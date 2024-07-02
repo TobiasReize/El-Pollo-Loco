@@ -7,4 +7,6 @@ body {
 
 canvas {
     background-color: black;
+    /* background-image: url('assets/img/5_background/layers/air.png');
+    background-position: center; */
 }

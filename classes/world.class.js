@@ -9,7 +9,10 @@ class World {
         new Cloud()
     ];
     backgroundObjects = [
-        new BackgroundObject('assets/img/5_background/layers/3_third_layer/1.png', 0, 80)
+        new BackgroundObject('assets/img/5_background/layers/air.png', 0),
+        new BackgroundObject('assets/img/5_background/layers/3_third_layer/1.png', 0),
+        new BackgroundObject('assets/img/5_background/layers/2_second_layer/1.png', 0),
+        new BackgroundObject('assets/img/5_background/layers/1_first_layer/1.png', 0)
     ];
     canvas;     //"Leinwand"
     ctx;        //"Pinsel"
@@ -25,10 +28,10 @@ class World {
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);    //das Canvas muss immer zuerst geleert werden, bevor es neu gezeichnet wird!
 
+        this.addObjectsToMap(this.backgroundObjects);    //zeichnet die Hintergründe, jedes einzelne aus dem Array (muss zuerst gezeichnet werden, damit die anderen Elemente davor angezeigt werden!)
         this.addToMap(this.character);                 //zeichnet den Charakter, drawImage(Bild, x-Pos, y-Pos, Breite, Höhe)
         this.addObjectsToMap(this.enemies);                //zeichnet die Enemies (Chicken), jedes einzelne aus dem Array
         this.addObjectsToMap(this.clouds);                //zeichnet die Clouds, jedes einzelne aus dem Array
-        this.addObjectsToMap(this.backgroundObjects);    //zeichnet die Hintergründe, jedes einzelne aus dem Array
 
 
         let self = this;
