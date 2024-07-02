@@ -6,7 +6,7 @@ class MovableObject {
     width = 100;
 
     loadImage(path) {
-        this.img = new Image();
+        this.img = new Image();     //new Image() vgl. mit einem <img>-HTML-Element (nur für JS vordefiniert, wird später in die HTML-Datei eingefügt)
         this.img.src = path;
     }
 
