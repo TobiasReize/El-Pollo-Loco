@@ -26,6 +26,14 @@ class MovableObject {
     }
 
 
+    playAnimation(images) {     //Spielt die Animation der Bilder ab
+        let i = this.currentImage % this.IMAGES_WALKING.length;     //Berechnung des "Modulo" (% --> Rest der Division). Erzeugt eine unendliche Reihe wiederkehrender Zahlenfolge!
+        let path = images[i];
+        this.img = this.imageCache[path];
+        this.currentImage++;
+    }
+
+
     moveRight() {
         console.log('moving right');
     }

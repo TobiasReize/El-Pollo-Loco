@@ -11,7 +11,7 @@ class Chicken extends MovableObject {
 
 
     constructor() {
-        super().loadImage('assets/img/3_enemies_chicken/chicken_normal/1_walk/1_w.png');    //ladet ein Bild
+        super().loadImage('assets/img/3_enemies_chicken/chicken_normal/1_walk/1_w.png');    //lädt das Start-Bild
 
         this.x = 200 + Math.random() * 500;     //chicken werden zwischen 200 und 700 eingefügt
         this.speed = 0.15 + Math.random() * 0.5;   //zufällige Geschwindigkeitsbereich (min. 0.15)
@@ -23,13 +23,11 @@ class Chicken extends MovableObject {
 
 
     animate() {     //animiert die Chicken
-        setInterval(() => {
-            let i = this.currentImage % this.IMAGES_WALKING.length;     //Berechnung des "Modulo" (% --> Rest der Division). Erzeugt eine unendliche Reihe!
-            let path = this.IMAGES_WALKING[i];
-            this.img = this.imageCache[path];
-            this.currentImage++;
-        }, 200);
-
+        
         this.moveLeft();
+
+        setInterval(() => {
+            this.playAnimation(this.IMAGES_WALKING);
+        }, 200);
     }
 }
