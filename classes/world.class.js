@@ -16,12 +16,20 @@ class World {
     ];
     canvas;     //"Leinwand"
     ctx;        //"Pinsel"
+    keyboard;
 
 
-    constructor(canvas) {
+    constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
+        this.keyboard = keyboard;
         this.draw();    //damit die draw-Funktion gleich aufgerufen wird, sobald eine neue Welt erstellt wird!
+        this.setWorld();
+    }
+
+
+    setWorld() {    //übergibt eine Referenz dieser Welt! (damit die Variablen dieser Klasse verwendet werden können!)
+        this.character.world = this;    //durch "this" wird die komplette Instanz der "World" übergeben!
     }
 
 
@@ -43,13 +51,26 @@ class World {
 
     addObjectsToMap(objects) {      //Hilfsfunktion, zum Aufrufen jedes einzelnen Elements aus dem Array
         objects.forEach(object => {
-            this.addToMap(object);
+            this.addToMap(object);  //jedes einzelne Objekt wird der "addToMap" Funktion übergeben!
         });
     }
 
 
     addToMap(movableObject) {   //Hilfsfunktion zum Zeichnen der Objekte
+        if (movableObject.otherDirection) {
+            this.ctx.save();    //aktuelle Einstellungen/ Status von unserem Kontext werden gespeichert
+            this.ctx.translate(movableObject.width, 0); //Da das Bild an der y-Achse gespiegelt wird, muss die Breite des Objektes noch abgezogen werden! (Bild wird um die Breite verschoben!)
+            this.ctx.scale(-1, 1);  //Bild wird an der y-Achse gespiegelt --> Dadurch fängt die x-Achse nun rechts an und nicht mehr links!
+            movableObject.x = movableObject.x * -1;     //x-Achse wird wieder korrigiert! (fängt wieder links an)
+        }
+        
         this.ctx.drawImage(movableObject.img, movableObject.x, movableObject.y, movableObject.width, movableObject.height);
+
+        if (movableObject.otherDirection) {     //wenn der Kontext verändert wurde (Bilder wurden gespiegelt), wird diese Einstellung wieder zurückgesetzt!
+            movableObject.x = movableObject.x * -1;
+            this.ctx.restore();
+        }
     }
+
 
 }
