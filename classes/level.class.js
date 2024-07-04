@@ -2,7 +2,7 @@ class Level {
     enemies;
     clouds;
     backgroundObjects;
-    level_end_x = 2200;  //max. x-Pos. für das Ende der Map
+    level_end_x = 2200;  //max. x-Pos. für das Ende von Pepe
 
 
     constructor(enemies, clouds, backgroundObjects) {

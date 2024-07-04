@@ -8,7 +8,8 @@ class MovableObject {
     currentImage = 0;   //Zählvariable
     speed = 0.15;
     otherDirection = false;     //Variable zum Spiegeln der Bilder
-
+    speedY = 0;
+    acceleration = 1.5;
 
 
     loadImage(path) {   //ein Bild wird geladen mit dem jeweiligen Pfad "path"
@@ -43,6 +44,21 @@ class MovableObject {
         setInterval(() => {
             this.x -= this.speed;
         }, 1000 / 60);  //60x pro Sekunde (60 fps)
+    }
+
+
+    applyGravity() {    //Funktion zum Verändern der y-Pos. (wenn Pepe springt)
+        setInterval(() => {
+            if (this.isAboveGround() || this.speedY > 0) {
+                this.y -= this.speedY;  //auf die y-Pos. wird ständig speedY drauf gerechnet! (beim Fallen ist speedY negativ, beim Springen ist speedY positiv!)
+                this.speedY -= this.acceleration;   //von speedY wird regelmäßig die acceleration abgezogen!
+            }
+        }, 1000 / 25);
+    }
+
+
+    isAboveGround() {   //Hilfsfunktion zum Prüfen ob Pepe in der Luft ist!
+        return this.y < 150;    //gibt "WAHR" zurück wenn die y-Pos. < 150 ist (Objekt in der Luft)
     }
 
 }

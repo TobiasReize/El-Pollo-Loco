@@ -6,7 +6,10 @@ const LEVEL_1 = new Level(
         new Endboss()
     ],
     [   // 2. cloud-Array
-        new Cloud()
+        new Cloud(0),   //Wolke an der x-Pos. 0
+        new Cloud(720),  //2. Wolke an der x-Pos. 720, usw.
+        new Cloud(800*2),
+        new Cloud(800*3)
     ],
     [   // 3. background-objects-Array
         new BackgroundObject('assets/img/5_background/layers/air.png', -719),
