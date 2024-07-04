@@ -26,6 +26,22 @@ class Character extends MovableObject {
         'assets/img/2_character_pepe/3_jump/J-39.png'
     ];
 
+    IMAGES_HURT = [
+        'assets/img/2_character_pepe/4_hurt/H-41.png',
+        'assets/img/2_character_pepe/4_hurt/H-42.png',
+        'assets/img/2_character_pepe/4_hurt/H-43.png',
+    ];
+
+    IMAGES_DEAD = [
+        'assets/img/2_character_pepe/5_dead/D-51.png',
+        'assets/img/2_character_pepe/5_dead/D-52.png',
+        'assets/img/2_character_pepe/5_dead/D-53.png',
+        'assets/img/2_character_pepe/5_dead/D-54.png',
+        'assets/img/2_character_pepe/5_dead/D-55.png',
+        'assets/img/2_character_pepe/5_dead/D-56.png',
+        'assets/img/2_character_pepe/5_dead/D-57.png'
+    ];
+
     world;  //Referenz auf die Klasse (aktuelle Instanz) "world", damit die Variable "keyboard" der Klasse "world" auch hier verwendet werden kann!
     walking_sound = new Audio('assets/audio/walking.mp3');
     jumping_sound = new Audio('assets/audio/jump.mp3');
@@ -35,6 +51,8 @@ class Character extends MovableObject {
        
         this.loadImages(this.IMAGES_WALKING);   //speichert alle Bilder für die Animation in dem ImageCache
         this.loadImages(this.IMAGES_JUMPING);
+        this.loadImages(this.IMAGES_DEAD);
+        this.loadImages(this.IMAGES_HURT);
 
         this.animate();     //animiert den Charakter
         this.applyGravity();
@@ -68,11 +86,18 @@ class Character extends MovableObject {
 
 
         setInterval(() => { //Intervall für die Animation des Charakters (walking & jumping)
-            if (this.isAboveGround()) {     //nur wenn sich der Charakter über dem Boden befindet, wird die Animation für jumping ausgeführt!
-                this.playAnimation(this.IMAGES_JUMPING);
-            } else {    //die Animation für walking ist innerhalb des else-Teil der jumping-Animation, damit der Charakter nicht gleichzeitig die jumping- und walking-Animaion durchführt! (falls man während des Sprungs die Pfeiltasten drückt)
-                if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {    //nur wenn die rechte oder linke Pfeiltaste gedrückt ist, wird der Charakter animiert!
-                    this.playAnimation(this.IMAGES_WALKING);
+            if (this.isDead()) {
+                this.playAnimation(this.IMAGES_DEAD);
+
+            } else {
+                
+                if (this.isAboveGround()) {     //nur wenn sich der Charakter über dem Boden befindet, wird die Animation für jumping ausgeführt!
+                    this.playAnimation(this.IMAGES_JUMPING);
+
+                } else {    //die Animation für walking ist innerhalb des else-Teil der jumping-Animation, damit der Charakter nicht gleichzeitig die jumping- und walking-Animaion durchführt! (falls man während des Sprungs die Pfeiltasten drückt)
+                    if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {    //nur wenn die rechte oder linke Pfeiltaste gedrückt ist, wird der Charakter animiert!
+                        this.playAnimation(this.IMAGES_WALKING);
+                    }
                 }
             }
         }, 50);

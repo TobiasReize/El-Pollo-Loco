@@ -10,6 +10,7 @@ class MovableObject {
     otherDirection = false;     //Variable zum Spiegeln der Bilder
     speedY = 0;
     acceleration = 2.5;
+    energy = 100;   //Ursprungs-Energie bei 100%
 
 
     loadImage(path) {   //ein Bild wird geladen mit dem jeweiligen Pfad "path"
@@ -87,6 +88,11 @@ class MovableObject {
                 (this.y + this.offsetY + this.height) >= obj.y &&   //Pepe unterhalb von Chicken
                 (this.y + this.offsetY) <= (obj.y + obj.height) //&&    //Pepe oberhalb von Chicken
                 // obj.onCollisionCourse; // Optional: hiermit könnten wir schauen, ob ein Objekt sich in die richtige Richtung bewegt. Nur dann kollidieren wir. Nützlich bei Gegenständen, auf denen man stehen kann.
+    }
+
+
+    isDead() {
+        return this.energy <= 0;
     }
 
 }

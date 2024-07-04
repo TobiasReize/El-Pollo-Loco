@@ -80,10 +80,15 @@ class World {
         setInterval(() => {
             this.level.enemies.forEach(enemy => {
                 if (this.character.isColliding(enemy)) {
-                    console.log('Collision with Character and ', enemy);
+
+                    this.character.energy -= 15;
+                    if (this.character.isDead()) {
+                        console.log('Character is dead! You lose!');
+                    } else {
+                        console.log('Collision with Character, energy: ', this.character.energy);
+                    }
                 }
             });
-        }, 1000);
+        }, 500);
     }
-
 }
