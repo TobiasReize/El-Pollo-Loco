@@ -9,7 +9,7 @@ class MovableObject {
     speed = 0.15;
     otherDirection = false;     //Variable zum Spiegeln der Bilder
     speedY = 0;
-    acceleration = 1.5;
+    acceleration = 2.5;
 
 
     loadImage(path) {   //ein Bild wird geladen mit dem jeweiligen Pfad "path"
@@ -36,14 +36,17 @@ class MovableObject {
 
 
     moveRight() {
-        console.log('moving right');
+        this.x += this.speed;           //auf der x-Achse nach rechts
     }
 
 
     moveLeft() {
-        setInterval(() => {
-            this.x -= this.speed;
-        }, 1000 / 60);  //60x pro Sekunde (60 fps)
+        this.x -= this.speed;           //auf der x-Achse nach links
+    }
+
+
+    jump() {
+        this.speedY = 30;
     }
 
 
@@ -59,6 +62,31 @@ class MovableObject {
 
     isAboveGround() {   //Hilfsfunktion zum Prüfen ob Pepe in der Luft ist!
         return this.y < 150;    //gibt "WAHR" zurück wenn die y-Pos. < 150 ist (Objekt in der Luft)
+    }
+
+
+    draw(ctx) {     //Bild wird auf dem Canvas gezeichnet
+        ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
+    }
+
+
+    drawFrame(ctx) {    //zeichnet die Rechtecke um die Objekte (zur Kollisionsprüfung)
+        if (this instanceof Character || this instanceof Chicken) {     //nur für den Charakter und die Chickens
+            ctx.beginPath();
+            ctx.lineWidth = "4";
+            ctx.strokeStyle = "blue";
+            ctx.rect(this.x, this.y, this.width, this.height);     //cxt.rect(x, y, width, height)
+            ctx.stroke();
+        }
+    }
+
+
+    isColliding(obj) {  //prüft, ob die Objekte miteinander kollidieren, wenn ja gibt "WAHR" zurück
+        return  (this.x + this.width) >= obj.x &&   //Pepe rechts von Chicken
+                this.x <= (obj.x + obj.width) &&    //Pepe links von Chicken
+                (this.y + this.offsetY + this.height) >= obj.y &&   //Pepe unterhalb von Chicken
+                (this.y + this.offsetY) <= (obj.y + obj.height) //&&    //Pepe oberhalb von Chicken
+                // obj.onCollisionCourse; // Optional: hiermit könnten wir schauen, ob ein Objekt sich in die richtige Richtung bewegt. Nur dann kollidieren wir. Nützlich bei Gegenständen, auf denen man stehen kann.
     }
 
 }

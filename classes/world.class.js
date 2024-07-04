@@ -13,6 +13,7 @@ class World {
         this.keyboard = keyboard;
         this.draw();    //damit die draw-Funktion gleich aufgerufen wird, sobald eine neue Welt erstellt wird!
         this.setWorld();
+        this.checkCollisions();
     }
 
 
@@ -24,7 +25,7 @@ class World {
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);    //das Canvas muss immer zuerst geleert werden, bevor es neu gezeichnet wird!
 
-        this.ctx.translate(this.camera_x, 0);  //der gesamte Kontext wird nach links verschoben! (y ist 0) (Die Position, an der die Bilder eingefügt werden!)
+        this.ctx.translate(this.camera_x, 0);  //der gesamte Kontext wird nach links verschoben! (Die Position, an der die Bilder eingefügt werden!) (zweite Wert: y ist 0) 
 
         this.addObjectsToMap(this.level.backgroundObjects);    //zeichnet die Hintergründe, jedes einzelne aus dem Array (muss zuerst gezeichnet werden, damit die anderen Elemente davor angezeigt werden!)
         this.addToMap(this.character);                      //zeichnet den Charakter, drawImage(Bild, x-Pos, y-Pos, Breite, Höhe)
@@ -49,18 +50,40 @@ class World {
 
     addToMap(movableObject) {   //Hilfsfunktion zum Zeichnen der Objekte
         if (movableObject.otherDirection) {     //prüft, ob die Bilder gespiegelt werden sollen
-            this.ctx.save();    //aktuelle Einstellungen/ Status von unserem Kontext werden gespeichert (bevor die Bilder gespiegelt werden!)
-            this.ctx.translate(movableObject.width, 0); //Da das Bild an der y-Achse gespiegelt wird, muss die Breite des Objektes noch abgezogen werden! (Bild wird um die Breite verschoben!)
-            this.ctx.scale(-1, 1);  //Bild (bzw. der gesamte Kontext) wird an der y-Achse gespiegelt --> Dadurch fängt die x-Achse nun rechts an und nicht mehr links!
-            movableObject.x = movableObject.x * -1;     //x-Achse wird wieder korrigiert! (fängt wieder links an)
+            this.mirrowImage(movableObject);
         }
         
-        this.ctx.drawImage(movableObject.img, movableObject.x, movableObject.y, movableObject.width, movableObject.height);     //Bild wird auf dem Canvas gezeichnet
+        movableObject.draw(this.ctx);   //Bild wird auf dem Canvas gezeichnet
+        movableObject.drawFrame(this.ctx);   //Rechtecke zeichnen (zur Kollisions-Prüfung)
 
-        if (movableObject.otherDirection) {     //wenn der Kontext verändert wurde (Bilder wurden gespiegelt), wird diese Einstellung wieder zurückgesetzt!
-            movableObject.x = movableObject.x * -1;
-            this.ctx.restore();     //Hier werden die zuvor gespeicherten Einstellungen des Kontext wieder hergestellt!
+        if (movableObject.otherDirection) {     //wenn der Kontext verändert wurde
+            this.mirrowImageBack(movableObject);
         }
+    }
+
+
+    mirrowImage(movableObject) {
+        this.ctx.save();    //aktuelle Einstellungen/ Status von unserem Kontext werden gespeichert (bevor die Bilder gespiegelt werden!)
+        this.ctx.translate(movableObject.width, 0); //Da das Bild an der y-Achse gespiegelt wird, muss die Breite des Objektes noch abgezogen werden! (Bild wird um die Breite verschoben!)
+        this.ctx.scale(-1, 1);  //Bild (bzw. der gesamte Kontext) wird an der y-Achse gespiegelt --> Dadurch fängt die x-Achse nun rechts an und nicht mehr links!
+        movableObject.x = movableObject.x * -1;     //x-Achse wird wieder korrigiert! (fängt wieder links an)
+    }
+
+
+    mirrowImageBack(movableObject) {    //wenn der Kontext verändert wurde (Bilder wurden gespiegelt), wird diese Einstellung wieder zurückgesetzt!
+        movableObject.x = movableObject.x * -1;
+        this.ctx.restore();     //Hier werden die zuvor gespeicherten Einstellungen des Kontext wieder hergestellt!
+    }
+
+
+    checkCollisions() {
+        setInterval(() => {
+            this.level.enemies.forEach(enemy => {
+                if (this.character.isColliding(enemy)) {
+                    console.log('Collision with Character and ', enemy);
+                }
+            });
+        }, 1000);
     }
 
 }
