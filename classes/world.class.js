@@ -81,12 +81,14 @@ class World {
             this.level.enemies.forEach(enemy => {
                 if (this.character.isColliding(enemy)) {
 
-                    this.character.energy -= 15;
+                    this.character.hit();
+
                     if (this.character.isDead()) {
                         console.log('Character is dead! You lose!');
                     } else {
                         console.log('Collision with Character, energy: ', this.character.energy);
                     }
+
                 }
             });
         }, 500);

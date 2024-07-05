@@ -1,35 +1,16 @@
-class MovableObject {
-    x = 100;
-    y = 280;
-    img;
-    height = 150;
-    width = 100;
-    imageCache = {};    //Bilder-Speicher
-    currentImage = 0;   //Zählvariable
+class MovableObject extends DrawableObject {
+ 
     speed = 0.15;
     otherDirection = false;     //Variable zum Spiegeln der Bilder
     speedY = 0;
     acceleration = 2.5;
     energy = 100;   //Ursprungs-Energie bei 100%
+    lastHit = 0;
 
 
-    loadImage(path) {   //ein Bild wird geladen mit dem jeweiligen Pfad "path"
-        this.img = new Image();     //new Image() vgl. mit einem <img>-HTML-Element (nur für JS vordefiniert, wird später in die HTML-Datei eingefügt)
-        this.img.src = path;
-    }
-
-
-    loadImages(arr) {   //es werden alle Bilder aus dem Array "arr" geladen und in "imageCache" abgespeichert
-        arr.forEach(path => {
-            let img = new Image();
-            img.src = path;
-            this.imageCache[path] = img;    //key: Image-Pfad und value: Image-Objekt
-        });
-    }
-
-
+    
     playAnimation(images) {     //Spielt die Animation der Bilder ab
-        let i = this.currentImage % this.IMAGES_WALKING.length;     //Berechnung des "Modulo" (% --> Rest der Division). Erzeugt eine unendliche Reihe wiederkehrender Zahlenfolge!
+        let i = this.currentImage % images.length;     //Berechnung des "Modulo" (% --> Rest der Division). Erzeugt eine unendliche Reihe wiederkehrender Zahlenfolge!
         let path = images[i];
         this.img = this.imageCache[path];
         this.currentImage++;
@@ -66,11 +47,6 @@ class MovableObject {
     }
 
 
-    draw(ctx) {     //Bild wird auf dem Canvas gezeichnet
-        ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
-    }
-
-
     drawFrame(ctx) {    //zeichnet die Rechtecke um die Objekte (zur Kollisionsprüfung)
         if (this instanceof Character || this instanceof Chicken) {     //nur für den Charakter und die Chickens
             ctx.beginPath();
@@ -91,8 +67,25 @@ class MovableObject {
     }
 
 
+    hit() {
+        this.energy -= 15;
+        if (this.energy < 0) {
+            this.energy = 0;
+        } else {
+            this.lastHit = new Date().getTime();
+        }
+    }
+
+
+    isHurt() {
+        let timePassed = new Date().getTime() - this.lastHit;   //Differenz in ms
+        timePassed = timePassed / 1000;     //Differenz in s
+        return timePassed < 0.5;
+    }
+
+
     isDead() {
-        return this.energy <= 0;
+        return this.energy == 0;
     }
 
 }
