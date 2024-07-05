@@ -8,7 +8,7 @@ class MovableObject extends DrawableObject {
     lastHit = 0;
 
 
-    
+
     playAnimation(images) {     //Spielt die Animation der Bilder ab
         let i = this.currentImage % images.length;     //Berechnung des "Modulo" (% --> Rest der Division). Erzeugt eine unendliche Reihe wiederkehrender Zahlenfolge!
         let path = images[i];
@@ -44,17 +44,6 @@ class MovableObject extends DrawableObject {
 
     isAboveGround() {   //Hilfsfunktion zum Prüfen ob Pepe in der Luft ist!
         return this.y < 150;    //gibt "WAHR" zurück wenn die y-Pos. < 150 ist (Objekt in der Luft)
-    }
-
-
-    drawFrame(ctx) {    //zeichnet die Rechtecke um die Objekte (zur Kollisionsprüfung)
-        if (this instanceof Character || this instanceof Chicken) {     //nur für den Charakter und die Chickens
-            ctx.beginPath();
-            ctx.lineWidth = "4";
-            ctx.strokeStyle = "blue";
-            ctx.rect(this.x, this.y, this.width, this.height);     //cxt.rect(x, y, width, height)
-            ctx.stroke();
-        }
     }
 
 

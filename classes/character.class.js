@@ -42,7 +42,7 @@ class Character extends MovableObject {
         'assets/img/2_character_pepe/5_dead/D-57.png'
     ];
 
-    world;  //Referenz auf die Klasse (aktuelle Instanz) "world", damit die Variable "keyboard" der Klasse "world" auch hier verwendet werden kann!
+    world;  //Referenz auf die Klasse "world" (aktuelle Instanz), damit die Variable "keyboard" der Klasse "world" auch hier verwendet werden kann!
     walking_sound = new Audio('assets/audio/walking.mp3');
     jumping_sound = new Audio('assets/audio/jump.mp3');
     

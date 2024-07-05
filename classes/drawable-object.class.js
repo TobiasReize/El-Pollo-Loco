@@ -28,4 +28,15 @@ class DrawableObject {
         ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
     }
 
+
+    drawFrame(ctx) {    //zeichnet die Rechtecke um die Objekte (zur Kollisionsprüfung)
+        if (this instanceof Character || this instanceof Chicken) {     //nur für den Charakter und die Chickens
+            ctx.beginPath();
+            ctx.lineWidth = "4";
+            ctx.strokeStyle = "blue";
+            ctx.rect(this.x, this.y, this.width, this.height);     //cxt.rect(x, y, width, height)
+            ctx.stroke();
+        }
+    }
+
 }

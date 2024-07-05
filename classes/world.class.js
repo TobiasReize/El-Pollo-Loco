@@ -5,6 +5,7 @@ class World {
     ctx;        //"Pinsel"
     keyboard;
     camera_x = 0;    //um den Bildausschnitt zu verschieben (wenn Pepe läuft)
+    statusBar = new StatusBar();
 
 
     constructor(canvas, keyboard) {
@@ -28,6 +29,7 @@ class World {
         this.ctx.translate(this.camera_x, 0);  //der gesamte Kontext wird nach links verschoben! (Die Position, an der die Bilder eingefügt werden!) (zweite Wert: y ist 0) 
 
         this.addObjectsToMap(this.level.backgroundObjects);    //zeichnet die Hintergründe, jedes einzelne aus dem Array (muss zuerst gezeichnet werden, damit die anderen Elemente davor angezeigt werden!)
+        this.addToMap(this.statusBar);
         this.addToMap(this.character);                      //zeichnet den Charakter, drawImage(Bild, x-Pos, y-Pos, Breite, Höhe)
         this.addObjectsToMap(this.level.enemies);                //zeichnet die Enemies (Chicken), jedes einzelne aus dem Array
         this.addObjectsToMap(this.level.clouds);                //zeichnet die Clouds, jedes einzelne aus dem Array
@@ -54,7 +56,7 @@ class World {
         }
         
         movableObject.draw(this.ctx);   //Bild wird auf dem Canvas gezeichnet
-        movableObject.drawFrame(this.ctx);   //Rechtecke zeichnen (zur Kollisions-Prüfung)
+        movableObject.drawFrame(this.ctx);   //Rechtecke zeichnen, nur für Charakter und Chicken (zur Kollisions-Prüfung)
 
         if (movableObject.otherDirection) {     //wenn der Kontext verändert wurde
             this.mirrowImageBack(movableObject);
