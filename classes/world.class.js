@@ -6,6 +6,9 @@ class World {
     keyboard;
     camera_x = 0;    //um den Bildausschnitt zu verschieben (wenn Pepe läuft)
     statusBar = new StatusBar();
+    throwableObjects = [
+        new ThrowableObject()
+    ];
 
 
     constructor(canvas, keyboard) {
@@ -14,7 +17,7 @@ class World {
         this.keyboard = keyboard;
         this.draw();    //damit die draw-Funktion gleich aufgerufen wird, sobald eine neue Welt erstellt wird!
         this.setWorld();
-        this.checkCollisions();
+        this.run();     //Intervall, das ständig läuft!
     }
 
 
@@ -32,7 +35,8 @@ class World {
         this.addToMap(this.character);                      //zeichnet den Charakter, drawImage(Bild, x-Pos, y-Pos, Breite, Höhe)
         this.addObjectsToMap(this.level.enemies);                //zeichnet die Enemies (Chicken), jedes einzelne aus dem Array
         this.addObjectsToMap(this.level.clouds);                //zeichnet die Clouds, jedes einzelne aus dem Array
-        
+        this.addObjectsToMap(this.throwableObjects);
+
         // this.ctx.translate(-this.camera_x, 0);  //Back
         this.addToMap(this.statusBar);  //zeichnet die Statusbar. Muss nach den Wolken eingefügt werden, damit die Wolken nicht die Statusbar verdecken können!
         // this.ctx.translate(this.camera_x, 0);  //Forwards
@@ -81,22 +85,36 @@ class World {
     }
 
 
-    checkCollisions() {
+    run() {     //Hilfsfunktion für das Durchführen des Intervalls! (somit braucht man nur ein Intervall!)
         setInterval(() => {
-            this.level.enemies.forEach(enemy => {
-                if (this.character.isColliding(enemy)) {
-
-                    this.character.hit();
-                    this.statusBar.setPercentage(this.character.energy);    //die Statusbar wird entsprechend der neuen, verbleibenden Energie des Charakters aktualisiert
-
-                    if (this.character.isDead()) {
-                        console.log('Character is dead! You lost!');
-                    } else {
-                        console.log('Collision with Character, energy: ', this.character.energy);
-                    }
-
-                }
-            });
+            this.checkCollision();
+            this.checkThrowObjects();
         }, 500);
     }
+
+
+    checkCollision() {
+        this.level.enemies.forEach(enemy => {
+            if (this.character.isColliding(enemy)) {
+                this.character.hit();
+                this.statusBar.setPercentage(this.character.energy);    //die Statusbar wird entsprechend der neuen, verbleibenden Energie des Charakters aktualisiert
+
+                if (this.character.isDead()) {
+                    console.log('Character is dead! You lost!');
+                } else {
+                    console.log('Collision with Character, energy: ', this.character.energy);
+                }
+            }
+        });
+    }
+
+
+    checkThrowObjects() {
+        if (this.keyboard.KEY_D) {
+            let bottle = new ThrowableObject(this.character.x + 100, this.character.y + 100);
+            this.throwableObjects.push(bottle);
+        }
+    }
+
+
 }

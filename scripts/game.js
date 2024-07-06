@@ -31,6 +31,10 @@ window.addEventListener('keydown', (e) => {
     if(e.code == 'Space') {
         keyboard.SPACE = true;
     }
+    
+    if(e.code == 'KeyD') {
+        keyboard.KEY_D = true;
+    }
 });
 
 
@@ -53,5 +57,9 @@ window.addEventListener('keyup', (e) => {
 
     if(e.code == 'Space') {
         keyboard.SPACE = false;
+    }
+
+    if(e.code == 'KeyD') {
+        keyboard.KEY_D = false;
     }
 });
