@@ -26,15 +26,18 @@ class World {
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);    //das Canvas muss immer zuerst geleert werden, bevor es neu gezeichnet wird!
 
-        this.ctx.translate(this.camera_x, 0);  //der gesamte Kontext wird nach links verschoben! (Die Position, an der die Bilder eingefügt werden!) (zweite Wert: y ist 0) 
+        this.ctx.translate(this.camera_x, 0);  //der gesamte Kontext wird um den Betrag der Kamera (= x-Pos. des Charakters) verschoben! (Die Position, an der die Bilder eingefügt werden!) (zweite Wert: y ist 0) 
 
         this.addObjectsToMap(this.level.backgroundObjects);    //zeichnet die Hintergründe, jedes einzelne aus dem Array (muss zuerst gezeichnet werden, damit die anderen Elemente davor angezeigt werden!)
-        this.addToMap(this.statusBar);
         this.addToMap(this.character);                      //zeichnet den Charakter, drawImage(Bild, x-Pos, y-Pos, Breite, Höhe)
         this.addObjectsToMap(this.level.enemies);                //zeichnet die Enemies (Chicken), jedes einzelne aus dem Array
         this.addObjectsToMap(this.level.clouds);                //zeichnet die Clouds, jedes einzelne aus dem Array
+        
+        // this.ctx.translate(-this.camera_x, 0);  //Back
+        this.addToMap(this.statusBar);  //zeichnet die Statusbar. Muss nach den Wolken eingefügt werden, damit die Wolken nicht die Statusbar verdecken können!
+        // this.ctx.translate(this.camera_x, 0);  //Forwards
 
-        this.ctx.translate(-this.camera_x, 0);  //der gesamte Kontext wird wieder nach rechts verschoben!
+        this.ctx.translate(-this.camera_x, 0);  //der gesamte Kontext wird wieder zurück verschoben!
 
         let self = this;
         requestAnimationFrame(function () {      //ruft die draw-Funktion immer wieder neu auf! Benötigt eine callback-function! Innerhalb dieser callback-function kann man nicht das "this" verwenden! Daher macht man den Workaround mit "self"!
@@ -50,16 +53,16 @@ class World {
     }
 
 
-    addToMap(movableObject) {   //Hilfsfunktion zum Zeichnen der Objekte
-        if (movableObject.otherDirection) {     //prüft, ob die Bilder gespiegelt werden sollen
-            this.mirrowImage(movableObject);
+    addToMap(object) {   //Hilfsfunktion zum Zeichnen der Objekte
+        if (object.otherDirection) {     //prüft, ob die Bilder gespiegelt werden sollen
+            this.mirrowImage(object);
         }
         
-        movableObject.draw(this.ctx);   //Bild wird auf dem Canvas gezeichnet
-        movableObject.drawFrame(this.ctx);   //Rechtecke zeichnen, nur für Charakter und Chicken (zur Kollisions-Prüfung)
+        object.draw(this.ctx);   //Bild wird auf dem Canvas gezeichnet
+        object.drawFrame(this.ctx);   //Rechtecke zeichnen, nur für Charakter und Chicken (zur Kollisions-Prüfung)
 
-        if (movableObject.otherDirection) {     //wenn der Kontext verändert wurde
-            this.mirrowImageBack(movableObject);
+        if (object.otherDirection) {     //wenn der Kontext verändert wurde
+            this.mirrowImageBack(object);
         }
     }
 
@@ -84,9 +87,10 @@ class World {
                 if (this.character.isColliding(enemy)) {
 
                     this.character.hit();
+                    this.statusBar.setPercentage(this.character.energy);    //die Statusbar wird entsprechend der neuen, verbleibenden Energie des Charakters aktualisiert
 
                     if (this.character.isDead()) {
-                        console.log('Character is dead! You lose!');
+                        console.log('Character is dead! You lost!');
                     } else {
                         console.log('Collision with Character, energy: ', this.character.energy);
                     }

@@ -1,6 +1,7 @@
 class Chicken extends MovableObject {
 
     y = 360;
+    offsetY = 0;    //die Bilder der Chicken  haben keine Freifläche! (daher 0)
     height = 60;
     width = 80;
     IMAGES_WALKING = [

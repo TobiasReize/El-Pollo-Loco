@@ -2,7 +2,7 @@ class Character extends MovableObject {
 
     height = 280;
     y = 0;
-    offsetY = 10;   //da das Bild von Pepe nach oben zu viel Freifläche hat!
+    offsetY = 100;   //da das Bild von Pepe nach oben zu viel Freifläche hat!
     speed = 10;
 
     IMAGES_WALKING = [
@@ -82,6 +82,7 @@ class Character extends MovableObject {
             }
 
             this.world.camera_x = -this.x + 100;  //jedes Mal wenn der Charakter seine x-Pos. verändert, wird die Kameraeinstellung um den selben Betrag in die andere Richtung verschoben! (standardmäßig um +100 verschoben, damit der Charakter etwas weiter in der Mitte ist!)
+            this.world.statusBar.x = this.x;    //die Statusbar bewegt sich mit dem Charakter mit! (bleibt immer auf der selben Position)
         }, 1000 / 60);
 
 

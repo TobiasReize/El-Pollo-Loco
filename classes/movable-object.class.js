@@ -56,17 +56,17 @@ class MovableObject extends DrawableObject {
     }
 
 
-    hit() {
+    hit() {     //Pepe wurde getroffen und die Energie wird abgezogen
         this.energy -= 15;
         if (this.energy < 0) {
             this.energy = 0;
         } else {
-            this.lastHit = new Date().getTime();
+            this.lastHit = new Date().getTime();    //der Zeitpunkt der letzten Kollision wird gespeichert (in ms)
         }
     }
 
 
-    isHurt() {
+    isHurt() {  //gibt "WAHR" zurück, wenn die letzte Kollision weniger als 0,5s her ist
         let timePassed = new Date().getTime() - this.lastHit;   //Differenz in ms
         timePassed = timePassed / 1000;     //Differenz in s
         return timePassed < 0.5;
