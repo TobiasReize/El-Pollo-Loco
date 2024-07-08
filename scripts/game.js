@@ -4,6 +4,7 @@ let keyboard = new Keyboard();
 
 
 function init() {
+    document.getElementById('start_screen').classList.add('d-none');
     initLevel();
     canvas = document.getElementById('canvas');
     world = new World(canvas, keyboard);    //Der Instanz der "World" wird das "canvas" und die Instanz des "Keyboard" übergeben!

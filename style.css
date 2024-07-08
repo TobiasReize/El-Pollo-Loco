@@ -3,6 +3,10 @@
     src: url('assets/fonts/zabars.ttf') format('truetype');
 }
 
+.d-none {
+    display: none !important;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -31,4 +35,44 @@ h1 {
 
 canvas {
     background-color: black;
+}
+
+.start-screen {
+    position: absolute;
+    min-height: 100vh;
+    width: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('assets/img/9_intro_outro_screens/start/startscreen_1.png');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+}
+
+.start-button {
+    cursor: pointer;
+    width: 210px;
+    height: 60px;
+    margin-bottom: 2%;
+    font-size: 48px;
+    letter-spacing: 1px;
+    background-color: rgb(243, 178, 0);
+    border-radius: 16px;
+    border-color: rgb(139, 84, 0);
+    border-width: 4px;
+    border-style: outset;
+}
+
+.start-button:hover {
+    background-color: rgb(255, 205, 69);
+}
+
+.start-button:active {
+    border-style: inset;
+    background-color: rgb(221, 162, 0);
 }
