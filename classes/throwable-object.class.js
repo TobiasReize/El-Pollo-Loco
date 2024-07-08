@@ -17,17 +17,16 @@ class ThrowableObject extends MovableObject {
     ];
 
     constructor(x, y) {
-        super().loadImage('assets/img/6_salsa_bottle/salsa_bottle.png');
+        super().loadImage('assets/img/6_salsa_bottle/salsa_bottle.png');    //am Anfang muss immer ein Startbild einzeln geladen werden, wenn das Objekt erstellt wird! Ansonten gibt die Funktion "draw(ctx){}" der "DrawableObject" Klasse einen Fehler!
+        this.loadImages(this.IMAGES_ROTATION);
+        this.loadImages(this.IMAGES_SPLASH);
 
         this.x = x;
         this.y = y;
         this.height = 60;
         this.width = 50;
 
-        this.loadImages(this.IMAGES_ROTATION);
-        this.loadImages(this.IMAGES_SPLASH);
-
-        this.throw();
+        this.throw();   //die Funktion "throw" muss im constructor sein, damit die Flasche immer gleich geworfen wird, sobalb ein neues Objekt erstellt wird!
     }
 
 
@@ -35,8 +34,6 @@ class ThrowableObject extends MovableObject {
     throw() {
         this.speedY = 30;
         this.applyGravity();
-
-        console.log('Throw bottle!!!');
 
         setInterval(() => {
             this.x += 10;

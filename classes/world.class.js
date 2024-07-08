@@ -6,9 +6,7 @@ class World {
     keyboard;
     camera_x = 0;    //um den Bildausschnitt zu verschieben (wenn Pepe läuft)
     statusBar = new StatusBar();
-    throwableObjects = [
-        new ThrowableObject()
-    ];
+    throwableObjects = [];
 
 
     constructor(canvas, keyboard) {
@@ -93,7 +91,7 @@ class World {
     }
 
 
-    checkCollision() {
+    checkCollision() {      //prüft, ob der Charakter mit einem Gegner kollidiert und zieht dann die Energie ab
         this.level.enemies.forEach(enemy => {
             if (this.character.isColliding(enemy)) {
                 this.character.hit();
@@ -109,7 +107,7 @@ class World {
     }
 
 
-    checkThrowObjects() {
+    checkThrowObjects() {       //erstellt ein neues Objekt der Flasche (Flasche wird geworfen)
         if (this.keyboard.KEY_D) {
             let bottle = new ThrowableObject(this.character.x + 100, this.character.y + 100);
             this.throwableObjects.push(bottle);

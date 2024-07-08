@@ -9,7 +9,7 @@ class DrawableObject {
 
 
 
-    loadImage(path) {   //ein Bild wird geladen mit dem jeweiligen Pfad "path"
+    loadImage(path) {   //am Anfang muss immer ein Startbild einzeln geladen werden, wenn das Objekt erstellt wird! Ansonten gibt die Funktion "draw(ctx){}" einen Fehler! (diese Funktion erwartet ein img-Element!)
         this.img = new Image();     //new Image() vgl. mit einem <img>-HTML-Element (nur für JS vordefiniert, wird später in die HTML-Datei eingefügt)
         this.img.src = path;
     }
