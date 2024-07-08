@@ -1,5 +1,12 @@
 class ThrowableObject extends MovableObject {
 
+    offset = {      //Offset zur genauen Kollisionsprüfung (Offset wird von der ursprünglichen Bildgröße abgezogen!)
+        top: 10,
+        left: 10,
+        right: 10,
+        bottom: 10
+    };
+
     IMAGES_ROTATION = [
         'assets/img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png',
         'assets/img/6_salsa_bottle/bottle_rotation/2_bottle_rotation.png',
@@ -36,8 +43,9 @@ class ThrowableObject extends MovableObject {
         this.applyGravity();
 
         setInterval(() => {
-            this.x += 10;
-        }, 25);
+            this.playAnimation(this.IMAGES_ROTATION);
+            this.x += 20;
+        }, 50);
     }
 
 

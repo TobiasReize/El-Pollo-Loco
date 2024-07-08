@@ -4,6 +4,12 @@ class Endboss extends MovableObject {
     width = 250;
     y = 50;
 
+    offset = {  //Offset zur genauen Kollisionsprüfung (Offset wird von der ursprünglichen Bildgröße abgezogen!)
+        top: 150,
+        left: 40,
+        right: 0,
+        bottom: 20
+    };
 
     IMAGES_WALKING = [
         'assets/img/4_enemie_boss_chicken/2_alert/G5.png',
@@ -14,7 +20,7 @@ class Endboss extends MovableObject {
         'assets/img/4_enemie_boss_chicken/2_alert/G10.png',
         'assets/img/4_enemie_boss_chicken/2_alert/G11.png',
         'assets/img/4_enemie_boss_chicken/2_alert/G12.png'
-    ]
+    ];
 
 
     constructor() {

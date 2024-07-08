@@ -52,10 +52,10 @@ class MovableObject extends DrawableObject {
 
 
     isColliding(obj) {  //prüft, ob die Objekte miteinander kollidieren, wenn ja gibt "WAHR" zurück
-        return  (this.x + this.width) >= obj.x &&   //Pepe rechts von Chicken
-                this.x <= (obj.x + obj.width) &&    //Pepe links von Chicken
-                (this.y + this.offsetY + this.height) >= obj.y &&   //Pepe unterhalb von Chicken
-                (this.y + this.offsetY) <= (obj.y + obj.height) //&&    //Pepe oberhalb von Chicken
+        return  (this.x + this.width - this.offset.right) >= (obj.x + obj.offset.left) &&   //Pepe rechts von Chicken
+                (this.x + this.offset.left) <= (obj.x + obj.width - obj.offset.right) &&    //Pepe links von Chicken
+                (this.y + this.height - this.offset.bottom) >= (obj.y + obj.offset.top) &&   //Pepe unterhalb von Chicken
+                (this.y + this.offset.top) <= (obj.y + obj.height - obj.offset.bottom) //&&    //Pepe oberhalb von Chicken
                 // obj.onCollisionCourse; // Optional: hiermit könnten wir schauen, ob ein Objekt sich in die richtige Richtung bewegt. Nur dann kollidieren wir. Nützlich bei Gegenständen, auf denen man stehen kann.
     }
 

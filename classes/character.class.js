@@ -2,8 +2,15 @@ class Character extends MovableObject {
 
     height = 280;
     y = 0;
-    offsetY = 100;   //da das Bild von Pepe nach oben zu viel Freifläche hat!
     speed = 10;
+
+    offset = {      //Offset zur genauen Kollisionsprüfung (Offset wird von der ursprünglichen Bildgröße abgezogen!)
+        top: 120,
+        left: 20,
+        right: 30,
+        bottom: 20
+    };
+
 
     IMAGES_WALKING = [
         'assets/img/2_character_pepe/2_walk/W-21.png',
