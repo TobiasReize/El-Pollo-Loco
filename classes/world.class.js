@@ -5,8 +5,11 @@ class World {
     ctx;        //"Pinsel"
     keyboard;
     camera_x = 0;    //um den Bildausschnitt zu verschieben (wenn Pepe läuft)
-    statusBar = new StatusBar();
+    statusBarHealth = new StatusBarHealth();
+    statusBarBottle = new StatusBarBottle();
+    statusBarCoin = new StatusBarCoin();
     throwableObjects = [];
+    endboss = this.level.enemies[this.level.enemies.length - 1];
 
 
     constructor(canvas, keyboard) {
@@ -35,9 +38,13 @@ class World {
         this.addObjectsToMap(this.level.clouds);                //zeichnet die Clouds, jedes einzelne aus dem Array
         this.addObjectsToMap(this.throwableObjects);
 
-        // this.ctx.translate(-this.camera_x, 0);  //Back
-        this.addToMap(this.statusBar);  //zeichnet die Statusbar. Muss nach den Wolken eingefügt werden, damit die Wolken nicht die Statusbar verdecken können!
-        // this.ctx.translate(this.camera_x, 0);  //Forwards
+        this.ctx.translate(-this.camera_x, 0);  //der Kontext wird wieder zurück verschoben, damit die folgenden Objekte immer an der selben Stelle bleiben!
+        // ----- Space for fixed objects ----- //   (diese Objekte verschieben sich nicht!)
+        this.addToMap(this.statusBarHealth);  //zeichnet die Statusbar. Muss nach den Wolken eingefügt werden, damit die Wolken nicht die Statusbar verdecken können! Die Statusbar bewegt sich mit dem Charakter mit! (bleibt immer auf der selben Position)
+        this.addToMap(this.statusBarBottle);
+        this.addToMap(this.statusBarCoin);
+        // ----- ^ Space for fixed objects ^ ----- //
+        this.ctx.translate(this.camera_x, 0);  //der Kontext wird wieder verschoben, damit sich die Hintergrundbilder nach links bewegen, wenn Pepe nach rechts läuft!
 
         this.ctx.translate(-this.camera_x, 0);  //der gesamte Kontext wird wieder zurück verschoben!
 
@@ -85,17 +92,18 @@ class World {
 
     run() {     //Hilfsfunktion für das Durchführen des Intervalls! (somit braucht man nur ein Intervall!)
         setInterval(() => {
-            this.checkCollision();
+            this.checkCollisionCharacter();
             this.checkThrowObjects();
-        }, 500);
+            this.checkCollisionEndboss();
+        }, 250);
     }
 
 
-    checkCollision() {      //prüft, ob der Charakter mit einem Gegner kollidiert und zieht dann die Energie ab
+    checkCollisionCharacter() {      //prüft, ob der Charakter mit einem Gegner kollidiert und zieht dann die Energie ab
         this.level.enemies.forEach(enemy => {
             if (this.character.isColliding(enemy)) {
                 this.character.hit();
-                this.statusBar.setPercentage(this.character.energy);    //die Statusbar wird entsprechend der neuen, verbleibenden Energie des Charakters aktualisiert
+                this.statusBarHealth.setPercentage(this.character.energy);    //die Statusbar wird entsprechend der neuen, verbleibenden Energie des Charakters aktualisiert
 
                 if (this.character.isDead()) {
                     console.log('Character is dead! You lost!');
@@ -107,11 +115,23 @@ class World {
     }
 
 
-    checkThrowObjects() {       //erstellt ein neues Objekt der Flasche (Flasche wird geworfen)
-        if (this.keyboard.KEY_D) {
-            let bottle = new ThrowableObject(this.character.x + 100, this.character.y + 100);
-            this.throwableObjects.push(bottle);
+    checkThrowObjects() {       //erstellt ein neues Objekt der Flasche, wenn die Anzahl größer 0 ist! (Flasche wird geworfen)
+        if (this.keyboard.KEY_D && this.statusBarBottle.amountBottles > 0) {
+            let bottle = new ThrowableObject(this.character.x + 100, this.character.y + 100);   //neue Instanz der Klasse "ThrowableObject" wird erstellt
+            this.throwableObjects.push(bottle);     //neue Instanz wird in das Array reingepusht (durch die draw()-Funktion wird das Element sofort angezeigt)
+            this.statusBarBottle.amountBottles--;   //Menge reduzieren
+            console.log(this.statusBarBottle.amountBottles);
+            this.statusBarBottle.setStatusbarImage();   //Statusbar anpassen
         }
+    }
+
+
+    checkCollisionEndboss() {
+        this.throwableObjects.forEach(bottle => {
+            if (this.endboss.isColliding(bottle)) {
+                console.log('Hit Endboss!!!');
+            }
+        });
     }
 
 

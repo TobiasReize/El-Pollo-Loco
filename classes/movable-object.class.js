@@ -61,7 +61,7 @@ class MovableObject extends DrawableObject {
 
 
     hit() {     //Pepe wurde getroffen und die Energie wird abgezogen
-        this.energy -= 15;
+        this.energy -= 10;
         if (this.energy < 0) {
             this.energy = 0;
         } else {
