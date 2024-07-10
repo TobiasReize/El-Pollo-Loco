@@ -6,6 +6,7 @@ class DrawableObject {
     img;
     imageCache = {};    //Bilder-Speicher
     currentImage = 0;   //Zählvariable
+    amount = 0;     //zum Zählen der Sammelgegenstände (Flaschen, Coins)
 
     offset = {      //Standard-Offset für die Kollisionsprüfung (wird je nach Objekt angepasst!)
         top: 0,
@@ -36,7 +37,7 @@ class DrawableObject {
 
     
     drawFrame(ctx) {    //zeichnet die Rechtecke um die Objekte (nur zur Kontrolle der Kollisionsprüfung)
-        if (this instanceof Character || this instanceof Chicken || this instanceof Endboss || this instanceof ThrowableObject) {     //nur für den Charakter und die Chickens
+        if (this instanceof Character || this instanceof Chicken || this instanceof Endboss || this instanceof ThrowableObject || this instanceof Bottle) {     //nur für den Charakter und die Chickens
             ctx.beginPath();
             ctx.lineWidth = "4";
             ctx.strokeStyle = "blue";

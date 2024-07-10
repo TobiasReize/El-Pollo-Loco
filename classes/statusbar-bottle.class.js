@@ -1,6 +1,6 @@
 class StatusBarBottle extends DrawableObject {
 
-    amountBottles = 10;  //zum Zählen der Flaschen
+    // amountBottles = 0;  //zum Zählen der Flaschen
 
     IMAGES = [
         'assets/img/7_statusbars/1_statusbar/3_statusbar_bottle/blue/0.png',
@@ -31,17 +31,17 @@ class StatusBarBottle extends DrawableObject {
 
 
     resolveImageIndex() {   //gibt den Index des IMAGES-Array zurück je nach dem wie groß "amountBottles" ist (wie viel bottles man noch hat)
-        if (this.amountBottles >= 10) {
+        if (this.amount == 5) {
             return 5;
-        } else if (this.amountBottles >= 8) {
+        } else if (this.amount == 4) {
             return 4;
-        } else if (this.amountBottles >= 6) {
+        } else if (this.amount == 3) {
             return 3;
-        } else if (this.amountBottles >= 4) {
+        } else if (this.amount == 2) {
             return 2;
-        } else if (this.amountBottles >= 1) {
+        } else if (this.amount == 1) {
             return 1;
-        } else if (this.amountBottles == 0) {
+        } else if (this.amount == 0) {
             return 0;
         }
     }

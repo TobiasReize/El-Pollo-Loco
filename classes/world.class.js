@@ -10,6 +10,7 @@ class World {
     statusBarCoin = new StatusBarCoin();
     throwableObjects = [];
     endboss = this.level.enemies[this.level.enemies.length - 1];
+    bottles = [];
 
 
     constructor(canvas, keyboard) {
@@ -18,6 +19,7 @@ class World {
         this.keyboard = keyboard;
         this.draw();    //damit die draw-Funktion gleich aufgerufen wird, sobald eine neue Welt erstellt wird!
         this.setWorld();
+        this.creatBottles();    //es werden nur einmal die Flaschen erstellt!
         this.run();     //Intervall, das ständig läuft!
     }
 
@@ -34,6 +36,7 @@ class World {
 
         this.addObjectsToMap(this.level.backgroundObjects);    //zeichnet die Hintergründe, jedes einzelne aus dem Array (muss zuerst gezeichnet werden, damit die anderen Elemente davor angezeigt werden!)
         this.addToMap(this.character);                      //zeichnet den Charakter, drawImage(Bild, x-Pos, y-Pos, Breite, Höhe)
+        this.addObjectsToMap(this.bottles);
         this.addObjectsToMap(this.level.enemies);                //zeichnet die Enemies (Chicken), jedes einzelne aus dem Array
         this.addObjectsToMap(this.level.clouds);                //zeichnet die Clouds, jedes einzelne aus dem Array
         this.addObjectsToMap(this.throwableObjects);
@@ -95,6 +98,8 @@ class World {
             this.checkCollisionCharacter();
             this.checkThrowObjects();
             this.checkCollisionEndboss();
+            this.checkCollisionThrowObject();
+            this.checkCollectBottle();
         }, 250);
     }
 
@@ -116,11 +121,10 @@ class World {
 
 
     checkThrowObjects() {       //erstellt ein neues Objekt der Flasche, wenn die Anzahl größer 0 ist! (Flasche wird geworfen)
-        if (this.keyboard.KEY_D && this.statusBarBottle.amountBottles > 0) {
+        if (this.keyboard.KEY_D && this.statusBarBottle.amount > 0) {
             let bottle = new ThrowableObject(this.character.x + 100, this.character.y + 100);   //neue Instanz der Klasse "ThrowableObject" wird erstellt
             this.throwableObjects.push(bottle);     //neue Instanz wird in das Array reingepusht (durch die draw()-Funktion wird das Element sofort angezeigt)
-            this.statusBarBottle.amountBottles--;   //Menge reduzieren
-            console.log(this.statusBarBottle.amountBottles);
+            this.statusBarBottle.amount--;   //Menge reduzieren
             this.statusBarBottle.setStatusbarImage();   //Statusbar anpassen
         }
     }
@@ -132,6 +136,35 @@ class World {
                 console.log('Hit Endboss!!!');
             }
         });
+    }
+
+
+    checkCollectBottle() {
+        this.bottles.forEach(bottle => {
+            let currentBottleIndex = this.bottles.findIndex(singleBottle => bottle == singleBottle);
+            if (this.character.isColliding(bottle) && this.statusBarBottle.amount < 5) {
+                this.bottles.splice(currentBottleIndex, 1);
+                this.statusBarBottle.amount++;
+                this.statusBarBottle.setStatusbarImage();
+            }
+        });
+    }
+
+
+    checkCollisionThrowObject() {
+        this.throwableObjects.forEach(bottle => {
+            if (bottle.y > 300) {
+                bottle.playAnimation(bottle.IMAGES_SPLASH);
+                //aktuelle Flasche muss aus dem Array entfernt werden?! (sonst wird diese Funktion immer ausgeführt!)
+            }
+        });
+    }
+
+
+    creatBottles() {    //es wird am Anfang nur einmal die 10x Flaschen erstellt
+        for (let i = 0; i < 10; i++) {
+            this.bottles.push(new Bottle());
+        }
     }
 
 

@@ -1,7 +1,7 @@
 class Character extends MovableObject {
 
     height = 280;
-    y = 0;
+    y = 150;
     speed = 10;
 
     offset = {      //Offset zur genauen Kollisionsprüfung (Offset wird von der ursprünglichen Bildgröße abgezogen!)

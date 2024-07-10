@@ -1,6 +1,6 @@
 class StatusBarCoin extends DrawableObject {
 
-    amountCoins = 0;  //zum Zählen der Coins
+    // amountCoins = 0;  //zum Zählen der Coins
 
 
     IMAGES = [
@@ -32,17 +32,17 @@ class StatusBarCoin extends DrawableObject {
 
 
     resolveImageIndex() {   //gibt den Index des IMAGES-Array zurück je nach dem wie groß "percentage" ist (wie viel health man noch hat)
-        if (this.amountCoins >= 10) {
+        if (this.amount >= 10) {
             return 5;
-        } else if (this.amountCoins >= 8) {
+        } else if (this.amount >= 8) {
             return 4;
-        } else if (this.amountCoins >= 6) {
+        } else if (this.amount >= 6) {
             return 3;
-        } else if (this.amountCoins >= 4) {
+        } else if (this.amount >= 4) {
             return 2;
-        } else if (this.amountCoins >= 1) {
+        } else if (this.amount >= 1) {
             return 1;
-        } else if (this.amountCoins == 0) {
+        } else if (this.amount == 0) {
             return 0;
         }
     }
