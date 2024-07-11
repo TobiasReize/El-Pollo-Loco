@@ -122,41 +122,48 @@ class World {
 
     checkThrowObjects() {       //erstellt ein neues Objekt der Flasche, wenn die Anzahl größer 0 ist! (Flasche wird geworfen)
         if (this.keyboard.KEY_D && this.statusBarBottle.amount > 0) {
-            let bottle = new ThrowableObject(this.character.x + 100, this.character.y + 100);   //neue Instanz der Klasse "ThrowableObject" wird erstellt
-            this.throwableObjects.push(bottle);     //neue Instanz wird in das Array reingepusht (durch die draw()-Funktion wird das Element sofort angezeigt)
+            let thrownBottle = new ThrowableObject(this.character.x + 100, this.character.y + 100);   //neue Instanz der Klasse "ThrowableObject" wird erstellt
+            this.throwableObjects.push(thrownBottle);     //neue Instanz wird in das Array reingepusht (durch die draw()-Funktion wird das Element sofort angezeigt)
             this.statusBarBottle.amount--;   //Menge reduzieren
             this.statusBarBottle.setStatusbarImage();   //Statusbar anpassen
         }
     }
 
 
-    checkCollisionEndboss() {
-        this.throwableObjects.forEach(bottle => {
-            if (this.endboss.isColliding(bottle)) {
+    checkCollisionEndboss() {       //prüft die Kollision der geworfenen Flasche mit dem Endboss
+        this.throwableObjects.forEach(thrownBottle => {
+            if (this.endboss.isColliding(thrownBottle)) {
                 console.log('Hit Endboss!!!');
             }
         });
     }
 
 
-    checkCollectBottle() {
+    checkCollectBottle() {      //Funktion zum Einsammeln von Flaschen
         this.bottles.forEach(bottle => {
-            let currentBottleIndex = this.bottles.findIndex(singleBottle => bottle == singleBottle);
+            let currentBottleIndex = this.bottles.findIndex(element => bottle == element);
             if (this.character.isColliding(bottle) && this.statusBarBottle.amount < 5) {
-                this.bottles.splice(currentBottleIndex, 1);
-                this.statusBarBottle.amount++;
-                this.statusBarBottle.setStatusbarImage();
+                this.bottles.splice(currentBottleIndex, 1);     //eingesammelte Falsche wird aus dem Array entfernt (und somit auch nicht mehr angezeigt!)
+                this.statusBarBottle.amount++;      //Menge erhöhen
+                this.statusBarBottle.setStatusbarImage();   //Statusbar updaten
             }
         });
     }
 
 
     checkCollisionThrowObject() {
-        this.throwableObjects.forEach(bottle => {
-            if (bottle.y > 300) {
-                bottle.playAnimation(bottle.IMAGES_SPLASH);
-                //aktuelle Flasche muss aus dem Array entfernt werden?! (sonst wird diese Funktion immer ausgeführt!)
+        this.throwableObjects.forEach(thrownBottle => {
+            let currentBottleIndex = this.throwableObjects.findIndex(element => thrownBottle == element);
+            
+            //1. Kollision mit dem Boden
+            if (thrownBottle.y > 280) {
+                thrownBottle.x = thrownBottle.x;    //Flasche soll sich nicht weiter nach rechts bewegen
+                setInterval(() => {
+                    thrownBottle.playAnimation(thrownBottle.IMAGES_SPLASH);     //Animation SPLASH wird ausgeführt
+                }, 50);
+                this.throwableObjects.splice(currentBottleIndex, 1);     //aktuelle Flasche muss aus dem Array entfernt werden?! (sonst wird diese Funktion immer ausgeführt!)
             }
+            //2. Kollision mit einem Chicken
         });
     }
 

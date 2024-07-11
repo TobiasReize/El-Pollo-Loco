@@ -56,7 +56,7 @@ class MovableObject extends DrawableObject {
                 (this.x + this.offset.left) <= (obj.x + obj.width - obj.offset.right) &&    //Pepe links von Chicken
                 (this.y + this.height - this.offset.bottom) >= (obj.y + obj.offset.top) &&   //Pepe unterhalb von Chicken
                 (this.y + this.offset.top) <= (obj.y + obj.height - obj.offset.bottom) //&&    //Pepe oberhalb von Chicken
-                // obj.onCollisionCourse; // Optional: hiermit könnten wir schauen, ob ein Objekt sich in die richtige Richtung bewegt. Nur dann kollidieren wir. Nützlich bei Gegenständen, auf denen man stehen kann.
+                // obj.onCollisionCourse; // Optional: hiermit könnten wir schauen, ob ein Objekt sich in die richtige Richtung bewegt. Nur dann kollidieren wir. Nützlich bei Gegenständen, auf denen man stehen kann. (z. B. für Plattformen --> aktuell nicht vorhanden!)
     }
 
 
@@ -75,6 +75,11 @@ class MovableObject extends DrawableObject {
         timePassed = timePassed / 1000;     //Differenz in s
         return timePassed < 0.5;
     }
+
+
+    // isLongIdle() {
+
+    // }
 
 
     isDead() {

@@ -1,8 +1,5 @@
 class StatusBarCoin extends DrawableObject {
 
-    // amountCoins = 0;  //zum Zählen der Coins
-
-
     IMAGES = [
         'assets/img/7_statusbars/1_statusbar/1_statusbar_coin/blue/0.png',
         'assets/img/7_statusbars/1_statusbar/1_statusbar_coin/blue/20.png',

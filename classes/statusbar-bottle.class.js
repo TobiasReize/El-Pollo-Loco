@@ -1,7 +1,5 @@
 class StatusBarBottle extends DrawableObject {
 
-    // amountBottles = 0;  //zum Zählen der Flaschen
-
     IMAGES = [
         'assets/img/7_statusbars/1_statusbar/3_statusbar_bottle/blue/0.png',
         'assets/img/7_statusbars/1_statusbar/3_statusbar_bottle/blue/20.png',
