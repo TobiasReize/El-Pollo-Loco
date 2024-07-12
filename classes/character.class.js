@@ -6,6 +6,8 @@ class Character extends MovableObject {
     world;  //Referenz auf die Klasse "world" (aktuelle Instanz), damit die Variable "keyboard" der Klasse "world" auch hier verwendet werden kann!
     walking_sound = new Audio('assets/audio/walking.mp3');
     jumping_sound = new Audio('assets/audio/jump.mp3');
+    idleTimer = 0;
+    idleStatus = false;
 
     offset = {      //Offset zur genauen Kollisionsprüfung (Offset wird von der ursprünglichen Bildgröße abgezogen!)
         top: 120,
@@ -94,19 +96,20 @@ class Character extends MovableObject {
     animate() {     //animiert den Charakter
         //Bewegungen:
         setStoppableInterval(() => this.moveCharacter(), 1000 / 60);
-        
+
         //Animationen:
         setStoppableInterval(() => this.dead(), 100);
         setStoppableInterval(() => this.hurt(), 100);
         setStoppableInterval(() => this.aboveGround(), 150);
         setStoppableInterval(() => this.walk(), 50);
-        setStoppableInterval(() => this.idle(), 200);
+        setStoppableInterval(() => this.idle(), 150);
     }
 
 
     dead() {
         if (this.isDead()) {
             this.playAnimation(this.IMAGES_DEAD);
+            this.idleStatus = false;
         }
     }
 
@@ -114,6 +117,7 @@ class Character extends MovableObject {
     hurt() {
         if (this.isHurt()) {
             this.playAnimation(this.IMAGES_HURT);
+            this.idleStatus = false;
         }
     }
 
@@ -121,6 +125,7 @@ class Character extends MovableObject {
     aboveGround() {
         if (this.isAboveGround() && !this.isDead()) {
             this.playAnimation(this.IMAGES_JUMPING);
+            this.idleStatus = false;
         }
     }
 
@@ -128,13 +133,24 @@ class Character extends MovableObject {
     walk() {
         if (!this.isDead() && !this.isHurt() && !this.isAboveGround() && (this.world.keyboard.RIGHT || this.world.keyboard.LEFT)) {
             this.playAnimation(this.IMAGES_WALKING);
+            this.idleStatus = false;
         }
     }
 
 
     idle() {
-        if (!this.isDead() && !this.isHurt() && !this.isAboveGround() && !this.world.keyboard.RIGHT && !this.world.keyboard.LEFT) {
+        let timePassed = new Date().getTime() - this.idleTimer;     //Differenz zw. letztem idle-Zustand und aktuellem Zeitpunkt
+        timePassed = timePassed / 1000;
+        
+        if (this.idleStatus && timePassed > 3) {
+            this.playAnimation(this.IMAGES_LONG_IDLE);
+
+        } else if (this.idleStatus) {
             this.playAnimation(this.IMAGES_IDLE);
+
+        } else if (!this.isDead() && !this.isHurt() && !this.isAboveGround() && !this.world.keyboard.RIGHT && !this.world.keyboard.LEFT && !this.idleStatus) {
+            this.idleTimer = new Date().getTime();  //startet den idle-Timer
+            this.idleStatus = true;                 //setzt den idle-Zustand auf "true" (somit wird nur einmal der idle-Timer gesetzt!)
         }
     }
 
