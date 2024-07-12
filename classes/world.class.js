@@ -17,8 +17,8 @@ class World {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
         this.keyboard = keyboard;
-        this.draw();    //damit die draw-Funktion gleich aufgerufen wird, sobald eine neue Welt erstellt wird!
         this.setWorld();
+        this.draw();    //damit die draw-Funktion gleich aufgerufen wird, sobald eine neue Welt erstellt wird!
         this.creatBottles();    //es werden nur einmal die Flaschen erstellt!
         this.run();     //Intervall, das ständig läuft!
     }
@@ -42,11 +42,11 @@ class World {
         this.addObjectsToMap(this.throwableObjects);
 
         this.ctx.translate(-this.camera_x, 0);  //der Kontext wird wieder zurück verschoben, damit die folgenden Objekte immer an der selben Stelle bleiben!
-        // ----- Space for fixed objects ----- //   (diese Objekte verschieben sich nicht!)
+        // ----- ↓ Space for fixed objects ↓ ----- //   (diese Objekte verschieben sich nicht!)
         this.addToMap(this.statusBarHealth);  //zeichnet die Statusbar. Muss nach den Wolken eingefügt werden, damit die Wolken nicht die Statusbar verdecken können! Die Statusbar bewegt sich mit dem Charakter mit! (bleibt immer auf der selben Position)
         this.addToMap(this.statusBarBottle);
         this.addToMap(this.statusBarCoin);
-        // ----- ^ Space for fixed objects ^ ----- //
+        // ----- ↑ Space for fixed objects ↑ ----- //
         this.ctx.translate(this.camera_x, 0);  //der Kontext wird wieder verschoben, damit sich die Hintergrundbilder nach links bewegen, wenn Pepe nach rechts läuft!
 
         this.ctx.translate(-this.camera_x, 0);  //der gesamte Kontext wird wieder zurück verschoben!

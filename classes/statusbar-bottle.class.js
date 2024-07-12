@@ -10,7 +10,6 @@ class StatusBarBottle extends DrawableObject {
     ];
 
 
-
     constructor() {
         super();    //immer den super-constructor aufrufen, um die Variablen und Funktionen der Über-Klasse zu laden!
         this.loadImages(this.IMAGES);

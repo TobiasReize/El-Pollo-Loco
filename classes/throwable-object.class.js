@@ -23,6 +23,7 @@ class ThrowableObject extends MovableObject {
         'assets/img/6_salsa_bottle/bottle_rotation/bottle_splash/6_bottle_splash.png'
     ];
 
+
     constructor(x, y) {
         super().loadImage('assets/img/6_salsa_bottle/salsa_bottle.png');    //am Anfang muss immer ein Startbild einzeln geladen werden, wenn das Objekt erstellt wird! Ansonten gibt die Funktion "draw(ctx){}" der "DrawableObject" Klasse einen Fehler!
         this.loadImages(this.IMAGES_ROTATION);
@@ -35,7 +36,6 @@ class ThrowableObject extends MovableObject {
 
         this.throw();   //die Funktion "throw" muss im constructor sein, damit die Flasche immer gleich geworfen wird, sobalb ein neues Objekt erstellt wird!
     }
-
 
 
     throw() {

@@ -77,11 +77,6 @@ class MovableObject extends DrawableObject {
     }
 
 
-    // isLongIdle() {
-
-    // }
-
-
     isDead() {
         return this.energy == 0;
     }

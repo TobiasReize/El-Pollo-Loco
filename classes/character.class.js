@@ -3,6 +3,9 @@ class Character extends MovableObject {
     height = 280;
     y = 150;
     speed = 10;
+    world;  //Referenz auf die Klasse "world" (aktuelle Instanz), damit die Variable "keyboard" der Klasse "world" auch hier verwendet werden kann!
+    walking_sound = new Audio('assets/audio/walking.mp3');
+    jumping_sound = new Audio('assets/audio/jump.mp3');
 
     offset = {      //Offset zur genauen Kollisionsprüfung (Offset wird von der ursprünglichen Bildgröße abgezogen!)
         top: 120,
@@ -10,7 +13,6 @@ class Character extends MovableObject {
         right: 30,
         bottom: 20
     };
-
 
     IMAGES_WALKING = [
         'assets/img/2_character_pepe/2_walk/W-21.png',
@@ -75,75 +77,119 @@ class Character extends MovableObject {
         'assets/img/2_character_pepe/5_dead/D-57.png'
     ];
 
-    world;  //Referenz auf die Klasse "world" (aktuelle Instanz), damit die Variable "keyboard" der Klasse "world" auch hier verwendet werden kann!
-    walking_sound = new Audio('assets/audio/walking.mp3');
-    jumping_sound = new Audio('assets/audio/jump.mp3');
-    
+
     constructor() {
         super().loadImage('assets/img/2_character_pepe/2_walk/W-21.png');   //lädt das Start-Bild. Der "super-constructor" darf nur einmal aufgerufen werden! Danach immer nur "this" verwenden!
-       
         this.loadImages(this.IMAGES_WALKING);   //speichert alle Bilder für die Animation in dem ImageCache
         this.loadImages(this.IMAGES_JUMPING);
         this.loadImages(this.IMAGES_HURT);
         this.loadImages(this.IMAGES_IDLE);
         this.loadImages(this.IMAGES_LONG_IDLE);
         this.loadImages(this.IMAGES_DEAD);
-
         this.animate();     //animiert den Charakter
         this.applyGravity();
     }
 
 
     animate() {     //animiert den Charakter
-
-        setInterval(() => { //Intervall für die Bewegung des Charakters + Abspielen des walking-sounds
-            this.walking_sound.pause();     //wenn Pepe nicht läuft, wird der Sound pausiert!
-
-            if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {    //Bewegung nach rechts! (bis die max. x-Pos. erreicht ist)
-                this.moveRight();
-                this.otherDirection = false;    //Bilder werden nicht gespiegelt! (Blickrichtung rechts)
-                this.walking_sound.play();      //Audio wird nur abgespielt wenn Pepe läuft
-            }
-
-            if (this.world.keyboard.LEFT && this.x > 0) {    //Bewegung nach links! (bis max. zur x-Pos = 0)
-                this.moveLeft();
-                this.otherDirection = true;     //Bilder werden gespiegelt! (Blickrichtung links)
-                this.walking_sound.play();
-            }
-
-            if (this.world.keyboard.SPACE && !this.isAboveGround()) {   //Sprung nach oben! (nur wenn Pepe den Boden berührt!)
-                this.jump();
-                this.jumping_sound.play();
-            }
-
-            this.world.camera_x = -this.x + 100;  //jedes Mal wenn der Charakter seine x-Pos. verändert, wird die Kameraeinstellung um den selben Betrag in die andere Richtung verschoben! (standardmäßig um +100 verschoben, damit der Charakter etwas weiter in der Mitte ist!)
-        }, 1000 / 60);
+        //Bewegungen:
+        setStoppableInterval(() => this.moveCharacter(), 1000 / 60);
+        
+        //Animationen:
+        setStoppableInterval(() => this.dead(), 100);
+        setStoppableInterval(() => this.hurt(), 100);
+        setStoppableInterval(() => this.aboveGround(), 150);
+        setStoppableInterval(() => this.walk(), 50);
+        setStoppableInterval(() => this.idle(), 200);
+    }
 
 
-        setInterval(() => { //Intervall für die Animation des Charakters (walking & jumping & hurt & dead)
-            if (this.isDead()) {
-                this.playAnimation(this.IMAGES_DEAD);
-
-            } else if (this.isHurt()) {
-                this.playAnimation(this.IMAGES_HURT);
-
-            } else if (this.isAboveGround()) {     //nur wenn sich der Charakter über dem Boden befindet, wird die Animation für jumping ausgeführt!
-                this.playAnimation(this.IMAGES_JUMPING);
-
-            } else if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {    //die Animation für walking ist innerhalb des else-Teil der jumping-Animation, damit der Charakter nicht gleichzeitig die jumping- und walking-Animaion durchführt! (falls man während des Sprungs die Pfeiltasten drückt)
-                this.playAnimation(this.IMAGES_WALKING);    //nur wenn die rechte oder linke Pfeiltaste gedrückt ist, wird der Charakter animiert!
-            
-            } else {
-                this.playAnimation(this.IMAGES_IDLE);
-                setTimeout(() => {
-                    this.playAnimation(this.IMAGES_LONG_IDLE);
-                }, 3000);
-            }
-        }, 50);
+    dead() {
+        if (this.isDead()) {
+            this.playAnimation(this.IMAGES_DEAD);
+        }
+    }
 
 
+    hurt() {
+        if (this.isHurt()) {
+            this.playAnimation(this.IMAGES_HURT);
+        }
+    }
 
 
+    aboveGround() {
+        if (this.isAboveGround() && !this.isDead()) {
+            this.playAnimation(this.IMAGES_JUMPING);
+        }
+    }
+
+
+    walk() {
+        if (!this.isDead() && !this.isHurt() && !this.isAboveGround() && (this.world.keyboard.RIGHT || this.world.keyboard.LEFT)) {
+            this.playAnimation(this.IMAGES_WALKING);
+        }
+    }
+
+
+    idle() {
+        if (!this.isDead() && !this.isHurt() && !this.isAboveGround() && !this.world.keyboard.RIGHT && !this.world.keyboard.LEFT) {
+            this.playAnimation(this.IMAGES_IDLE);
+        }
+    }
+
+
+    moveCharacter() {       //Funktion zum Bewegen des Charakters
+        this.walking_sound.pause();     //wenn Pepe nicht läuft, wird der Sound pausiert!
+
+        if (this.canMoveRight()) {    //Bewegung nach rechts! (bis die max. x-Pos. erreicht ist)
+            this.moveRight();
+        }
+
+        if (this.canMoveLeft()) {    //Bewegung nach links! (bis max. zur x-Pos = 0)
+            this.moveLeft();
+        }
+
+        if (this.canJump()) {   //Sprung nach oben! (nur wenn Pepe den Boden berührt!)
+            this.jump();
+        }
+
+        this.world.camera_x = -this.x + 100;
+    }
+
+
+    canMoveRight() {
+        return this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x;
+    }
+
+
+    moveRight() {
+        super.moveRight();
+        this.otherDirection = false;    //Bilder werden nicht gespiegelt! (Blickrichtung rechts)
+        this.walking_sound.play();      //Audio wird nur abgespielt wenn Pepe läuft
+    }
+
+
+    canMoveLeft() {
+        return this.world.keyboard.LEFT && this.x > 0;
+    }
+
+
+    moveLeft() {
+        super.moveLeft();
+        this.otherDirection = true;     //Bilder werden gespiegelt! (Blickrichtung links)
+        this.walking_sound.play();
+    }
+
+
+    canJump() {
+        return this.world.keyboard.SPACE && !this.isAboveGround();
+    }
+
+
+    jump() {
+        super.jump();
+        this.jumping_sound.play();
     }
 
 }

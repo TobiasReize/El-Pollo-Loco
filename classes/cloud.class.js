@@ -3,6 +3,7 @@ class Cloud extends MovableObject {
     height = 250;
     width = 720;
 
+    
     constructor(imagePath, x) {
         super().loadImage(imagePath);
         this.x = x;
