@@ -102,6 +102,7 @@ class World {
             this.checkCollisionEndboss();
             this.checkCollisionThrowObject();
             this.checkCollectBottle();
+            this.checkEncounterEndboss();
         }, 250);
     }
 
@@ -169,6 +170,14 @@ class World {
             }
             //2. Kollision mit einem Chicken
         });
+    }
+
+
+    checkEncounterEndboss() {
+        if (this.character.x >= 1930 && !this.endboss.visible) {
+            this.statusBarEndboss.setStatusbarImage(50);    //Statusbar des Endboss wird angezeigt (mit voller Energie!)
+            this.endboss.visible = true;    //damit diese Abfrage nur einmal "true" wird!
+        }
     }
 
 
