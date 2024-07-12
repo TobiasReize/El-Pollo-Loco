@@ -1,5 +1,7 @@
 class StatusBarCoin extends DrawableObject {
 
+    amount = 0;     //zum Zählen der eingesammelten Coins
+
     IMAGES = [
         'assets/img/7_statusbars/1_statusbar/1_statusbar_coin/blue/0.png',
         'assets/img/7_statusbars/1_statusbar/1_statusbar_coin/blue/20.png',
@@ -13,15 +15,15 @@ class StatusBarCoin extends DrawableObject {
     constructor() {
         super();    //immer den super-constructor aufrufen, um die Variablen und Funktionen der Über-Klasse zu laden!
         this.loadImages(this.IMAGES);
-        this.x = 20;
-        this.y = 100;
-        this.width = 200;
-        this.height = 60;
-        this.setPercentage();    //damit die Statusbar am Anfang gleich angezeigt wird! (und ein img-Element definiert wird!)
+        this.x = 320;
+        this.y = 0;
+        this.width = 150;
+        this.height = 50;
+        this.setStatusbarImage();    //damit die Statusbar am Anfang gleich angezeigt wird! (und ein img-Element definiert wird!)
     }
 
 
-    setPercentage() {     //wählt das passende Bild zum aktuellen "percentage" aus!
+    setStatusbarImage() {     //wählt das passende Bild zum aktuellen "percentage" aus!
         let path = this.IMAGES[this.resolveImageIndex()];
         this.img = this.imageCache[path];
     }

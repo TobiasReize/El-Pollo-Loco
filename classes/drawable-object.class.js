@@ -6,7 +6,6 @@ class DrawableObject {
     img;
     imageCache = {};    //Bilder-Speicher
     currentImage = 0;   //Zählvariable
-    amount = 0;     //zum Zählen der Sammelgegenstände (Flaschen, Coins)
 
     offset = {      //Standard-Offset für die Kollisionsprüfung (wird je nach Objekt angepasst!)
         top: 0,

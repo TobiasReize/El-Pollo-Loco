@@ -3,6 +3,7 @@ class Endboss extends MovableObject {
     height = 400;
     width = 250;
     y = 50;
+    energy = 50;    //Ursprungs-Energie ist nur 50, damit man den Endboss nur 5x treffen muss!
 
     offset = {  //Offset zur genauen Kollisionsprüfung (Offset wird von der ursprünglichen Bildgröße abgezogen!)
         top: 150,

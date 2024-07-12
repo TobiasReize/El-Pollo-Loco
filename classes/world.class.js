@@ -8,6 +8,7 @@ class World {
     statusBarHealth = new StatusBarHealth();
     statusBarBottle = new StatusBarBottle();
     statusBarCoin = new StatusBarCoin();
+    statusBarEndboss = new StatusBarEndboss();
     throwableObjects = [];
     endboss = this.level.enemies[this.level.enemies.length - 1];
     bottles = [];
@@ -35,10 +36,10 @@ class World {
         this.ctx.translate(this.camera_x, 0);  //der gesamte Kontext wird um den Betrag der Kamera (= x-Pos. des Charakters) verschoben! (Die Position, an der die Bilder eingefügt werden!) (zweite Wert: y ist 0) 
 
         this.addObjectsToMap(this.level.backgroundObjects);    //zeichnet die Hintergründe, jedes einzelne aus dem Array (muss zuerst gezeichnet werden, damit die anderen Elemente davor angezeigt werden!)
-        this.addToMap(this.character);                      //zeichnet den Charakter, drawImage(Bild, x-Pos, y-Pos, Breite, Höhe)
+        this.addObjectsToMap(this.level.clouds);                //zeichnet die Clouds, jedes einzelne aus dem Array
         this.addObjectsToMap(this.bottles);
         this.addObjectsToMap(this.level.enemies);                //zeichnet die Enemies (Chicken), jedes einzelne aus dem Array
-        this.addObjectsToMap(this.level.clouds);                //zeichnet die Clouds, jedes einzelne aus dem Array
+        this.addToMap(this.character);                      //zeichnet den Charakter, drawImage(Bild, x-Pos, y-Pos, Breite, Höhe)
         this.addObjectsToMap(this.throwableObjects);
 
         this.ctx.translate(-this.camera_x, 0);  //der Kontext wird wieder zurück verschoben, damit die folgenden Objekte immer an der selben Stelle bleiben!
@@ -46,6 +47,7 @@ class World {
         this.addToMap(this.statusBarHealth);  //zeichnet die Statusbar. Muss nach den Wolken eingefügt werden, damit die Wolken nicht die Statusbar verdecken können! Die Statusbar bewegt sich mit dem Charakter mit! (bleibt immer auf der selben Position)
         this.addToMap(this.statusBarBottle);
         this.addToMap(this.statusBarCoin);
+        this.addToMap(this.statusBarEndboss);
         // ----- ↑ Space for fixed objects ↑ ----- //
         this.ctx.translate(this.camera_x, 0);  //der Kontext wird wieder verschoben, damit sich die Hintergrundbilder nach links bewegen, wenn Pepe nach rechts läuft!
 
@@ -108,7 +110,7 @@ class World {
         this.level.enemies.forEach(enemy => {
             if (this.character.isColliding(enemy)) {
                 this.character.hit();
-                this.statusBarHealth.setPercentage(this.character.energy);    //die Statusbar wird entsprechend der neuen, verbleibenden Energie des Charakters aktualisiert
+                this.statusBarHealth.setStatusbarImage(this.character.energy);    //die Statusbar wird entsprechend der neuen, verbleibenden Energie des Charakters aktualisiert
 
                 if (this.character.isDead()) {
                     console.log('Character is dead! You lost!');
@@ -133,7 +135,9 @@ class World {
     checkCollisionEndboss() {       //prüft die Kollision der geworfenen Flasche mit dem Endboss
         this.throwableObjects.forEach(thrownBottle => {
             if (this.endboss.isColliding(thrownBottle)) {
-                console.log('Hit Endboss!!!');
+                this.endboss.hit();
+                this.statusBarEndboss.setStatusbarImage(this.endboss.energy);
+                console.log('Hit Endboss!!!', this.endboss.energy);
             }
         });
     }
