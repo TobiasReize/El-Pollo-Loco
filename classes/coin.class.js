@@ -1,26 +1,26 @@
-class Bottle extends MovableObject {
+class Coin extends MovableObject {
 
-    y = 350;
-    height = 80;
-    width = 60;
+    height = 120;
+    width = 120;
 
     offset = {      //Offset zur genauen Kollisionsprüfung (Offset wird von der ursprünglichen Bildgröße abgezogen!)
-        top: 20,
-        left: 20,
-        right: 15,
-        bottom: 10
+        top: 40,
+        left: 40,
+        right: 40,
+        bottom: 40
     };
 
     IMAGES = [
-        'assets/img/6_salsa_bottle/1_salsa_bottle_on_ground.png',
-        'assets/img/6_salsa_bottle/2_salsa_bottle_on_ground.png'
+        'assets/img/8_coin/coin_1.png',
+        'assets/img/8_coin/coin_2.png'
     ]
 
 
     constructor() {
-        super().loadImage('assets/img/6_salsa_bottle/1_salsa_bottle_on_ground.png');
+        super().loadImage('assets/img/8_coin/coin_1.png');
         this.loadImages(this.IMAGES);
         this.x = 200 + Math.random() * 1800;    //zufällige x-Pos. zwischen 200 und 2000
+        this.y = 60 + Math.random() * 150;       //zufällige y-Pos. zwischen 60 und 210
         this.animate();
     }
 
@@ -30,4 +30,5 @@ class Bottle extends MovableObject {
             this.playAnimation(this.IMAGES);
         }, 500);
     }
+
 }

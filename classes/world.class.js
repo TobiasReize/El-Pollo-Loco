@@ -12,6 +12,7 @@ class World {
     throwableObjects = [];
     endboss = this.level.enemies[this.level.enemies.length - 1];
     bottles = [];
+    coins = [];
 
 
     constructor(canvas, keyboard) {
@@ -21,6 +22,7 @@ class World {
         this.setWorld();
         this.draw();    //damit die draw-Funktion gleich aufgerufen wird, sobald eine neue Welt erstellt wird!
         this.creatBottles();    //es werden nur einmal die Flaschen erstellt!
+        this.creatCoins();
         this.run();     //Intervall, das ständig läuft!
     }
 
@@ -38,6 +40,7 @@ class World {
         this.addObjectsToMap(this.level.backgroundObjects);    //zeichnet die Hintergründe, jedes einzelne aus dem Array (muss zuerst gezeichnet werden, damit die anderen Elemente davor angezeigt werden!)
         this.addObjectsToMap(this.level.clouds);                //zeichnet die Clouds, jedes einzelne aus dem Array
         this.addObjectsToMap(this.bottles);
+        this.addObjectsToMap(this.coins);
         this.addObjectsToMap(this.level.enemies);                //zeichnet die Enemies (Chicken), jedes einzelne aus dem Array
         this.addToMap(this.character);                      //zeichnet den Charakter, drawImage(Bild, x-Pos, y-Pos, Breite, Höhe)
         this.addObjectsToMap(this.throwableObjects);
@@ -102,6 +105,7 @@ class World {
             this.checkCollisionEndboss();
             this.checkCollisionThrowObject();
             this.checkCollectBottle();
+            this.checkCollectCoin();
             this.checkEncounterEndboss();
         }, 250);
     }
@@ -156,6 +160,18 @@ class World {
     }
 
 
+    checkCollectCoin() {
+        this.coins.forEach(coin => {
+            let currentCoinIndex = this.coins.findIndex(element => coin == element);
+            if (this.character.isColliding(coin)) {
+                this.coins.splice(currentCoinIndex, 1);
+                this.statusBarCoin.amount++;
+                this.statusBarCoin.setStatusbarImage();
+            }
+        });
+    }
+
+
     checkCollisionThrowObject() {
         this.throwableObjects.forEach(thrownBottle => {
             let currentBottleIndex = this.throwableObjects.findIndex(element => thrownBottle == element);
@@ -184,6 +200,13 @@ class World {
     creatBottles() {    //es wird am Anfang nur einmal die 10x Flaschen erstellt
         for (let i = 0; i < 10; i++) {
             this.bottles.push(new Bottle());
+        }
+    }
+
+
+    creatCoins() {    //es wird am Anfang nur einmal die 10x Coins erstellt
+        for (let i = 0; i < 10; i++) {
+            this.coins.push(new Coin());
         }
     }
 

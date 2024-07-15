@@ -10,7 +10,7 @@ class Character extends MovableObject {
     idleStatus = false;
 
     offset = {      //Offset zur genauen Kollisionsprüfung (Offset wird von der ursprünglichen Bildgröße abgezogen!)
-        top: 120,
+        top: 140,
         left: 20,
         right: 30,
         bottom: 20

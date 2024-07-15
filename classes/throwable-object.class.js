@@ -34,7 +34,7 @@ class ThrowableObject extends MovableObject {
         this.height = 60;
         this.width = 50;
 
-        this.throw();   //die Funktion "throw" muss im constructor sein, damit die Flasche immer gleich geworfen wird, sobalb ein neues Objekt erstellt wird!
+        this.throw();   //die Funktion "throw" muss im constructor ausgeführt werden, damit die Flasche immer gleich geworfen wird, sobalb ein neues Objekt erstellt wird!
     }
 
 
