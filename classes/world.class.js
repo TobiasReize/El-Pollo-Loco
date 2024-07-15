@@ -99,7 +99,7 @@ class World {
 
 
     run() {     //Hilfsfunktion für das Durchführen aller Intervalle!
-        setStoppableInterval(() => this.checkCollisionCharacter(), 300);
+        setStoppableInterval(() => this.checkCollisionCharacter(), 250);
         setStoppableInterval(() => this.checkThrowObjects(), 150);
         setStoppableInterval(() => this.checkCollisionEndboss(), 250);
         setStoppableInterval(() => this.checkCollisionThrowObject(), 300);
@@ -192,6 +192,7 @@ class World {
         if (this.character.x >= 1930 && !this.endboss.visible) {
             this.statusBarEndboss.setStatusbarImage(50);    //Statusbar des Endboss wird angezeigt (mit voller Energie!)
             this.endboss.visible = true;    //damit diese Abfrage nur einmal "true" wird!
+            this.endboss.walk();
         }
     }
 
