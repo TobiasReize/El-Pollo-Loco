@@ -20,25 +20,15 @@ class Chicken extends MovableObject {
 
     constructor() {
         super().loadImage('assets/img/3_enemies_chicken/chicken_normal/1_walk/1_w.png');    //lädt das Start-Bild
-
-        this.x = 200 + Math.random() * 500;     //chicken werden zwischen 200 und 700 eingefügt
-        this.speed = 0.15 + Math.random() * 0.5;   //zufällige Geschwindigkeitsbereich (min. 0.15)
-
         this.loadImages(this.IMAGES_WALKING);   //speichert alle Bilder für die Animation in dem ImageCache
-
+        this.x = 200 + Math.random() * 500;     //chicken werden zwischen 200 und 700 eingefügt
+        this.speed = 0.2 + Math.random() * 0.5;   //zufälliger Geschwindigkeitsbereich
         this.animate();
     }
 
 
     animate() {     //animiert die Chicken
-        
-        setInterval(() => {     //für die Bewegung nach links
-            this.moveLeft();
-        }, 1000 / 60);  //60x pro Sekunde (60 fps)
-
-
-        setInterval(() => {     //für die Animation der Bilder
-            this.playAnimation(this.IMAGES_WALKING);
-        }, 200);
+        setStoppableInterval(() => this.moveLeft(), 1000 / 60);     //für die Bewegung nach links (60x pro Sekunde (60 fps))
+        setStoppableInterval(() => this.playAnimation(this.IMAGES_WALKING), 200);   //für die Animation der Bilder
     }
 }

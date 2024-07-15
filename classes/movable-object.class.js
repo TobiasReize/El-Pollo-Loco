@@ -32,13 +32,11 @@ class MovableObject extends DrawableObject {
     }
 
 
-    applyGravity() {    //Funktion zum Verändern der y-Pos. (wenn Pepe springt)
-        setInterval(() => {
-            if (this.isAboveGround() || this.speedY > 0) {
-                this.y -= this.speedY;  //auf die y-Pos. wird ständig speedY drauf gerechnet! (beim Fallen ist speedY negativ, beim Springen ist speedY positiv!)
-                this.speedY -= this.acceleration;   //von speedY wird regelmäßig die acceleration abgezogen!
-            }
-        }, 1000 / 25);
+    applyGravity() {    //Funktion zum Verändern der y-Pos. (wenn Pepe springt) (Muss als Intervall-Funktion aufgerufen werden!)
+        if (this.isAboveGround() || this.speedY > 0) {
+            this.y -= this.speedY;  //auf die y-Pos. wird ständig speedY drauf gerechnet! (beim Fallen ist speedY negativ, beim Springen ist speedY positiv!)
+            this.speedY -= this.acceleration;   //von speedY wird regelmäßig die acceleration abgezogen!
+        }
     }
 
 

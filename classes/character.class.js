@@ -89,7 +89,7 @@ class Character extends MovableObject {
         this.loadImages(this.IMAGES_LONG_IDLE);
         this.loadImages(this.IMAGES_DEAD);
         this.animate();     //animiert den Charakter
-        this.applyGravity();
+        setStoppableInterval(() => this.applyGravity(), 1000 / 25);
     }
 
 
@@ -142,13 +142,13 @@ class Character extends MovableObject {
         let timePassed = new Date().getTime() - this.idleTimer;     //Differenz zw. letztem idle-Zustand und aktuellem Zeitpunkt
         timePassed = timePassed / 1000;
         
-        if (this.idleStatus && timePassed > 3) {            //bei mehr als 3 Sekunden wird die long-idle-Animation abgespielt!
+        if (this.idleStatus && timePassed > 3 && !this.world.keyboard.KEY_D) {            //bei mehr als 3 Sekunden wird die long-idle-Animation abgespielt!
             this.playAnimation(this.IMAGES_LONG_IDLE);
 
         } else if (this.idleStatus) {
             this.playAnimation(this.IMAGES_IDLE);
 
-        } else if (!this.isDead() && !this.isHurt() && !this.isAboveGround() && !this.world.keyboard.RIGHT && !this.world.keyboard.LEFT && !this.idleStatus) {
+        } else if (!this.isDead() && !this.isHurt() && !this.isAboveGround() && !this.world.keyboard.RIGHT && !this.world.keyboard.LEFT && !this.world.keyboard.KEY_D && !this.idleStatus) {
             this.idleTimer = new Date().getTime();  //startet den idle-Timer
             this.idleStatus = true;                 //setzt den idle-Zustand auf "true" (somit wird nur einmal der idle-Timer gesetzt!)
         }

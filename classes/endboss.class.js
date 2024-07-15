@@ -9,11 +9,11 @@ class Endboss extends MovableObject {
     offset = {  //Offset zur genauen Kollisionsprüfung (Offset wird von der ursprünglichen Bildgröße abgezogen!)
         top: 150,
         left: 40,
-        right: 0,
+        right: 30,
         bottom: 20
     };
 
-    IMAGES_WALKING = [
+    IMAGES_ALERT = [
         'assets/img/4_enemie_boss_chicken/2_alert/G5.png',
         'assets/img/4_enemie_boss_chicken/2_alert/G6.png',
         'assets/img/4_enemie_boss_chicken/2_alert/G7.png',
@@ -26,18 +26,15 @@ class Endboss extends MovableObject {
 
 
     constructor() {
-        super().loadImage(this.IMAGES_WALKING[0]);    //lädt das Start-Bild
-        this.loadImages(this.IMAGES_WALKING);           //lädt alle Animations-Bilder
-        this.x = 2500;
-
+        super().loadImage(this.IMAGES_ALERT[0]);    //lädt das Start-Bild
+        this.loadImages(this.IMAGES_ALERT);           //lädt alle Animations-Bilder
+        this.x = 2500;  //x-Pos. am Ende der Map
         this.animate();
     }
 
 
     animate() {
-        setInterval(() => {
-            this.playAnimation(this.IMAGES_WALKING);
-        }, 200);
+        setStoppableInterval(() => this.playAnimation(this.IMAGES_ALERT), 200);
     }
 
 }

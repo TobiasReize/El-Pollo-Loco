@@ -23,7 +23,7 @@ class World {
         this.draw();    //damit die draw-Funktion gleich aufgerufen wird, sobald eine neue Welt erstellt wird!
         this.creatBottles();    //es werden nur einmal die Flaschen erstellt!
         this.creatCoins();
-        this.run();     //Intervall, das ständig läuft!
+        this.run();
     }
 
 
@@ -98,16 +98,14 @@ class World {
     }
 
 
-    run() {     //Hilfsfunktion für das Durchführen des Intervalls! (somit braucht man nur ein Intervall!)
-        setInterval(() => {
-            this.checkCollisionCharacter();
-            this.checkThrowObjects();
-            this.checkCollisionEndboss();
-            this.checkCollisionThrowObject();
-            this.checkCollectBottle();
-            this.checkCollectCoin();
-            this.checkEncounterEndboss();
-        }, 250);
+    run() {     //Hilfsfunktion für das Durchführen aller Intervalle!
+        setStoppableInterval(() => this.checkCollisionCharacter(), 300);
+        setStoppableInterval(() => this.checkThrowObjects(), 150);
+        setStoppableInterval(() => this.checkCollisionEndboss(), 250);
+        setStoppableInterval(() => this.checkCollisionThrowObject(), 300);
+        setStoppableInterval(() => this.checkCollectBottle(), 150);
+        setStoppableInterval(() => this.checkCollectCoin(), 150);
+        setStoppableInterval(() => this.checkEncounterEndboss(), 350);
     }
 
 
@@ -133,6 +131,7 @@ class World {
             this.throwableObjects.push(thrownBottle);     //neue Instanz wird in das Array reingepusht (durch die draw()-Funktion wird das Element sofort angezeigt)
             this.statusBarBottle.amount--;   //Menge reduzieren
             this.statusBarBottle.setStatusbarImage();   //Statusbar anpassen
+            this.character.idleStatus = false;      //der "idleStatus" des Charakters muss wieder zurück gesetzt werden, damit er nicht in den "long-idle" Zustand kommt!
         }
     }
 
@@ -144,6 +143,23 @@ class World {
                 this.statusBarEndboss.setStatusbarImage(this.endboss.energy);
                 console.log('Hit Endboss!!!', this.endboss.energy);
             }
+        });
+    }
+
+
+    checkCollisionThrowObject() {
+        this.throwableObjects.forEach(thrownBottle => {
+            let currentBottleIndex = this.throwableObjects.findIndex(element => thrownBottle == element);
+            
+            //1. Kollision mit dem Boden
+            if (thrownBottle.y > 280) {
+                thrownBottle.x = thrownBottle.x;    //Flasche soll sich nicht weiter nach rechts bewegen
+                setInterval(() => {
+                    thrownBottle.playAnimation(thrownBottle.IMAGES_SPLASH);     //Animation SPLASH wird ausgeführt
+                }, 50);
+                this.throwableObjects.splice(currentBottleIndex, 1);     //aktuelle Flasche muss aus dem Array entfernt werden?! (sonst wird diese Funktion immer ausgeführt!)
+            }
+            //2. Kollision mit einem Chicken
         });
     }
 
@@ -168,23 +184,6 @@ class World {
                 this.statusBarCoin.amount++;
                 this.statusBarCoin.setStatusbarImage();
             }
-        });
-    }
-
-
-    checkCollisionThrowObject() {
-        this.throwableObjects.forEach(thrownBottle => {
-            let currentBottleIndex = this.throwableObjects.findIndex(element => thrownBottle == element);
-            
-            //1. Kollision mit dem Boden
-            if (thrownBottle.y > 280) {
-                thrownBottle.x = thrownBottle.x;    //Flasche soll sich nicht weiter nach rechts bewegen
-                setInterval(() => {
-                    thrownBottle.playAnimation(thrownBottle.IMAGES_SPLASH);     //Animation SPLASH wird ausgeführt
-                }, 50);
-                this.throwableObjects.splice(currentBottleIndex, 1);     //aktuelle Flasche muss aus dem Array entfernt werden?! (sonst wird diese Funktion immer ausgeführt!)
-            }
-            //2. Kollision mit einem Chicken
         });
     }
 

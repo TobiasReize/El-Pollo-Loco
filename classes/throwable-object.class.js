@@ -33,20 +33,15 @@ class ThrowableObject extends MovableObject {
         this.y = y;
         this.height = 60;
         this.width = 50;
+        this.speedY = 30;
 
-        this.throw();   //die Funktion "throw" muss im constructor ausgeführt werden, damit die Flasche immer gleich geworfen wird, sobalb ein neues Objekt erstellt wird!
+        setStoppableInterval(() => this.applyGravity(), 1000 / 25);     //sobald eine neue Instanz erstellt wird, wird die Funktion "applyGravity" ausgeführt!
+        setStoppableInterval(() => this.throw(), 50);   //die Funktion "throw" muss im constructor ausgeführt werden, damit die Flasche immer gleich geworfen wird, sobalb ein neues Objekt erstellt wird!
     }
 
 
     throw() {
-        this.speedY = 30;
-        this.applyGravity();
-
-        setInterval(() => {
             this.playAnimation(this.IMAGES_ROTATION);
-            this.x += 20;
-        }, 50);
+            this.x += 15;
     }
-
-
 }
