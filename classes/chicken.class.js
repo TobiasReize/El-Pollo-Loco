@@ -17,10 +17,18 @@ class Chicken extends MovableObject {
         'assets/img/3_enemies_chicken/chicken_normal/1_walk/3_w.png'
     ];
 
+    IMAGES_DEAD = [
+        'assets/img/3_enemies_chicken/chicken_normal/2_dead/dead.png'
+    ];
+
+    moveIntervalID = 0;
+    animationIntervalID = 0;
+
 
     constructor() {
         super().loadImage('assets/img/3_enemies_chicken/chicken_normal/1_walk/1_w.png');    //lädt das Start-Bild
         this.loadImages(this.IMAGES_WALKING);   //speichert alle Bilder für die Animation in dem ImageCache
+        this.loadImages(this.IMAGES_DEAD);
         this.x = 200 + Math.random() * 500;     //chicken werden zwischen 200 und 700 eingefügt
         this.speed = 0.2 + Math.random() * 0.5;   //zufälliger Geschwindigkeitsbereich
         this.animate();
@@ -28,7 +36,20 @@ class Chicken extends MovableObject {
 
 
     animate() {     //animiert die Chicken
-        setStoppableInterval(() => this.moveLeft(), 1000 / 60);     //für die Bewegung nach links (60x pro Sekunde (60 fps))
-        setStoppableInterval(() => this.playAnimation(this.IMAGES_WALKING), 200);   //für die Animation der Bilder
+        this.moveIntervalID = setInterval(() => {   //für die Bewegung nach links (60x pro Sekunde (60 fps))
+            this.moveLeft();
+        }, 1000 / 60);
+        
+        this.animationIntervalID = setInterval(() => {      //für die Animation der Bilder
+            this.playAnimation(this.IMAGES_WALKING);
+        }, 200);
+    }
+
+
+    dead(currentEnemyIndex) {
+        this.playAnimation(this.IMAGES_DEAD);
+        setTimeout(() => {
+            LEVEL_1.enemies.splice(currentEnemyIndex, 1);
+        }, 1000);
     }
 }

@@ -101,8 +101,9 @@ class World {
     run() {     //Hilfsfunktion für das Durchführen aller Intervalle!
         setStoppableInterval(() => this.checkCollisionCharacter(), 250);
         setStoppableInterval(() => this.checkThrowObjects(), 150);
-        setStoppableInterval(() => this.checkCollisionEndboss(), 250);
-        setStoppableInterval(() => this.checkCollisionThrowObject(), 300);
+        setStoppableInterval(() => this.checkHitEndboss(), 250);
+        // setStoppableInterval(() => this.checkCollisionThrowObject(), 300);
+        setStoppableInterval(() => this.checkJumpOnChicken(), 50);
         setStoppableInterval(() => this.checkCollectBottle(), 150);
         setStoppableInterval(() => this.checkCollectCoin(), 150);
         setStoppableInterval(() => this.checkEncounterEndboss(), 350);
@@ -111,10 +112,9 @@ class World {
 
     checkCollisionCharacter() {      //prüft, ob der Charakter mit einem Gegner kollidiert und zieht dann die Energie ab
         this.level.enemies.forEach(enemy => {
-            if (this.character.isColliding(enemy)) {
+            if (this.character.isColliding(enemy) && this.character.speedY == 0 && !enemy.isDead()) {  //wird nur verletzt wenn der Gegener kollidiert und der Charakter nicht springt und der Gegner nicht tot ist!
                 this.character.hit();
                 this.statusBarHealth.setStatusbarImage(this.character.energy);    //die Statusbar wird entsprechend der neuen, verbleibenden Energie des Charakters aktualisiert
-
                 if (this.character.isDead()) {
                     console.log('Character is dead! You lost!');
                 } else {
@@ -136,30 +136,48 @@ class World {
     }
 
 
-    checkCollisionEndboss() {       //prüft die Kollision der geworfenen Flasche mit dem Endboss
+    checkHitEndboss() {       //prüft die Kollision der geworfenen Flasche mit dem Endboss
         this.throwableObjects.forEach(thrownBottle => {
-            if (this.endboss.isColliding(thrownBottle)) {
+            if (this.endboss.isColliding(thrownBottle) && !thrownBottle.hitEnemy) {
+                thrownBottle.hitEnemy = true;   //damit der Endboss nur einmal gehit-ed wird!
                 this.endboss.hit();
                 this.statusBarEndboss.setStatusbarImage(this.endboss.energy);
                 console.log('Hit Endboss!!!', this.endboss.energy);
+                clearInterval(thrownBottle.throwIntervalID);
+                thrownBottle.speedY = 0;
+                thrownBottle.acceleration = 0;
+                thrownBottle.splash();      //splash-Animation abspielen!
+            } else if (thrownBottle.splashDone) {    //die splashDone-Variable wird erst "true", wenn die Animation beendet wurde!
+                this.throwableObjects.shift();      //"shift()"entfernt immer das erste Element aus dem Array
             }
         });
     }
 
 
-    checkCollisionThrowObject() {
-        this.throwableObjects.forEach(thrownBottle => {
-            let currentBottleIndex = this.throwableObjects.findIndex(element => thrownBottle == element);
+    // checkCollisionThrowObject() {
+    //     this.throwableObjects.forEach(thrownBottle => {
+    //         let currentBottleIndex = this.throwableObjects.findIndex(element => thrownBottle == element);
             
-            //1. Kollision mit dem Boden
-            if (thrownBottle.y > 280) {
-                thrownBottle.x = thrownBottle.x;    //Flasche soll sich nicht weiter nach rechts bewegen
-                setInterval(() => {
-                    thrownBottle.playAnimation(thrownBottle.IMAGES_SPLASH);     //Animation SPLASH wird ausgeführt
-                }, 50);
-                this.throwableObjects.splice(currentBottleIndex, 1);     //aktuelle Flasche muss aus dem Array entfernt werden?! (sonst wird diese Funktion immer ausgeführt!)
+    //         //1. Kollision mit dem Boden
+    //         if (thrownBottle.y > 280) {
+                
+    //             this.throwableObjects.splice(currentBottleIndex, 1);     //aktuelle Flasche muss aus dem Array entfernt werden?! (sonst wird diese Funktion immer ausgeführt!)
+    //         }
+    //         //2. Kollision mit einem Chicken
+    //     });
+    // }
+
+
+    checkJumpOnChicken() {
+        this.level.enemies.forEach(enemy => {
+            let currentEnemyIndex = this.level.enemies.findIndex(element => enemy == element);
+            if (this.character.isColliding(enemy) && this.character.speedY < 0 && !enemy.isDead()) {
+                enemy.energy = 0;   //damit die Abfrage "enemy.isDead()" true wird!
+                clearInterval(enemy.moveIntervalID);    //Intervalle müssen beendet werden, damit die Hühnchen nicht weiterlaufen!
+                clearInterval(enemy.animationIntervalID);
+                enemy.dead(currentEnemyIndex);  //dead-Animation des Chickens abspielen und danach aus dem Array löschen
+                this.character.jump();
             }
-            //2. Kollision mit einem Chicken
         });
     }
 

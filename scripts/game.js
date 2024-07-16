@@ -1,7 +1,7 @@
 let canvas;
 let world;
 let keyboard = new Keyboard();
-let intervalIds = [];   //Sammler für alle Intervalle
+let intervalIDs = [];   //Sammler für alle Intervalle
 
 
 function init() {
@@ -69,10 +69,10 @@ window.addEventListener('keyup', (e) => {
 
 function setStoppableInterval(fn, time) {       //Hilfsfunktion für alle Intervalle! Alle Intervall-IDs werden in einem Array gespeichert!
     let id = setInterval(fn, time);
-    intervalIds.push(id);
+    intervalIDs.push(id);
 }
 
 
 function stopGame() {                           //Funkion, die alle Intervalle beendet!
-    intervalIds.forEach(clearInterval);
+    intervalIDs.forEach(clearInterval);
 }

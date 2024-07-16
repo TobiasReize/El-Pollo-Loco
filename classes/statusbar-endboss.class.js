@@ -3,7 +3,7 @@ class StatusBarEndboss extends DrawableObject {
     percentage = 0;   //Wert der Statusbar (zum Anzeigen des Bildes)
 
     IMAGES = [
-        'assets/img/2_character_pepe/5_dead/D-57.png',  //Bild ist nicht optimal! (es ist ein Schatten zu sehen!)
+        '',  //leeres Bild, da die Statusbar erst angezeigt wird, wenn der Charakter am Ende ist!
         'assets/img/7_statusbars/2_statusbar_endboss/orange/orange0.png',
         'assets/img/7_statusbars/2_statusbar_endboss/orange/orange20.png',
         'assets/img/7_statusbars/2_statusbar_endboss/orange/orange40.png',
@@ -14,7 +14,7 @@ class StatusBarEndboss extends DrawableObject {
 
 
     constructor() {
-        super().loadImage('assets/img/2_character_pepe/5_dead/D-57.png');
+        super();
         this.loadImages(this.IMAGES);
         this.x = 550;
         this.y = 5;
@@ -33,7 +33,7 @@ class StatusBarEndboss extends DrawableObject {
 
     resolveImageIndex() {   //gibt den Index des IMAGES-Array zurück je nach dem wie groß "percentage" ist (wie viel Energie man noch hat)
         if (this.percentage == -1) {
-            return 0;   //Bild ist durchsichtig! (somit nicht zu sehen!)
+            return 0;   //kein Bild vorhanden! (Statusbar somit nicht sichtbar!)
         } else if (this.percentage >= 50) {
             return 6;
         } else if (this.percentage >= 40) {
@@ -48,7 +48,4 @@ class StatusBarEndboss extends DrawableObject {
             return 1;
         }
     }
-
-
-
 }

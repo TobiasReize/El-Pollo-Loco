@@ -126,6 +126,8 @@ class Character extends MovableObject {
         if (this.isAboveGround() && !this.isDead()) {
             this.playAnimation(this.IMAGES_JUMPING);
             this.idleStatus = false;
+        } else {
+            this.speedY = 0;    //speedY muss wieder auf 0 gesetzt werden, ansonsten ist der Wert immer negativ!
         }
     }
 

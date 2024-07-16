@@ -63,7 +63,7 @@ class Endboss extends MovableObject {
         this.loadImages(this.IMAGES_HURT);
         this.loadImages(this.IMAGES_DEAD);
         this.x = 2600;      //x-Pos. am Ende der Map
-        this.speed = 5;
+        this.speed = 8;
     }
 
 

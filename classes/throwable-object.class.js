@@ -22,7 +22,11 @@ class ThrowableObject extends MovableObject {
         'assets/img/6_salsa_bottle/bottle_rotation/bottle_splash/5_bottle_splash.png',
         'assets/img/6_salsa_bottle/bottle_rotation/bottle_splash/6_bottle_splash.png'
     ];
-
+    throwIntervalID = 0;
+    splashIntervalID = 0;
+    splashDone = false;
+    hitEnemy = false;
+    imgCounter = 0;
 
     constructor(x, y) {
         super().loadImage('assets/img/6_salsa_bottle/salsa_bottle.png');    //am Anfang muss immer ein Startbild einzeln geladen werden, wenn das Objekt erstellt wird! Ansonten gibt die Funktion "draw(ctx){}" der "DrawableObject" Klasse einen Fehler!
@@ -34,14 +38,30 @@ class ThrowableObject extends MovableObject {
         this.height = 60;
         this.width = 50;
         this.speedY = 30;
+        this.speed = 15;
 
         setStoppableInterval(() => this.applyGravity(), 1000 / 25);     //sobald eine neue Instanz erstellt wird, wird die Funktion "applyGravity" ausgeführt!
-        setStoppableInterval(() => this.throw(), 50);   //die Funktion "throw" muss im constructor ausgeführt werden, damit die Flasche immer gleich geworfen wird, sobalb ein neues Objekt erstellt wird!
+        this.throw();   //die Funktion "throw" muss im constructor ausgeführt werden, damit die Flasche immer gleich geworfen wird, sobalb ein neues Objekt erstellt wird!
     }
 
 
     throw() {
+        this.throwIntervalID = setInterval(() => {
             this.playAnimation(this.IMAGES_ROTATION);
-            this.x += 15;
+            this.x += this.speed;
+        }, 50);
+    }
+
+
+    splash() {
+        this.splashIntervalID = setInterval(() => {
+            if (this.imgCounter == this.IMAGES_SPLASH.length - 1) {
+                clearInterval(this.splashIntervalID);
+                this.splashDone = true;    //erst wenn die Animation fertig ist und das Interval beendet wurde, wird "true" zurückgegeben!
+            } else {
+                this.playAnimation(this.IMAGES_SPLASH);
+                this.imgCounter++;
+            }
+        }, 200);
     }
 }
