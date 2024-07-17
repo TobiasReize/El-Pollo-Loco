@@ -74,5 +74,8 @@ function setStoppableInterval(fn, time) {       //Hilfsfunktion für alle Interv
 
 
 function stopGame() {                           //Funkion, die alle Intervalle beendet!
-    intervalIDs.forEach(clearInterval);
+    // intervalIDs.forEach(clearInterval);
+    for (let i = 0; i < 999; i++) {
+        window.clearInterval(i);
+    }
 }

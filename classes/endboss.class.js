@@ -45,6 +45,9 @@ class Endboss extends MovableObject {
     IMAGES_HURT = [
         'assets/img/4_enemie_boss_chicken/4_hurt/G21.png',
         'assets/img/4_enemie_boss_chicken/4_hurt/G22.png',
+        'assets/img/4_enemie_boss_chicken/4_hurt/G23.png',
+        'assets/img/4_enemie_boss_chicken/4_hurt/G21.png',  //doppelte Anzahl an Bildern, damit die Animation etwas länger geht!
+        'assets/img/4_enemie_boss_chicken/4_hurt/G22.png',
         'assets/img/4_enemie_boss_chicken/4_hurt/G23.png'
     ];
 
@@ -97,6 +100,19 @@ class Endboss extends MovableObject {
     attack() {
         let attackInterval = setInterval(() => {
             this.playAnimation(this.IMAGES_ATTACK);
+        }, 200);
+    }
+
+
+    hurt() {
+        let imgCounter = 0;
+        let hurtInterval = setInterval(() => {
+            if (imgCounter == this.IMAGES_HURT.length - 1) {
+                clearInterval(hurtInterval);
+            } else {
+                this.playAnimation(this.IMAGES_HURT);
+                imgCounter++;
+            }
         }, 200);
     }
 

@@ -101,7 +101,7 @@ class World {
     run() {     //Hilfsfunktion für das Durchführen aller Intervalle!
         setStoppableInterval(() => this.checkCollisionCharacter(), 250);
         setStoppableInterval(() => this.checkThrowObjects(), 150);
-        setStoppableInterval(() => this.checkHitEndboss(), 250);
+        setStoppableInterval(() => this.checkHitEndboss(), 150);
         // setStoppableInterval(() => this.checkCollisionThrowObject(), 300);
         setStoppableInterval(() => this.checkJumpOnChicken(), 50);
         setStoppableInterval(() => this.checkCollectBottle(), 150);
@@ -139,6 +139,7 @@ class World {
     checkHitEndboss() {       //prüft die Kollision der geworfenen Flasche mit dem Endboss
         this.throwableObjects.forEach(thrownBottle => {
             if (this.endboss.isColliding(thrownBottle) && !thrownBottle.hitEnemy) {
+                this.endboss.hurt();
                 thrownBottle.hitEnemy = true;   //damit der Endboss nur einmal gehit-ed wird!
                 this.endboss.hit();
                 this.statusBarEndboss.setStatusbarImage(this.endboss.energy);

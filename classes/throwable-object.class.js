@@ -62,6 +62,6 @@ class ThrowableObject extends MovableObject {
                 this.playAnimation(this.IMAGES_SPLASH);
                 this.imgCounter++;
             }
-        }, 200);
+        }, 50);
     }
 }
