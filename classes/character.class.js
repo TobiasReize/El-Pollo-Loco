@@ -206,6 +206,7 @@ class Character extends MovableObject {
 
 
     jump() {
+        this.currentImage = 0;  //damit die jump-Animation immer beim ersten Bild anfängt!
         super.jump();
         this.jumping_sound.play();
     }

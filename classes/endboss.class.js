@@ -5,6 +5,7 @@ class Endboss extends MovableObject {
     y = 50;
     energy = 50;    //Ursprungs-Energie ist nur 50, damit man den Endboss nur 5x treffen muss!
     visible = false;    //zum Prüfen ob der Endboss sichtbar ist (zum Anzeigen der Statusbar des Endbosses)
+    deadStatus = false;     //damit die dead-Animation nur einmal ausgeführt wird!
 
     offset = {  //Offset zur genauen Kollisionsprüfung (Offset wird von der ursprünglichen Bildgröße abgezogen!)
         top: 150,
@@ -45,9 +46,6 @@ class Endboss extends MovableObject {
     IMAGES_HURT = [
         'assets/img/4_enemie_boss_chicken/4_hurt/G21.png',
         'assets/img/4_enemie_boss_chicken/4_hurt/G22.png',
-        'assets/img/4_enemie_boss_chicken/4_hurt/G23.png',
-        'assets/img/4_enemie_boss_chicken/4_hurt/G21.png',  //doppelte Anzahl an Bildern, damit die Animation etwas länger geht!
-        'assets/img/4_enemie_boss_chicken/4_hurt/G22.png',
         'assets/img/4_enemie_boss_chicken/4_hurt/G23.png'
     ];
 
@@ -85,6 +83,7 @@ class Endboss extends MovableObject {
 
     alert() {
         let imgCounter = 0;
+        this.currentImage = 0;  //damit die Animation wieder beim ersten Bild anfängt!
         let alertInterval = setInterval(() => {
             if (imgCounter == this.IMAGES_ALERT.length - 1) {
                 clearInterval(alertInterval);
@@ -98,22 +97,41 @@ class Endboss extends MovableObject {
 
 
     attack() {
+        this.currentImage = 0;  //damit die Animation wieder beim ersten Bild anfängt!
         let attackInterval = setInterval(() => {
-            this.playAnimation(this.IMAGES_ATTACK);
+            if (this.isDead()) {
+                clearInterval(attackInterval);
+            } else {
+                this.playAnimation(this.IMAGES_ATTACK);
+            }
         }, 200);
     }
 
 
     hurt() {
-        let imgCounter = 0;
-        let hurtInterval = setInterval(() => {
-            if (imgCounter == this.IMAGES_HURT.length - 1) {
-                clearInterval(hurtInterval);
-            } else {
-                this.playAnimation(this.IMAGES_HURT);
-                imgCounter++;
-            }
-        }, 200);
+            let imgCounter = 0;
+            let hurtInterval = setInterval(() => {
+                if (imgCounter == (this.IMAGES_HURT.length - 1)* 3 || this.isDead()) {  //hurt-Animation wird zweimal durchgeführt!
+                    clearInterval(hurtInterval);
+                } else {
+                    this.playAnimation(this.IMAGES_HURT);
+                    imgCounter++;
+                }
+            }, 200);
     }
 
+
+    dead() {
+        let imgCounter = 0;
+        this.deadStatus = true;     //damit die dead()-Funktion nur einmal aufgerufen wird!
+        this.currentImage = 0;      //damit die dead-Animation beim ersten Bild des Arrays anfängt!
+        let deadInterval = setInterval(() => {
+            if (imgCounter == (this.IMAGES_DEAD.length - 1) * 3) {  //dead-Animation wird zweimal durchgeführt!
+                clearInterval(deadInterval);
+            } else {
+                this.playAnimation(this.IMAGES_DEAD);
+                imgCounter++;
+            }
+        }, 250);
+    }
 }

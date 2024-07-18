@@ -161,8 +161,9 @@ class World {
             if (thrownBottle.splashDone) {    //die splashDone-Variable wird erst "true", wenn die Animation beendet wurde!
                 delete this.throwableObjects[currentBottleIndex];
             }
-            if (this.endboss.isDead()) {
+            if (this.endboss.isDead() && !this.endboss.deadStatus) {
                 console.log('Endboss is dead!!!');
+                this.endboss.dead();
             }
         });
     }
