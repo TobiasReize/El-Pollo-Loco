@@ -10,7 +10,7 @@ class World {
     statusBarCoin = new StatusBarCoin();
     statusBarEndboss = new StatusBarEndboss();
     throwableObjects = [];
-    endboss = this.level.enemies[this.level.enemies.length - 1];
+    endboss = this.level.enemies[0];
     bottles = [];
     coins = [];
 
@@ -102,7 +102,7 @@ class World {
         setStoppableInterval(() => this.checkCollisionCharacter(), 250);
         setStoppableInterval(() => this.checkThrowObjects(), 150);
         setStoppableInterval(() => this.checkHitEndboss(), 150);
-        // setStoppableInterval(() => this.checkCollisionThrowObject(), 300);
+        setStoppableInterval(() => this.checkHitChicken(), 100);
         setStoppableInterval(() => this.checkJumpOnChicken(), 50);
         setStoppableInterval(() => this.checkCollectBottle(), 150);
         setStoppableInterval(() => this.checkCollectCoin(), 150);
@@ -133,43 +133,66 @@ class World {
             this.statusBarBottle.setStatusbarImage();   //Statusbar anpassen
             this.character.idleStatus = false;      //der "idleStatus" des Charakters muss wieder zurück gesetzt werden, damit er nicht in den "long-idle" Zustand kommt!
         }
+        if (this.throwableObjects.length > 0) {
+            this.throwableObjects.forEach(thrownBottle => {
+                let currentBottleIndex = this.throwableObjects.findIndex(element => thrownBottle == element);
+                if (thrownBottle.y > 480) {
+                    delete this.throwableObjects[currentBottleIndex];
+                }
+            });
+        }
     }
 
 
     checkHitEndboss() {       //prüft die Kollision der geworfenen Flasche mit dem Endboss
         this.throwableObjects.forEach(thrownBottle => {
+            let currentBottleIndex = this.throwableObjects.findIndex(element => thrownBottle == element);
             if (this.endboss.isColliding(thrownBottle) && !thrownBottle.hitEnemy) {
                 this.endboss.hurt();
-                thrownBottle.hitEnemy = true;   //damit der Endboss nur einmal gehit-ed wird!
+                thrownBottle.hitEnemy = true;   //damit der Endboss nur einmal je Flasche getroffen wird!
                 this.endboss.hit();
                 this.statusBarEndboss.setStatusbarImage(this.endboss.energy);
                 console.log('Hit Endboss!!!', this.endboss.energy);
-                clearInterval(thrownBottle.throwIntervalID);
+                clearInterval(thrownBottle.throwIntervalID);    //Bewegung der Flasche wird gestoppt (auf der x-Achse und nachfolgend auf der y-Achse)
                 thrownBottle.speedY = 0;
                 thrownBottle.acceleration = 0;
                 thrownBottle.splash();      //splash-Animation abspielen!
-            } else if (thrownBottle.splashDone) {    //die splashDone-Variable wird erst "true", wenn die Animation beendet wurde!
-                this.throwableObjects.shift();      //"shift()"entfernt immer das erste Element aus dem Array
+            }
+            if (thrownBottle.splashDone) {    //die splashDone-Variable wird erst "true", wenn die Animation beendet wurde!
+                delete this.throwableObjects[currentBottleIndex];
+            }
+            if (this.endboss.isDead()) {
+                console.log('Endboss is dead!!!');
             }
         });
     }
 
 
-    // checkCollisionThrowObject() {
-    //     this.throwableObjects.forEach(thrownBottle => {
-    //         let currentBottleIndex = this.throwableObjects.findIndex(element => thrownBottle == element);
-            
-    //         //1. Kollision mit dem Boden
-    //         if (thrownBottle.y > 280) {
-                
-    //             this.throwableObjects.splice(currentBottleIndex, 1);     //aktuelle Flasche muss aus dem Array entfernt werden?! (sonst wird diese Funktion immer ausgeführt!)
-    //         }
-    //         //2. Kollision mit einem Chicken
-    //     });
-    // }
+    checkHitChicken() {
+        this.throwableObjects.forEach(thrownBottle => {
+            let currentBottleIndex = this.throwableObjects.findIndex(element => thrownBottle == element);
+            this.level.enemies.slice(1).forEach(enemy => {
+                let currentEnemyIndex = this.level.enemies.findIndex(element => enemy == element);
+                if (thrownBottle.isColliding(enemy) && !thrownBottle.hitEnemy && !enemy.isDead()) {
+                    thrownBottle.hitEnemy = true;
+                    clearInterval(thrownBottle.throwIntervalID);    //Bewegung der Flasche wird gestoppt (auf der x-Achse und nachfolgend auf der y-Achse)
+                    thrownBottle.speedY = 0;
+                    thrownBottle.acceleration = 0;
+                    thrownBottle.splash();
+                    enemy.energy = 0;
+                    clearInterval(enemy.moveIntervalID);
+                    clearInterval(enemy.animationIntervalID);
+                    enemy.dead(currentEnemyIndex);
+                }
+                if (thrownBottle.splashDone) {
+                    delete this.throwableObjects[currentBottleIndex];
+                }
+            });
+        });
+    }
 
 
-    checkJumpOnChicken() {
+    checkJumpOnChicken() {      //prüft das Springen auf die Hühnchen, zeigt die dead-Animation an und entfernt dann das Hühnchen
         this.level.enemies.forEach(enemy => {
             let currentEnemyIndex = this.level.enemies.findIndex(element => enemy == element);
             if (this.character.isColliding(enemy) && this.character.speedY < 0 && !enemy.isDead()) {

@@ -22,12 +22,13 @@ class ThrowableObject extends MovableObject {
         'assets/img/6_salsa_bottle/bottle_rotation/bottle_splash/5_bottle_splash.png',
         'assets/img/6_salsa_bottle/bottle_rotation/bottle_splash/6_bottle_splash.png'
     ];
-    throwIntervalID = 0;
-    splashIntervalID = 0;
-    splashDone = false;
-    hitEnemy = false;
-    imgCounter = 0;
+    throwIntervalID = 0;        //zum Zwischenspeichern der throw-Intervall-ID je Flasche
+    splashIntervalID = 0;       //zum Zwischenspeichern der splash-Intervall-ID je Flasche
+    splashDone = false;         //zum Prüfen, ob die splash-Animation komplett durchgeführt wurde
+    hitEnemy = false;           //damit der Endboss/ Chicken nur einmal je Flasche getroffen wird
+    imgCounter = 0;             //zum Zählen der Animations-Bilder (damit die Animation nur einmal durchlaufen wird)
 
+    
     constructor(x, y) {
         super().loadImage('assets/img/6_salsa_bottle/salsa_bottle.png');    //am Anfang muss immer ein Startbild einzeln geladen werden, wenn das Objekt erstellt wird! Ansonten gibt die Funktion "draw(ctx){}" der "DrawableObject" Klasse einen Fehler!
         this.loadImages(this.IMAGES_ROTATION);
