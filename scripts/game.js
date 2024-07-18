@@ -79,3 +79,15 @@ function stopGame() {                           //Funkion, die alle Intervalle b
         window.clearInterval(i);
     }
 }
+
+
+function gameOver() {
+    stopGame();
+    console.log('Spiel beendet!!!');
+    document.getElementById('game_over_screen').classList.remove('d-none');
+}
+
+
+function youWin() {
+    'coming soon...'
+}
