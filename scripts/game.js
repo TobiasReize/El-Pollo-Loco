@@ -5,11 +5,21 @@ let intervalIDs = [];   //Sammler für alle Intervalle
 
 
 function init() {
+    document.getElementById('overlay_screen').classList.add('d-none');
     document.getElementById('start_screen').classList.add('d-none');
     initLevel();
     canvas = document.getElementById('canvas');
     world = new World(canvas, keyboard);    //Der Instanz der "World" wird das "canvas" und die Instanz des "Keyboard" übergeben!
-    console.log('My character is', world.character);
+}
+
+
+function showInstructions() {
+    document.getElementById('overlay_instructions').classList.remove('d-none');
+}
+
+
+function closeInstructions() {
+    document.getElementById('overlay_instructions').classList.add('d-none');
 }
 
 
@@ -73,8 +83,7 @@ function setStoppableInterval(fn, time) {       //Hilfsfunktion für alle Interv
 }
 
 
-function stopGame() {                           //Funkion, die alle Intervalle beendet!
-    // intervalIDs.forEach(clearInterval);
+function stopAllIntervals() {                           //Funkion, die alle Intervalle beendet!
     for (let i = 0; i < 999; i++) {
         window.clearInterval(i);
     }
@@ -82,12 +91,21 @@ function stopGame() {                           //Funkion, die alle Intervalle b
 
 
 function gameOver() {
-    stopGame();
-    console.log('Spiel beendet!!!');
+    stopAllIntervals();
+    document.getElementById('overlay_screen').style.backgroundImage = 'none';
+    document.getElementById('overlay_screen').classList.remove('d-none');
     document.getElementById('game_over_screen').classList.remove('d-none');
 }
 
 
 function youWin() {
-    'coming soon...'
+    stopAllIntervals();
+    document.getElementById('overlay_screen').style.backgroundImage = 'none';
+    document.getElementById('overlay_screen').classList.remove('d-none');
+    document.getElementById('win_screen').classList.remove('d-none');
+}
+
+
+function stopPropagation(event) {
+    event.stopPropagation();
 }

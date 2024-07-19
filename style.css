@@ -3,10 +3,6 @@
     src: url('assets/fonts/zabars.ttf') format('truetype');
 }
 
-.d-none {
-    display: none !important;
-}
-
 * {
     margin: 0;
     padding: 0;
@@ -14,31 +10,59 @@
     font-family: 'zabars', Arial, Helvetica, sans-serif;
 }
 
-body {
+/* Reusable classes: */
+.d-none {
+    display: none !important;
+}
+
+.df-ai-jc-ctr {
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
+}
+
+.df-ai-ctr {
+    display: flex;
+    align-items: center;
+}
+
+.df-jc-ctr {
+    display: flex;
+    justify-content: center;
+}
+
+/* Design: */
+body {
+    flex-direction: column;
     min-height: 100vh;
     background-image: url('assets/img/5_background/desert.png');
-    background-position: top;
+    background-position: bottom;
     background-size: cover;
     background-repeat: no-repeat;
 }
 
 h1 {
     font-size: 72px;
+    font-weight: 400;
     letter-spacing: 4px;
     text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
     margin-bottom: 32px;
+}
+
+h2 {
+    font-size: 56px;
+    font-weight: 400;
+    letter-spacing: 2px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    width: 100%;
+    text-align: center;
 }
 
 canvas {
     background-color: black;
 }
 
-/* Start screen: */
-.start-screen {
+.overlay-screen {
     position: absolute;
     min-height: 100vh;
     width: 100%;
@@ -46,22 +70,25 @@ canvas {
     left: 0;
     right: 0;
     bottom: 0;
-    background-image: url('assets/img/9_intro_outro_screens/start/startscreen_1.png');
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
+    background-image: linear-gradient(#029CC7, #994409);
 }
 
-.start-button {
+.content-screen {
+    height: 100%;
+    width: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.button {
     cursor: pointer;
-    width: 210px;
+    width: 250px;
     height: 60px;
     margin-bottom: 2%;
     font-size: 48px;
-    letter-spacing: 1px;
+    font-weight: 400;
+    text-align: center;
+    letter-spacing: 2px;
     background-color: rgb(243, 178, 0);
     border-radius: 16px;
     border-color: rgb(139, 84, 0);
@@ -69,17 +96,25 @@ canvas {
     border-style: outset;
 }
 
-.start-button:hover {
+.button:hover {
     background-color: rgb(255, 205, 69);
 }
 
-.start-button:active {
+.button:active {
     border-style: inset;
     background-color: rgb(221, 162, 0);
 }
 
-/* Game Over screen: */
-.game-over-screen {
+/* Start screen: */
+.start-screen {
+    background-image: url('assets/img/9_intro_outro_screens/start/startscreen_1.png');
+    background-size: contain;
+    align-items: flex-end;
+    gap: 64px;
+}
+
+/* Instructions screen: */
+.overlay-instructions {
     position: absolute;
     min-height: 100vh;
     width: 100%;
@@ -87,12 +122,44 @@ canvas {
     left: 0;
     right: 0;
     bottom: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 5;
+}
+
+.instructions-content {
+    background-color: #ffffff;
+    height: 80%;
+    width: 80%;
+    border-radius: 32px;
+    padding: 24px;
+}
+
+.close {
+    font-size: 40px;
+    padding: 4px;
+}
+
+.close:hover {
+    cursor: pointer;
+    color: rgb(200, 147, 0);
+}
+
+.close:active {
+    color: rgb(100, 73, 0);
+}
+
+/* Game Over screen: */
+.game-over-screen {
     background-image: url('assets/img/9_intro_outro_screens/game_over/oh no you lost!.png');
-    background-color: rgba(0, 0, 0, 0.4);
-    background-position: center;
     background-size: cover;
-    background-repeat: no-repeat;
-    display: flex;
-    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    align-items: flex-end;
+}
+
+/* Win screen: */
+.win-screen {
+    background-image: url('assets/img/9_intro_outro_screens/win/win_2.png');
+    background-size: contain;
+    background-color: rgba(0, 0, 0, 0.5);
     align-items: flex-end;
 }
