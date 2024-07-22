@@ -29,17 +29,18 @@ class ThrowableObject extends MovableObject {
     imgCounter = 0;             //zum Zählen der Animations-Bilder (damit die Animation nur einmal durchlaufen wird)
 
     
-    constructor(x, y) {
+    constructor(x, y, otherDirection) {
         super().loadImage('assets/img/6_salsa_bottle/salsa_bottle.png');    //am Anfang muss immer ein Startbild einzeln geladen werden, wenn das Objekt erstellt wird! Ansonten gibt die Funktion "draw(ctx){}" der "DrawableObject" Klasse einen Fehler!
         this.loadImages(this.IMAGES_ROTATION);
         this.loadImages(this.IMAGES_SPLASH);
 
         this.x = x;
-        this.y = y;
+        this.y = y + 100;
         this.height = 60;
         this.width = 50;
         this.speedY = 30;
         this.speed = 15;
+        this.otherDirection = otherDirection;   //um zu prüfen ob die Flasche nach links oder rechts fliegen soll
 
         setStoppableInterval(() => this.applyGravity(), 1000 / 25);     //sobald eine neue Instanz erstellt wird, wird die Funktion "applyGravity" ausgeführt!
         this.throw();   //die Funktion "throw" muss im constructor ausgeführt werden, damit die Flasche immer gleich geworfen wird, sobalb ein neues Objekt erstellt wird!
@@ -47,10 +48,18 @@ class ThrowableObject extends MovableObject {
 
 
     throw() {
-        this.throwIntervalID = setInterval(() => {
-            this.playAnimation(this.IMAGES_ROTATION);
-            this.x += this.speed;
-        }, 50);
+        if (this.otherDirection) {  //Wurf nach links
+            this.throwIntervalID = setInterval(() => {
+                this.playAnimation(this.IMAGES_ROTATION);
+                this.x -= this.speed;
+            }, 50);
+        } else {    //Wurf nach rechts
+            this.x = this.x + 50;
+            this.throwIntervalID = setInterval(() => {
+                this.playAnimation(this.IMAGES_ROTATION);
+                this.x += this.speed;
+            }, 50);
+        }
     }
 
 

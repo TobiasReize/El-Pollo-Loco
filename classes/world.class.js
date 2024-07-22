@@ -78,7 +78,7 @@ class World {
         object.draw(this.ctx);   //Bild wird auf dem Canvas gezeichnet
         object.drawFrame(this.ctx);   //Rechtecke zeichnen, nur für Charakter und Chicken (zur Kollisions-Prüfung)
 
-        if (object.otherDirection) {     //wenn der Kontext verändert wurde
+        if (object.otherDirection) {     //wenn der Kontext verändert wurde, wird er hier wieder rückgängig gemacht!
             this.mirrowImageBack(object);
         }
     }
@@ -129,7 +129,7 @@ class World {
 
     checkThrowObjects() {       //erstellt ein neues Objekt der Flasche, wenn die Anzahl größer 0 ist! (Flasche wird geworfen)
         if (this.keyboard.KEY_D && this.statusBarBottle.amount > 0) {
-            let thrownBottle = new ThrowableObject(this.character.x + 100, this.character.y + 100);   //neue Instanz der Klasse "ThrowableObject" wird erstellt
+            let thrownBottle = new ThrowableObject(this.character.x, this.character.y, this.character.otherDirection);   //neue Instanz der Klasse "ThrowableObject" wird erstellt
             this.throwableObjects.push(thrownBottle);     //neue Instanz wird in das Array reingepusht (durch die draw()-Funktion wird das Element sofort angezeigt)
             this.statusBarBottle.amount--;   //Menge reduzieren
             this.statusBarBottle.setStatusbarImage();   //Statusbar anpassen
