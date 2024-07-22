@@ -6,11 +6,9 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>El Pollo Loco</title>
-
         <link rel="icon" type="image/png" href="assets/img/3_enemies_chicken/chicken_normal/1_walk/3_w.png"/>
 
         <link rel="stylesheet" href="style.css" />
-
 
         <script src="classes/keyboard.class.js"></script>
         <script src="classes/level.class.js"></script>
@@ -34,12 +32,9 @@
         <script src="levels/level1.js"></script>
         <script src="classes/world.class.js"></script>
         <script src="scripts/game.js"></script>
-
     </head>
 
-
     <body class="df-ai-jc-ctr">
-
         <h1>El Pollo Loco</h1>
         <canvas id="canvas" width="720" height="480"></canvas>
 
@@ -65,23 +60,54 @@
                 <div class="df-ai-ctr columns-container">
                     <div class="df-ai-jc-ctr column">
                         <h3>Move</h3>
-                        <img class="img-move" src="assets/img/10_instructions/pepe-move.png" alt="pepe-move">
-                        <p>Beschreibung...</p>
+                        <img class="img-move" src="./assets/img/10_instructions/pepe-move.png" alt="pepe-move">
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td><img class="arrow-key-icon" src="./assets/icons/arrow-left.png" alt="arrow-left"></td>
+                                    <td class="table-text">Walk left</td>
+                                </tr>
+                                <tr>
+                                    <td><img class="arrow-key-icon" src="./assets/icons/arrow-right.png" alt="arrow-right"></td>
+                                    <td class="table-text">Walk right</td>
+                                </tr>
+                                <tr>
+                                    <td><img class="spacebar-icon" src="./assets/icons/spacebar.png" alt="spacebar"></td>
+                                    <td class="table-text">Jump</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                     <div class="df-ai-jc-ctr column">
                         <h3>Collect</h3>
-                        <img class="img-collect" src="assets/img/10_instructions/collect.png" alt="collect">
-                        <p>Beschreibung...</p>
+                        <img class="img-collect" src="./assets/img/10_instructions/collect.png" alt="collect">
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td class="table-text">Bottles:</td>
+                                    <td class="table-text">max. 5 pcs.</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                     <div class="df-ai-jc-ctr column">
                         <h3>Fight</h3>
-                        <img class="img-move" src="assets/img/10_instructions/enemies.png" alt="enemies">
-                        <p>Beschreibung...</p>
+                        <img class="img-move" src="./assets/img/10_instructions/enemies.png" alt="enemies">
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td><img class="arrow-key-icon" src="./assets/icons/key-d.png" alt="key-d"></td>
+                                    <td class="table-text">Throw bottles</td>
+                                </tr>
+                                <tr>
+                                    <td class="table-text">Small<br>chickens:</td>
+                                    <td class="table-text">Jump on</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-
             </div>
         </section>
-
     </body>
 </html>
