@@ -58,6 +58,13 @@ h2 {
     text-align: center;
 }
 
+h3 {
+    font-size: 40px;
+    font-weight: 400;
+    letter-spacing: 2px;
+    margin-bottom: 24px;
+}
+
 canvas {
     background-color: black;
 }
@@ -128,10 +135,11 @@ canvas {
 
 .instructions-content {
     background-color: #ffffff;
-    height: 80%;
-    width: 80%;
+    width: 1200px;
     border-radius: 32px;
-    padding: 24px;
+    padding: 48px;
+    display: flex;
+    flex-direction: column;
 }
 
 .close {
@@ -146,6 +154,31 @@ canvas {
 
 .close:active {
     color: rgb(100, 73, 0);
+}
+
+.headline {
+    margin-bottom: 64px;
+}
+
+.columns-container {
+    align-items: flex-start;
+    flex: 1;
+}
+
+.column {
+    flex-direction: column;
+    flex: 1;
+}
+
+.img-move {
+    height: 300px;
+    margin-bottom: 32px;
+}
+
+.img-collect {
+    height: 200px;
+    margin-top: 50px;
+    margin-bottom: 82px;
 }
 
 /* Game Over screen: */
