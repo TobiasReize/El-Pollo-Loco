@@ -3,6 +3,7 @@ class Bottle extends MovableObject {
     y = 350;
     height = 80;
     width = 60;
+    collectBottleSound = new Audio('assets/audio/collect-bottle.mp3');      //für jede eingesammelte Falsche wird ein neues Audio-Objekt erstellt! (somit wird immer ein neuer Ton abgespielt)
 
     offset = {      //Offset zur genauen Kollisionsprüfung (Offset wird von der ursprünglichen Bildgröße abgezogen!)
         top: 20,
@@ -27,5 +28,11 @@ class Bottle extends MovableObject {
 
     animate() {
         setStoppableInterval(() => this.playAnimation(this.IMAGES), 500);
+    }
+
+
+    playCollectBottleSound() {
+        this.collectBottleSound.volume = 0.2;
+        this.collectBottleSound.play();
     }
 }

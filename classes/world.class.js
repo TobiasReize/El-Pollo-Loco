@@ -106,7 +106,7 @@ class World {
         setStoppableInterval(() => this.checkJumpOnChicken(), 50);
         setStoppableInterval(() => this.checkCollectBottle(), 150);
         setStoppableInterval(() => this.checkCollectCoin(), 150);
-        setStoppableInterval(() => this.checkEncounterEndboss(), 350);
+        setStoppableInterval(() => this.checkEncounterEndboss(), 250);
     }
 
 
@@ -177,7 +177,7 @@ class World {
     checkHitChicken() {
         this.throwableObjects.forEach(thrownBottle => {
             let currentBottleIndex = this.throwableObjects.findIndex(element => thrownBottle == element);
-            this.level.enemies.slice(1).forEach(enemy => {
+            this.level.enemies.slice(1).forEach(enemy => {  //der Endboss wird aus dem Array entfernt!
                 let currentEnemyIndex = this.level.enemies.findIndex(element => enemy == element);
                 if (thrownBottle.isColliding(enemy) && !thrownBottle.hitEnemy && !enemy.isDead()) {
                     thrownBottle.hitEnemy = true;
@@ -216,6 +216,7 @@ class World {
         this.bottles.forEach(bottle => {
             let currentBottleIndex = this.bottles.findIndex(element => bottle == element);
             if (this.character.isColliding(bottle) && this.statusBarBottle.amount < 5) {
+                bottle.playCollectBottleSound();
                 this.bottles.splice(currentBottleIndex, 1);     //eingesammelte Falsche wird aus dem Array entfernt (und somit auch nicht mehr angezeigt!)
                 this.statusBarBottle.amount++;      //Menge erhöhen
                 this.statusBarBottle.setStatusbarImage();   //Statusbar updaten
@@ -228,6 +229,7 @@ class World {
         this.coins.forEach(coin => {
             let currentCoinIndex = this.coins.findIndex(element => coin == element);
             if (this.character.isColliding(coin)) {
+                coin.playCollectCoinSound();
                 this.coins.splice(currentCoinIndex, 1);
                 this.statusBarCoin.amount++;
                 this.statusBarCoin.setStatusbarImage();
@@ -238,6 +240,7 @@ class World {
 
     checkEncounterEndboss() {
         if (this.character.x >= 1930 && !this.endboss.visible) {
+            this.endboss.playEncounterEndbossSound();
             this.statusBarEndboss.setStatusbarImage(50);    //Statusbar des Endboss wird angezeigt (mit voller Energie!)
             this.endboss.visible = true;    //damit diese Abfrage nur einmal "true" wird!
             this.endboss.walk();
@@ -245,6 +248,7 @@ class World {
     }
 
 
+    // Hilfsfunktionen:
     creatBottles() {    //es wird am Anfang nur einmal die 10x Flaschen erstellt
         for (let i = 0; i < 10; i++) {
             this.bottles.push(new Bottle());
@@ -257,6 +261,4 @@ class World {
             this.coins.push(new Coin());
         }
     }
-
-
 }

@@ -6,6 +6,9 @@ class Endboss extends MovableObject {
     energy = 50;    //Ursprungs-Energie ist nur 50, damit man den Endboss nur 5x treffen muss!
     visible = false;    //zum Prüfen ob der Endboss sichtbar ist (zum Anzeigen der Statusbar des Endbosses)
     deadStatus = false;     //damit die dead-Animation nur einmal ausgeführt wird!
+    endbossSound = new Audio('assets/audio/endboss-sound.mp3');
+    hecticMusic = new Audio('assets/audio/hectic-music.mp3');
+    hurtEndbossSound = new Audio('assets/audio/hurt-endboss-sound.mp3');
 
     offset = {  //Offset zur genauen Kollisionsprüfung (Offset wird von der ursprünglichen Bildgröße abgezogen!)
         top: 150,
@@ -109,15 +112,25 @@ class Endboss extends MovableObject {
 
 
     hurt() {
-            let imgCounter = 0;
-            let hurtInterval = setInterval(() => {
-                if (imgCounter == (this.IMAGES_HURT.length - 1)* 3 || this.isDead()) {  //hurt-Animation wird zweimal durchgeführt!
-                    clearInterval(hurtInterval);
-                } else {
-                    this.playAnimation(this.IMAGES_HURT);
-                    imgCounter++;
-                }
-            }, 200);
+        let imgCounter = 0;
+        this.playHurtEndbossSound();
+        let hurtInterval = setInterval(() => {
+            if (imgCounter == (this.IMAGES_HURT.length - 1)* 3 || this.isDead()) {  //hurt-Animation wird zweimal durchgeführt!
+                clearInterval(hurtInterval);
+            } else {
+                this.playAnimation(this.IMAGES_HURT);
+                imgCounter++;
+            }
+        }, 200);
+    }
+
+
+    playHurtEndbossSound() {
+        this.hurtEndbossSound.currentTime = 4.6;
+        this.hurtEndbossSound.play();
+        setTimeout(() => {
+            this.hurtEndbossSound.pause();
+        }, 600);
     }
 
 
@@ -133,5 +146,18 @@ class Endboss extends MovableObject {
                 imgCounter++;
             }
         }, 250);
+    }
+
+
+    playEncounterEndbossSound() {
+        this.hecticMusic.loop = true;
+        this.hecticMusic.volume = 0.8;
+        this.endbossSound.play();
+        let intervalID = setInterval(() => {
+            if (this.endbossSound.ended) {
+                this.hecticMusic.play();
+                clearInterval(intervalID);
+            }
+        }, 100);
     }
 }

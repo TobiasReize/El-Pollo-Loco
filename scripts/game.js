@@ -2,9 +2,24 @@ let canvas;
 let world;
 let keyboard = new Keyboard();
 let intervalIDs = [];   //Sammler für alle Intervalle
+let introSound = new Audio('assets/audio/intro.mp3');
 
 
 function init() {
+    // introSound.autoplay = true;
+    introSound.volume = 0.5
+    let promise = introSound.play();
+    console.log(promise);
+    setInterval(() => {
+        if (introSound.currentTime > 41) {
+            introSound.currentTime = 0;
+        }
+    }, 200);
+}
+
+
+function startGame() {
+    introSound.pause();
     document.getElementById('overlay_screen').classList.add('d-none');
     document.getElementById('start_screen').classList.add('d-none');
     initLevel();

@@ -1,5 +1,13 @@
 class ThrowableObject extends MovableObject {
 
+    throwIntervalID = 0;        //zum Zwischenspeichern der throw-Intervall-ID je Flasche
+    splashIntervalID = 0;       //zum Zwischenspeichern der splash-Intervall-ID je Flasche
+    splashDone = false;         //zum Prüfen, ob die splash-Animation komplett durchgeführt wurde
+    hitEnemy = false;           //damit der Endboss/ Chicken nur einmal je Flasche getroffen wird
+    imgCounter = 0;             //zum Zählen der Animations-Bilder (damit die Animation nur einmal durchlaufen wird)
+    throwSound = new Audio('assets/audio/throw.mp3');
+    bottleBreakSound = new Audio('assets/audio/bottle-break.mp3');
+    
     offset = {      //Offset zur genauen Kollisionsprüfung (Offset wird von der ursprünglichen Bildgröße abgezogen!)
         top: 10,
         left: 10,
@@ -22,11 +30,6 @@ class ThrowableObject extends MovableObject {
         'assets/img/6_salsa_bottle/bottle_rotation/bottle_splash/5_bottle_splash.png',
         'assets/img/6_salsa_bottle/bottle_rotation/bottle_splash/6_bottle_splash.png'
     ];
-    throwIntervalID = 0;        //zum Zwischenspeichern der throw-Intervall-ID je Flasche
-    splashIntervalID = 0;       //zum Zwischenspeichern der splash-Intervall-ID je Flasche
-    splashDone = false;         //zum Prüfen, ob die splash-Animation komplett durchgeführt wurde
-    hitEnemy = false;           //damit der Endboss/ Chicken nur einmal je Flasche getroffen wird
-    imgCounter = 0;             //zum Zählen der Animations-Bilder (damit die Animation nur einmal durchlaufen wird)
 
     
     constructor(x, y, otherDirection) {
@@ -48,6 +51,8 @@ class ThrowableObject extends MovableObject {
 
 
     throw() {
+        this.throwSound.volume = 0.2;
+        this.throwSound.play();
         if (this.otherDirection) {  //Wurf nach links
             this.throwIntervalID = setInterval(() => {
                 this.playAnimation(this.IMAGES_ROTATION);
@@ -64,6 +69,8 @@ class ThrowableObject extends MovableObject {
 
 
     splash() {
+        this.bottleBreakSound.volume = 0.2;
+        this.bottleBreakSound.play();
         this.splashIntervalID = setInterval(() => {
             if (this.imgCounter == this.IMAGES_SPLASH.length - 1) {
                 clearInterval(this.splashIntervalID);

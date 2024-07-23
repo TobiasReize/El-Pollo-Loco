@@ -4,8 +4,9 @@ class Character extends MovableObject {
     y = 150;
     speed = 10;
     world;  //Referenz auf die Klasse "world" (aktuelle Instanz), damit die Variable "keyboard" der Klasse "world" auch hier verwendet werden kann!
-    walking_sound = new Audio('assets/audio/walking.mp3');
-    jumping_sound = new Audio('assets/audio/jump.mp3');
+    walkingSound = new Audio('assets/audio/walking.mp3');
+    jumpingSound = new Audio('assets/audio/jump.mp3');
+    hurtSound = new Audio('assets/audio/hurt.mp3');
     idleTimer = 0;
     idleStatus = false;
 
@@ -90,6 +91,7 @@ class Character extends MovableObject {
         this.loadImages(this.IMAGES_DEAD);
         this.animate();     //animiert den Charakter
         setStoppableInterval(() => this.applyGravity(), 1000 / 25);
+        this.walkingSound.volume = 0.3;     //30%
     }
 
 
@@ -116,6 +118,7 @@ class Character extends MovableObject {
 
     hurt() {
         if (this.isHurt()) {
+            this.hurtSound.play();
             this.playAnimation(this.IMAGES_HURT);
             this.idleStatus = false;
         }
@@ -136,6 +139,8 @@ class Character extends MovableObject {
         if (!this.isDead() && !this.isHurt() && !this.isAboveGround() && (this.world.keyboard.RIGHT || this.world.keyboard.LEFT)) {
             this.playAnimation(this.IMAGES_WALKING);
             this.idleStatus = false;
+        } else {
+            this.walkingSound.currentTime = 0;      //Audiozeit wird wieder zurückgesetzt!
         }
     }
 
@@ -158,7 +163,7 @@ class Character extends MovableObject {
 
 
     moveCharacter() {       //Funktion zum Bewegen des Charakters
-        this.walking_sound.pause();     //wenn Pepe nicht läuft, wird der Sound pausiert!
+        this.walkingSound.pause();     //wenn Pepe nicht läuft, wird der Sound pausiert!
 
         if (this.canMoveRight()) {    //Bewegung nach rechts! (bis die max. x-Pos. erreicht ist)
             this.moveRight();
@@ -184,7 +189,7 @@ class Character extends MovableObject {
     moveRight() {
         super.moveRight();
         this.otherDirection = false;    //Bilder werden nicht gespiegelt! (Blickrichtung rechts)
-        this.walking_sound.play();      //Audio wird nur abgespielt wenn Pepe läuft
+        this.walkingSound.play();      //Audio wird nur abgespielt wenn Pepe läuft
     }
 
 
@@ -196,7 +201,7 @@ class Character extends MovableObject {
     moveLeft() {
         super.moveLeft();
         this.otherDirection = true;     //Bilder werden gespiegelt! (Blickrichtung links)
-        this.walking_sound.play();
+        this.walkingSound.play();
     }
 
 
@@ -208,7 +213,7 @@ class Character extends MovableObject {
     jump() {
         this.currentImage = 0;  //damit die jump-Animation immer beim ersten Bild anfängt!
         super.jump();
-        this.jumping_sound.play();
+        this.jumpingSound.play();
     }
 
 }

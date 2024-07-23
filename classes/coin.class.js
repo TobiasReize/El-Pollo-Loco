@@ -2,6 +2,7 @@ class Coin extends MovableObject {
 
     height = 120;
     width = 120;
+    collectCoinSound = new Audio('assets/audio/collect-coin.mp3');  	//für jeden eingesammelten Coin wird ein neues Audio-Objekt erstellt! (somit wird immer ein neuer Ton abgespielt)
 
     offset = {      //Offset zur genauen Kollisionsprüfung (Offset wird von der ursprünglichen Bildgröße abgezogen!)
         top: 40,
@@ -29,4 +30,9 @@ class Coin extends MovableObject {
         setStoppableInterval(() => this.playAnimation(this.IMAGES), 500);
     }
 
+
+    playCollectCoinSound() {
+        this.collectCoinSound.volume = 0.2;
+        this.collectCoinSound.play();
+    }
 }
