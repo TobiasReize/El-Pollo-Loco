@@ -8,7 +8,6 @@ class MovableObject extends DrawableObject {
     lastHit = 0;    //Zeitpunkt der letzten Kollision (zw. Charakter und Gegner)
 
 
-
     playAnimation(images) {     //Spielt die Animation der Bilder ab
         let i = this.currentImage % images.length;     //Berechnung des "Modulo" (% --> Rest der Division). Erzeugt eine unendliche Reihe wiederkehrender Zahlenfolge!
         let path = images[i];

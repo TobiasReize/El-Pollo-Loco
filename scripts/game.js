@@ -3,11 +3,14 @@ let world;
 let keyboard = new Keyboard();
 let intervalIDs = [];   //Sammler für alle Intervalle
 let introSound = new Audio('assets/audio/intro.mp3');
+let gameSound = new Audio('assets/audio/game-music.mp3');
+let winScreenSound = new Audio('assets/audio/you-win.mp3');
+let gameOverSound = new Audio('assets/audio/game-over-music.mp3');
 
 
 function init() {
     // introSound.autoplay = true;
-    introSound.volume = 0.5
+    introSound.volume = 0.4
     let promise = introSound.play();
     console.log(promise);
     setInterval(() => {
@@ -20,6 +23,9 @@ function init() {
 
 function startGame() {
     introSound.pause();
+    gameSound.volume = 0.1;
+    gameSound.loop = true;
+    gameSound.play();
     document.getElementById('overlay_screen').classList.add('d-none');
     document.getElementById('start_screen').classList.add('d-none');
     initLevel();
@@ -106,18 +112,24 @@ function stopAllIntervals() {                           //Funkion, die alle Inte
 
 
 function gameOver() {
+    gameSound.pause();
     stopAllIntervals();
     document.getElementById('overlay_screen').style.backgroundImage = 'none';
     document.getElementById('overlay_screen').classList.remove('d-none');
     document.getElementById('game_over_screen').classList.remove('d-none');
+    gameOverSound.volume = 0.2;
+    gameOverSound.play();
 }
 
 
 function youWin() {
+    gameSound.pause();
     stopAllIntervals();
     document.getElementById('overlay_screen').style.backgroundImage = 'none';
     document.getElementById('overlay_screen').classList.remove('d-none');
     document.getElementById('win_screen').classList.remove('d-none');
+    winScreenSound.volume = 0.2;
+    winScreenSound.play();
 }
 
 

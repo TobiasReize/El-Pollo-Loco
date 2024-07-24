@@ -115,7 +115,8 @@ class World {
             if (this.character.isColliding(enemy) && this.character.speedY == 0 && !enemy.isDead()) {  //wird nur verletzt wenn der Gegener kollidiert und der Charakter nicht springt und der Gegner nicht tot ist!
                 this.character.hit();
                 this.statusBarHealth.setStatusbarImage(this.character.energy);    //die Statusbar wird entsprechend der neuen, verbleibenden Energie des Charakters aktualisiert
-                if (this.character.isDead()) {
+                if (this.character.isDead() && !this.character.deadStatus) {
+                    this.playYouLostSound();
                     setTimeout(() => {
                         gameOver();
                     }, 2000);
@@ -164,6 +165,8 @@ class World {
                 delete this.throwableObjects[currentBottleIndex];
             }
             if (this.endboss.isDead() && !this.endboss.deadStatus) {
+                this.endboss.hecticMusic.pause();
+                this.playEndbossDefeatedSound();
                 console.log('Endboss is dead!!!');
                 this.endboss.dead();
                 setTimeout(() => {
@@ -260,5 +263,18 @@ class World {
         for (let i = 0; i < 10; i++) {
             this.coins.push(new Coin());
         }
+    }
+
+
+    playEndbossDefeatedSound() {
+        let winSound = new Audio('assets/audio/endboss-defeated.mp3');
+        winSound.play();
+    }
+
+
+    playYouLostSound() {
+        let lostSound = new Audio('assets/audio/you-lost.mp3');
+        lostSound.playbackRate = 2;
+        lostSound.play();
     }
 }

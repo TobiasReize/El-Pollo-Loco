@@ -9,6 +9,7 @@ class Character extends MovableObject {
     hurtSound = new Audio('assets/audio/hurt.mp3');
     idleTimer = 0;
     idleStatus = false;
+    deadStatus = false;
 
     offset = {      //Offset zur genauen Kollisionsprüfung (Offset wird von der ursprünglichen Bildgröße abgezogen!)
         top: 140,
@@ -111,6 +112,7 @@ class Character extends MovableObject {
     dead() {
         if (this.isDead()) {
             this.playAnimation(this.IMAGES_DEAD);
+            this.deadStatus = true;
             this.idleStatus = false;
         }
     }
@@ -182,7 +184,7 @@ class Character extends MovableObject {
 
 
     canMoveRight() {
-        return this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x;
+        return this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x && !this.deadStatus;
     }
 
 
@@ -194,7 +196,7 @@ class Character extends MovableObject {
 
 
     canMoveLeft() {
-        return this.world.keyboard.LEFT && this.x > 0;
+        return this.world.keyboard.LEFT && this.x > 0 && !this.deadStatus;
     }
 
 
@@ -206,7 +208,7 @@ class Character extends MovableObject {
 
 
     canJump() {
-        return this.world.keyboard.SPACE && !this.isAboveGround();
+        return this.world.keyboard.SPACE && !this.isAboveGround() && !this.deadStatus;
     }
 
 
