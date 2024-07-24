@@ -39,11 +39,13 @@ class MovableObject extends DrawableObject {
     }
 
 
-    isAboveGround() {   //Hilfsfunktion zum Prüfen ob Pepe in der Luft ist!
+    isAboveGround() {   //Hilfsfunktion zum Prüfen ob ein Objekt in der Luft ist!
         if (this instanceof ThrowableObject) {  //Throwable Objects fallen immer weiter nach unten!
             return true;
-        } else {
-            return this.y < 150;    //gibt "WAHR" zurück wenn die y-Pos. < 150 ist (Objekt in der Luft)
+        } else if (this instanceof NormalChicken) {
+            return this.y < 360;
+        } else if (this instanceof Character) {
+            return this.y < 150;
         }
     }
 

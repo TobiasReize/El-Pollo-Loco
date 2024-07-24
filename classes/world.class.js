@@ -21,7 +21,7 @@ class World {
         this.keyboard = keyboard;
         this.setWorld();
         this.draw();    //damit die draw-Funktion gleich aufgerufen wird, sobald eine neue Welt erstellt wird!
-        this.creatBottles();    //es werden nur einmal die Flaschen erstellt!
+        this.creatBottles(10);    //es werden am Anfang 10x Flaschen erstellt
         this.creatCoins();
         this.run();
     }
@@ -189,8 +189,7 @@ class World {
                     thrownBottle.acceleration = 0;
                     thrownBottle.splash();
                     enemy.energy = 0;
-                    clearInterval(enemy.moveIntervalID);
-                    clearInterval(enemy.animationIntervalID);
+                    enemy.stop();       //Intervalle müssen beendet werden, damit die Hühnchen sich nicht weiterbewegen!
                     enemy.dead(currentEnemyIndex);
                 }
                 if (thrownBottle.splashDone) {
@@ -206,8 +205,7 @@ class World {
             let currentEnemyIndex = this.level.enemies.findIndex(element => enemy == element);
             if (this.character.isColliding(enemy) && this.character.speedY < 0 && !enemy.isDead()) {
                 enemy.energy = 0;   //damit die Abfrage "enemy.isDead()" true wird!
-                clearInterval(enemy.moveIntervalID);    //Intervalle müssen beendet werden, damit die Hühnchen nicht weiterlaufen!
-                clearInterval(enemy.animationIntervalID);
+                enemy.stop();    //Intervalle müssen beendet werden, damit die Hühnchen sich nicht weiterbewegen!
                 enemy.dead(currentEnemyIndex);  //dead-Animation des Chickens abspielen und danach aus dem Array löschen
                 this.character.jump();
             }
@@ -223,6 +221,9 @@ class World {
                 this.bottles.splice(currentBottleIndex, 1);     //eingesammelte Falsche wird aus dem Array entfernt (und somit auch nicht mehr angezeigt!)
                 this.statusBarBottle.amount++;      //Menge erhöhen
                 this.statusBarBottle.setStatusbarImage();   //Statusbar updaten
+                if (this.bottles.length == 0) {      //wenn alle Flaschen eingesammelt wurden, werden 5x weitere erstellt!
+                    this.creatBottles(5);
+                }
             }
         });
     }
@@ -252,8 +253,8 @@ class World {
 
 
     // Hilfsfunktionen:
-    creatBottles() {    //es wird am Anfang nur einmal die 10x Flaschen erstellt
-        for (let i = 0; i < 10; i++) {
+    creatBottles(amount) {    //es wird am Anfang nur einmal die 10x Flaschen erstellt
+        for (let i = 0; i < amount; i++) {
             this.bottles.push(new Bottle());
         }
     }
@@ -268,6 +269,7 @@ class World {
 
     playEndbossDefeatedSound() {
         let winSound = new Audio('assets/audio/endboss-defeated.mp3');
+        winSound.volume = 0.5;
         winSound.play();
     }
 

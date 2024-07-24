@@ -4,10 +4,12 @@ let LEVEL_1;
 function initLevel() {
     LEVEL_1 = new Level(
         [   // 1. enemy-Array
-            new Endboss(),  //0
-            new Chicken(),  //1
-            new Chicken(),  //2
-            new Chicken()   //3
+            new Endboss(),
+            new NormalChicken(),
+            new NormalChicken(),
+            new NormalChicken(),
+            new NormalChicken(),
+            new NormalChicken()
         ],
         [   // 2. cloud-Array
             new Cloud('assets/img/5_background/layers/4_clouds/1.png', 0),   //Wolke an der x-Pos. 0
