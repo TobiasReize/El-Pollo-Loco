@@ -36,9 +36,9 @@ class DrawableObject {
 
     
     drawFrame(ctx) {    //zeichnet die Rechtecke um die Objekte (nur zur Kontrolle der Kollisionsprüfung)
-        if (this instanceof Character || this instanceof NormalChicken || this instanceof Endboss || this instanceof ThrowableObject || this instanceof Bottle || this instanceof Coin) {     //nur für den Charakter und die Chickens
+        if (this instanceof Character || this instanceof NormalChicken || this instanceof SmallChicken || this instanceof Endboss || this instanceof ThrowableObject || this instanceof Bottle || this instanceof Coin) {     //nur für den Charakter und die Chickens
             ctx.beginPath();
-            ctx.lineWidth = "4";
+            ctx.lineWidth = "3";
             ctx.strokeStyle = "blue";
             ctx.rect(this.x + this.offset.left, this.y + this.offset.top, this.width - this.offset.left - this.offset.right, this.height - this.offset.top - this.offset.bottom);     //cxt.rect(x, y, width, height)
             ctx.stroke();

@@ -116,6 +116,7 @@ class World {
                 this.character.hit();
                 this.statusBarHealth.setStatusbarImage(this.character.energy);    //die Statusbar wird entsprechend der neuen, verbleibenden Energie des Charakters aktualisiert
                 if (this.character.isDead() && !this.character.deadStatus) {
+                    this.endboss.hecticMusic.pause();
                     this.playYouLostSound();
                     setTimeout(() => {
                         gameOver();

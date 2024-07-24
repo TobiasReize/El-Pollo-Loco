@@ -9,7 +9,12 @@ function initLevel() {
             new NormalChicken(),
             new NormalChicken(),
             new NormalChicken(),
-            new NormalChicken()
+            new NormalChicken(),
+            new SmallChicken(),
+            new SmallChicken(),
+            new SmallChicken(),
+            new SmallChicken(),
+            new SmallChicken()
         ],
         [   // 2. cloud-Array
             new Cloud('assets/img/5_background/layers/4_clouds/1.png', 0),   //Wolke an der x-Pos. 0
@@ -41,7 +46,12 @@ function initLevel() {
             new BackgroundObject('assets/img/5_background/layers/air.png', 719*3),
             new BackgroundObject('assets/img/5_background/layers/3_third_layer/2.png', 719*3),
             new BackgroundObject('assets/img/5_background/layers/2_second_layer/2.png', 719*3),
-            new BackgroundObject('assets/img/5_background/layers/1_first_layer/2.png', 719*3)
+            new BackgroundObject('assets/img/5_background/layers/1_first_layer/2.png', 719*3),
+            
+            new BackgroundObject('assets/img/5_background/layers/air.png', 719*4),
+            new BackgroundObject('assets/img/5_background/layers/3_third_layer/1.png', 719*4),
+            new BackgroundObject('assets/img/5_background/layers/2_second_layer/1.png', 719*4),
+            new BackgroundObject('assets/img/5_background/layers/1_first_layer/1.png', 719*4)
         ]
     );
 }
