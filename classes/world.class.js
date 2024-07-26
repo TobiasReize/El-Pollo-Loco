@@ -13,6 +13,8 @@ class World {
     endboss = this.level.enemies[0];
     bottles = [];
     coins = [];
+    distanceEndbossCharacter = 0;
+    lastJumpEndboss = 0;
 
 
     constructor(canvas, keyboard) {
@@ -107,12 +109,14 @@ class World {
         setStoppableInterval(() => this.checkCollectBottle(), 150);
         setStoppableInterval(() => this.checkCollectCoin(), 150);
         setStoppableInterval(() => this.checkEncounterEndboss(), 250);
+        setStoppableInterval(() => this.calcDistanceEndbossCharacter(), 250);
+        setStoppableInterval(() => this.controlEndbossMovement(), 250);
     }
 
 
     checkCollisionCharacter() {      //prüft, ob der Charakter mit einem Gegner kollidiert und zieht dann die Energie ab
         this.level.enemies.forEach(enemy => {
-            if (this.character.isColliding(enemy) && this.character.speedY == 0 && !enemy.isDead()) {  //wird nur verletzt wenn der Gegener kollidiert und der Charakter nicht springt und der Gegner nicht tot ist!
+            if (this.character.isColliding(enemy) && !enemy.isDead()) {  //wird nur verletzt wenn der Gegener kollidiert und der Gegner nicht tot ist!
                 this.character.hit();
                 this.statusBarHealth.setStatusbarImage(this.character.energy);    //die Statusbar wird entsprechend der neuen, verbleibenden Energie des Charakters aktualisiert
                 if (this.character.isDead() && !this.character.deadStatus) {
@@ -169,6 +173,7 @@ class World {
                 this.endboss.hecticMusic.pause();
                 this.playEndbossDefeatedSound();
                 console.log('Endboss is dead!!!');
+                this.endboss.currentImage = 0;      //damit die dead-Animation von vorne beginnt!
                 this.endboss.dead();
                 setTimeout(() => {
                     youWin();
@@ -202,7 +207,7 @@ class World {
 
 
     checkJumpOnChicken() {      //prüft das Springen auf die Hühnchen, zeigt die dead-Animation an und entfernt dann das Hühnchen
-        this.level.enemies.forEach(enemy => {
+        this.level.enemies.slice(1).forEach(enemy => {      //der Endboss wird aus dem Array entfernt!
             let currentEnemyIndex = this.level.enemies.findIndex(element => enemy == element);
             if (this.character.isColliding(enemy) && this.character.speedY < 0 && !enemy.isDead()) {
                 enemy.energy = 0;   //damit die Abfrage "enemy.isDead()" true wird!
@@ -247,8 +252,31 @@ class World {
         if (this.character.x >= 1930 && !this.endboss.visible) {
             this.endboss.playEncounterEndbossSound();
             this.statusBarEndboss.setStatusbarImage(50);    //Statusbar des Endboss wird angezeigt (mit voller Energie!)
-            this.endboss.visible = true;    //damit diese Abfrage nur einmal "true" wird!
-            this.endboss.walk();
+            this.endboss.initEndboss();
+        }
+    }
+
+
+    calcDistanceEndbossCharacter() {    //ermittelt die Distanz zwischen Mittelpunkt Endboss und Charakter
+        this.distanceEndbossCharacter = ((this.endboss.x + this.endboss.width / 2) - (this.character.x + this.character.width / 2));
+    }
+
+
+    controlEndbossMovement() {
+        if (this.endboss.visible && !this.endboss.isDead()) {
+            let timePassed = new Date().getTime() - this.lastJumpEndboss;
+            timePassed = timePassed / 1000;
+            if (this.distanceEndbossCharacter >= 0 && (this.endboss.isWalking || this.endboss.isAttacking)) {
+                this.endboss.moveLeft();
+            } else if (this.distanceEndbossCharacter < 0 && (this.endboss.isWalking || this.endboss.isAttacking)) {
+                this.endboss.moveRight();
+            }
+            if (this.lastJumpEndboss == 0 && this.endboss.x < 2480) {   //erst wenn er Endboss seine Anfangsposition erreicht hat!
+                this.lastJumpEndboss = new Date().getTime();
+            } else if (timePassed > 4 && this.endboss.x < 2480) {       //erst wenn er Endboss seine Anfangsposition erreicht hat!
+                this.lastJumpEndboss = new Date().getTime();
+                this.endboss.jump();
+            }
         }
     }
 

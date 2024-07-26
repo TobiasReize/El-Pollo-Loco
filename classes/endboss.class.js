@@ -1,17 +1,21 @@
 class Endboss extends MovableObject {
 
-    height = 400;
-    width = 250;
-    y = 50;
+    height = 350;
+    width = 220;
+    y = 100;
     energy = 50;    //Ursprungs-Energie ist nur 50, damit man den Endboss nur 5x treffen muss!
     visible = false;    //zum Prüfen ob der Endboss sichtbar ist (zum Anzeigen der Statusbar des Endbosses)
     deadStatus = false;     //damit die dead-Animation nur einmal ausgeführt wird!
     endbossSound = new Audio('assets/audio/endboss-sound.mp3');
     hecticMusic = new Audio('assets/audio/hectic-music.mp3');
     hurtEndbossSound = new Audio('assets/audio/hurt-endboss-sound.mp3');
+    imgCounter = 0;
+    isAttacking = false;
+    isAlert = false;
+    isWalking = false;
 
     offset = {  //Offset zur genauen Kollisionsprüfung (Offset wird von der ursprünglichen Bildgröße abgezogen!)
-        top: 150,
+        top: 140,
         left: 40,
         right: 30,
         bottom: 70
@@ -66,86 +70,108 @@ class Endboss extends MovableObject {
         this.loadImages(this.IMAGES_ATTACK);
         this.loadImages(this.IMAGES_HURT);
         this.loadImages(this.IMAGES_DEAD);
-        this.x = 2600;      //x-Pos. am Ende der Map
-        this.speed = 8;
+        this.x = 2550;      //x-Pos. am Ende der Map
+        this.speed = 10;
+        setStoppableInterval(() => this.applyGravity(), 1000 / 25);     //Gravity ergänzt, damit der Endboss auch springen kann
+        this.animate();
     }
 
 
-    walk() {
-        let walkInterval = setInterval(() => {
+    initEndboss() {
+        this.visible = true;
+        this.isWalking = true;
+        let intervalID = setInterval(() => {
             if (this.x <= 2500) {
-                clearInterval(walkInterval);
-                this.alert();
-            } else {
-                this.moveLeft();
-                this.playAnimation(this.IMAGES_WALKING);
+                this.isAlert = true;
+                clearInterval(intervalID);
             }
-        }, 150);
+        }, 250);
+    }
+
+
+    animate() {
+        setStoppableInterval(() => this.walk(), 150);
+        setStoppableInterval(() => this.alert(), 200);
+        setStoppableInterval(() => this.attack(), 150);
+        setStoppableInterval(() => this.hurt(), 200);
+        setStoppableInterval(() => this.dead(), 250);
+    }
+
+    //Animationen:
+    walk() {
+        if (this.visible && !this.isAttacking && !this.isAlert && !this.isAboveGround() && !this.isHurt() && !this.deadStatus) {
+            this.isWalking = true;
+            this.playAnimation(this.IMAGES_WALKING);
+        } else {
+            this.isWalking = false;
+        }
     }
 
 
     alert() {
-        let imgCounter = 0;
-        this.currentImage = 0;  //damit die Animation wieder beim ersten Bild anfängt!
-        let alertInterval = setInterval(() => {
-            if (imgCounter == this.IMAGES_ALERT.length - 1) {
-                clearInterval(alertInterval);
-                this.attack();
-            } else {
-                this.playAnimation(this.IMAGES_ALERT);
-                imgCounter++;
-            }
-        }, 200);
+        if (this.visible && !this.isAttacking && !this.isWalking && !this.isAboveGround() && !this.isHurt() && (this.imgCounter < this.IMAGES_ALERT.length - 1) && !this.deadStatus) {
+            this.isAlert = true;
+            this.playAnimation(this.IMAGES_ALERT);
+            this.imgCounter++;
+        } else {
+            this.isAlert = false;
+        }
     }
 
 
     attack() {
-        this.currentImage = 0;  //damit die Animation wieder beim ersten Bild anfängt!
-        let attackInterval = setInterval(() => {
-            if (this.isDead()) {
-                clearInterval(attackInterval);
-            } else {
-                this.playAnimation(this.IMAGES_ATTACK);
-            }
-        }, 200);
+        if (this.visible && this.isAboveGround() && !this.isWalking && !this.isAlert && !this.isHurt() && !this.deadStatus) {
+            this.isAttacking = true;
+            this.playAnimation(this.IMAGES_ATTACK);
+        } else {
+            this.isAttacking = false;
+        }
     }
 
 
     hurt() {
-        let imgCounter = 0;
-        this.playHurtEndbossSound();
-        let hurtInterval = setInterval(() => {
-            if (imgCounter == (this.IMAGES_HURT.length - 1)* 3 || this.isDead()) {  //hurt-Animation wird zweimal durchgeführt!
-                clearInterval(hurtInterval);
-            } else {
-                this.playAnimation(this.IMAGES_HURT);
-                imgCounter++;
-            }
-        }, 200);
-    }
-
-
-    playHurtEndbossSound() {
-        this.hurtEndbossSound.currentTime = 4.6;
-        this.hurtEndbossSound.play();
-        setTimeout(() => {
-            this.hurtEndbossSound.pause();
-        }, 600);
+        if (this.visible && this.isHurt() && !this.deadStatus) {
+            this.playHurtEndbossSound();
+            this.playAnimation(this.IMAGES_HURT);
+        }
     }
 
 
     dead() {
-        let imgCounter = 0;
-        this.deadStatus = true;     //damit die dead()-Funktion nur einmal aufgerufen wird!
-        this.currentImage = 0;      //damit die dead-Animation beim ersten Bild des Arrays anfängt!
-        let deadInterval = setInterval(() => {
-            if (imgCounter == (this.IMAGES_DEAD.length - 1) * 3) {  //dead-Animation wird zweimal durchgeführt!
-                clearInterval(deadInterval);
-            } else {
-                this.playAnimation(this.IMAGES_DEAD);
-                imgCounter++;
-            }
-        }, 250);
+        if (this.isDead() && (this.currentImage < (this.IMAGES_DEAD.length - 1) * 3)) {
+            this.deadStatus = true;
+            this.playAnimation(this.IMAGES_DEAD);
+        }
+    }
+
+
+    //Bewegung:
+    moveRight() {
+        super.moveRight();
+        this.otherDirection = true;     //Bilder werden gespiegelt
+    }
+    
+    
+    moveLeft() {
+        super.moveLeft();
+        this.otherDirection = false;    //Bilder werden nicht gespiegelt (Endboss blickt ursprünglich nach links!)
+    }
+
+
+    jump() {
+        super.jump();
+    }
+
+
+    //Sounds:
+    playHurtEndbossSound() {    //Sound soll nur von Sekunde 4,6 bis 5,2 abgespielt werden!
+        if (this.hurtEndbossSound.paused || this.hurtEndbossSound.currentTime == 0) {   //Sound soll nur abgespielt werden, wenn er noch nie abgespielt wurde oder er pausiert wurde! (damit der Sound immer von Sekunde 4,6 bis 5,2 durchläuft!)
+            this.hurtEndbossSound.currentTime = 4.6;
+            this.hurtEndbossSound.play();
+            setTimeout(() => {
+                this.hurtEndbossSound.pause();
+            }, 600);
+        }
     }
 
 

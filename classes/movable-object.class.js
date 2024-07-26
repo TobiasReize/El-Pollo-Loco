@@ -46,6 +46,8 @@ class MovableObject extends DrawableObject {
             return this.y < 360;
         } else if (this instanceof Character) {
             return this.y < 150;
+        } else if (this instanceof Endboss) {
+            return this.y < 100;
         }
     }
 
