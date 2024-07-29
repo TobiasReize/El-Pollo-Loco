@@ -9,8 +9,9 @@ let gameOverSound = new Audio('assets/audio/game-over-music.mp3');
 
 
 function init() {
-    // introSound.autoplay = true;
+    introSound.autoplay = true;
     introSound.volume = 0.4
+
     let promise = introSound.play();
     console.log(promise);
     setInterval(() => {

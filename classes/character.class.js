@@ -151,7 +151,7 @@ class Character extends MovableObject {
         let timePassed = new Date().getTime() - this.idleTimer;     //Differenz zw. letztem idle-Zustand und aktuellem Zeitpunkt
         timePassed = timePassed / 1000;
         
-        if (this.idleStatus && timePassed > 3 && !this.world.keyboard.KEY_D) {            //bei mehr als 3 Sekunden wird die long-idle-Animation abgespielt!
+        if (this.idleStatus && timePassed > 5 && !this.world.keyboard.KEY_D) {            //bei mehr als 3 Sekunden wird die long-idle-Animation abgespielt!
             this.playAnimation(this.IMAGES_LONG_IDLE);
 
         } else if (this.idleStatus) {

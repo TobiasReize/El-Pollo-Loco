@@ -31,6 +31,10 @@
     justify-content: center;
 }
 
+.flex1 {
+    flex: 1;
+}
+
 /* Design: */
 body {
     flex-direction: column;
@@ -91,7 +95,6 @@ canvas {
     cursor: pointer;
     width: 250px;
     height: 60px;
-    margin-bottom: 2%;
     font-size: 48px;
     font-weight: 400;
     text-align: center;
@@ -117,7 +120,29 @@ canvas {
     background-image: url('./assets/img/9_intro_outro_screens/start/startscreen_1.png');
     background-size: contain;
     align-items: flex-end;
-    gap: 64px;
+    padding: 2%;
+}
+
+.imprint-privacy-policy-container {
+    justify-content: flex-end;
+    height: 60px;
+    gap: 8px;
+}
+
+.imprint-privacy-policy-container a {
+    font-size: 20px;
+    letter-spacing: 0.5px;
+    color: black;
+    text-decoration: none;
+}
+
+.imprint-privacy-policy-container a:hover {
+    cursor: pointer;
+    color: rgb(243, 178, 0);
+}
+
+.imprint-privacy-policy-container a:active {
+    color: rgb(221, 162, 0);
 }
 
 /* Instructions screen: */
@@ -149,11 +174,11 @@ canvas {
 
 .close:hover {
     cursor: pointer;
-    color: rgb(200, 147, 0);
+    color: rgb(243, 178, 0);
 }
 
 .close:active {
-    color: rgb(100, 73, 0);
+    color: rgb(221, 162, 0);
 }
 
 .headline {
@@ -162,12 +187,10 @@ canvas {
 
 .columns-container {
     align-items: flex-start;
-    flex: 1;
 }
 
 .column {
     flex-direction: column;
-    flex: 1;
 }
 
 .img-move {
@@ -216,6 +239,7 @@ td:nth-child(even) {
     background-size: cover;
     background-color: rgba(0, 0, 0, 0.5);
     align-items: flex-end;
+    padding-bottom: 2%;
 }
 
 /* Win screen: */
@@ -224,4 +248,5 @@ td:nth-child(even) {
     background-size: contain;
     background-color: rgba(0, 0, 0, 0.5);
     align-items: flex-end;
+    padding-bottom: 2%;
 }

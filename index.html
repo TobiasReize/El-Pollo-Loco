@@ -41,8 +41,15 @@
 
         <section id="overlay_screen" class="df-ai-jc-ctr overlay-screen">
             <div id="start_screen" class="df-jc-ctr content-screen start-screen">
-                <button onclick="startGame()" class="button">Start</button>
-                <button onclick="showInstructions()" class="button">Instructions</button>
+                <div class="flex1"></div>
+                <div class="df-ai-jc-ctr flex1">
+                    <button onclick="startGame()" class="button">Start</button>
+                    <button onclick="showInstructions()" class="button">Instructions</button>
+                </div>
+                <div class="imprint-privacy-policy-container df-ai-ctr flex1">
+                    <a href="./html/imprint.html">Impressum</a>
+                    <a href="./html/privacy-policy.html">Datenschutzerklärung</a>
+                </div>
             </div>
             <div id="win_screen" class="df-jc-ctr content-screen win-screen d-none">
                 <button onclick="location.reload()" class="button">Restart</button>
@@ -58,8 +65,8 @@
                     <h2>Instructions</h2>
                     <div onclick="closeInstructions()" class="close">X</div>
                 </div>
-                <div class="df-ai-ctr columns-container">
-                    <div class="df-ai-jc-ctr column">
+                <div class="df-ai-ctr flex1 columns-container">
+                    <div class="df-ai-jc-ctr flex1 column">
                         <h3>Move</h3>
                         <img class="img-move" src="./assets/img/10_instructions/pepe-move.png" alt="pepe-move">
                         <table>
@@ -79,19 +86,19 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="df-ai-jc-ctr column">
+                    <div class="df-ai-jc-ctr flex1 column">
                         <h3>Collect</h3>
                         <img class="img-collect" src="./assets/img/10_instructions/collect.png" alt="collect">
                         <table>
                             <tbody>
                                 <tr>
                                     <td class="table-text">Bottles:</td>
-                                    <td class="table-text">max. 5 pcs.</td>
+                                    <td class="table-text">carry max. 5 pcs.</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
-                    <div class="df-ai-jc-ctr column">
+                    <div class="df-ai-jc-ctr flex1 column">
                         <h3>Fight</h3>
                         <img class="img-fight" src="./assets/img/10_instructions/enemies.png" alt="enemies">
                         <table>
