@@ -116,7 +116,7 @@ class World {
 
     checkCollisionCharacter() {      //prüft, ob der Charakter mit einem Gegner kollidiert und zieht dann die Energie ab
         this.level.enemies.forEach(enemy => {
-            if (this.character.isColliding(enemy) && !enemy.isDead()) {  //wird nur verletzt wenn der Gegener kollidiert und der Gegner nicht tot ist!
+            if (this.character.isColliding(enemy) && !enemy.isDead() && this.character.speedY >= 0) {  //wird nur verletzt wenn der Gegener kollidiert und der Gegner nicht tot ist!
                 this.character.hit();
                 this.statusBarHealth.setStatusbarImage(this.character.energy);    //die Statusbar wird entsprechend der neuen, verbleibenden Energie des Charakters aktualisiert
                 if (this.character.isDead() && !this.character.deadStatus) {

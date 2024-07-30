@@ -11,6 +11,7 @@ let gameOverSound = new Audio('assets/audio/game-over-music.mp3');
 function init() {
     introSound.autoplay = true;
     introSound.volume = 0.4
+    introSound.loop = true;
 
     let promise = introSound.play();
     console.log(promise);
@@ -27,8 +28,7 @@ function startGame() {
     gameSound.volume = 0.1;
     gameSound.loop = true;
     gameSound.play();
-    document.getElementById('overlay_screen').classList.add('d-none');
-    document.getElementById('start_screen').classList.add('d-none');
+    document.getElementById('overlay_start_screen').classList.add('d-none');
     initLevel();
     canvas = document.getElementById('canvas');
     world = new World(canvas, keyboard);    //Der Instanz der "World" wird das "canvas" und die Instanz des "Keyboard" übergeben!
@@ -99,6 +99,60 @@ window.addEventListener('keyup', (e) => {
 });
 
 
+function muteAllSounds() {
+    let audioCollection = document.getElementsByTagName('audio');
+    console.log(audioCollection);
+}
+
+
+function gameOver() {
+    let fullscreen = document.getElementById('fullscreen');
+    gameSound.pause();
+    stopAllIntervals();
+    fullscreen.innerHTML += gameOverHTML();
+    gameOverSound.volume = 0.2;
+    gameOverSound.play();
+}
+
+
+function gameOverHTML() {
+    return /*html*/ `
+        <section class="df-ai-jc-ctr overlay-screen">
+            <div class="df-jc-ctr content-screen game-over-screen">
+                <button onclick="location.reload()" class="button">Restart</button>
+            </div>
+        </section>
+    `;
+}
+
+
+function youWin() {
+    let fullscreen = document.getElementById('fullscreen');
+    gameSound.pause();
+    stopAllIntervals();
+    fullscreen.innerHTML += youWinHTML();
+    winScreenSound.volume = 0.2;
+    winScreenSound.play();
+}
+
+
+function youWinHTML() {
+    return /*html*/ `
+        <section class="df-ai-jc-ctr overlay-screen">
+            <div class="df-jc-ctr content-screen win-screen">
+                <button onclick="location.reload()" class="button">Restart</button>
+            </div>
+        </section>
+    `;
+}
+
+
+// Hilfsfunktionen:
+function stopPropagation(event) {
+    event.stopPropagation();
+}
+
+
 function setStoppableInterval(fn, time) {       //Hilfsfunktion für alle Intervalle! Alle Intervall-IDs werden in einem Array gespeichert!
     let id = setInterval(fn, time);
     intervalIDs.push(id);
@@ -112,28 +166,12 @@ function stopAllIntervals() {                           //Funkion, die alle Inte
 }
 
 
-function gameOver() {
-    gameSound.pause();
-    stopAllIntervals();
-    document.getElementById('overlay_screen').style.backgroundImage = 'none';
-    document.getElementById('overlay_screen').classList.remove('d-none');
-    document.getElementById('game_over_screen').classList.remove('d-none');
-    gameOverSound.volume = 0.2;
-    gameOverSound.play();
-}
-
-
-function youWin() {
-    gameSound.pause();
-    stopAllIntervals();
-    document.getElementById('overlay_screen').style.backgroundImage = 'none';
-    document.getElementById('overlay_screen').classList.remove('d-none');
-    document.getElementById('win_screen').classList.remove('d-none');
-    winScreenSound.volume = 0.2;
-    winScreenSound.play();
-}
-
-
-function stopPropagation(event) {
-    event.stopPropagation();
+function showFullscreen() {
+    let fullscreen = document.getElementById('fullscreen');
+    let canvas = document.getElementById('canvas');
+    fullscreen.requestFullscreen();
+    canvas.style.width = '100%';
+    canvas.style.maxHeight = '100vh';
+    document.getElementById('imprint_privacy_policy_container').classList.add('d-none');
+    document.getElementById('headline').classList.add('d-none');
 }
