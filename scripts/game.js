@@ -169,9 +169,31 @@ function stopAllIntervals() {                           //Funkion, die alle Inte
 function showFullscreen() {
     let fullscreen = document.getElementById('fullscreen');
     let canvas = document.getElementById('canvas');
+    let gameInfoContainer = document.getElementById('game_info_container');
+
     fullscreen.requestFullscreen();
-    canvas.style.width = '100%';
-    canvas.style.maxHeight = '100vh';
-    document.getElementById('imprint_privacy_policy_container').classList.add('d-none');
+    canvas.classList.add('canvas-fullscreen');
+    gameInfoContainer.classList.add('game-info-container-fullscreen');
+
+    document.getElementById('game_imprint_container').classList.add('d-none');
     document.getElementById('headline').classList.add('d-none');
+
+    document.getElementById('icon_fullscreen').classList.add('d-none');
+    document.getElementById('icon_exit_fullscreen').classList.remove('d-none');
+}
+
+
+function removeFullscreen() {
+    let canvas = document.getElementById('canvas');
+    let gameInfoContainer = document.getElementById('game_info_container');
+
+    document.exitFullscreen();
+    canvas.classList.remove('canvas-fullscreen');
+    gameInfoContainer.classList.remove('game-info-container-fullscreen');
+
+    document.getElementById('game_imprint_container').classList.remove('d-none');
+    document.getElementById('headline').classList.remove('d-none');
+
+    document.getElementById('icon_fullscreen').classList.remove('d-none');
+    document.getElementById('icon_exit_fullscreen').classList.add('d-none');
 }
