@@ -153,10 +153,12 @@ h3 {
 .imprint-privacy-policy-container a:hover {
     cursor: pointer;
     color: rgb(243, 178, 0);
+    text-shadow: 0px 0px 4px rgba(0, 0, 0, 0.5);
 }
 
 .imprint-privacy-policy-container a:active {
     color: rgb(221, 162, 0);
+    text-shadow: 0px 0px 4px rgba(0, 0, 0, 0.5);
 }
 
 /* Instructions screen: */
