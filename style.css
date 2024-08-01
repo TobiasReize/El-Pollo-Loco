@@ -197,7 +197,7 @@ h3 {
     color: rgb(221, 162, 0);
 }
 
-.headline {
+.instruction-headline {
     margin-bottom: 64px;
 }
 
@@ -222,7 +222,7 @@ h3 {
 
 .img-fight {
     height: 295px;
-    margin-bottom: 32px;
+    margin-bottom: 37px;
 }
 
 .arrow-key-icon {
@@ -252,6 +252,7 @@ td:nth-child(even) {
 /* Game screen: */
 canvas {
     background-color: black;
+    display: block;
 }
 
 .canvas-fullscreen {
@@ -347,4 +348,122 @@ canvas {
     background-color: rgba(0, 0, 0, 0.5);
     align-items: flex-end;
     padding-bottom: 2%;
+}
+
+/* Orientation screen: */
+.orientation-screen {
+    flex-direction: column;
+    background-color: #ffffff;
+    z-index: 5;
+    display: none;
+}
+
+.orientation-screen img {
+    width: 100%;
+}
+
+/* Responsive Design: */
+@media only screen and (max-width: 720px) {
+    canvas {
+        width: 100%;
+    }
+}
+
+@media only screen and (max-height: 480px) {
+    canvas {
+        height: 100vh;
+    }
+}
+
+@media (max-width: 1250px) {
+    .overlay-instructions {
+        padding: 16px;
+    }
+    
+    .instructions-content {
+        width: 100%;
+        padding: 24px;
+    }
+}
+
+@media (max-width: 1150px) {
+    .button {
+        font-size: 32px;
+        width: 160px;
+    }
+}
+
+@media (max-width: 1000px) {
+    .start-screen {
+        gap: 8px;
+    }
+
+    .imprint-privacy-policy-container {
+        height: 50px;
+        gap: 4px;
+    }
+
+    .imprint-privacy-policy-container a {
+        font-size: 16px;
+    }
+
+    .sound-start {
+        height: 22px;
+    }
+
+    .button {
+        font-size: 22px;
+        letter-spacing: 1px;
+        width: 115px;
+        height: 50px;
+    }
+
+    /* Instruction overlay: */
+    .instructions-content {
+        padding: 16px;
+    }
+
+    h2 {
+        font-size: 48px;
+    }
+
+    .instruction-headline {
+        margin-bottom: 32px;
+    }
+
+    h3 {
+        font-size: 32px;
+    }
+
+    .img-move {
+        height: 200px;
+    }
+
+    .img-collect {
+        height: 100px;
+    }
+
+    .img-fight {
+        height: 190px;
+        margin-bottom: 42px;
+    }
+
+    .table-text {
+        font-size: 20px;
+    }
+
+    .arrow-key-icon {
+        height: 40px;
+    }
+
+    .spacebar-icon {
+        height: 32px;
+    }
+}
+
+
+@media screen and (orientation: portrait) and (max-width: 720px) {
+    .orientation-screen {
+        display: flex;
+    }
 }

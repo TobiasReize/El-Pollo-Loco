@@ -7,60 +7,7 @@ let introSoundIntervalID = 0;
 let gameSound = new Audio('assets/audio/game-music.mp3');
 let winScreenSound = new Audio('assets/audio/you-win.mp3');
 let gameOverSound = new Audio('assets/audio/game-over-music.mp3');
-
-
-window.addEventListener('keydown', (e) => {
-    if(e.code == 'ArrowLeft') {
-        keyboard.LEFT = true;
-    }
-    
-    if(e.code == 'ArrowRight') {
-        keyboard.RIGHT = true;
-    }
-
-    if(e.code == 'ArrowUp') {
-        keyboard.UP = true;
-    }
-
-    if(e.code == 'ArrowDown') {
-        keyboard.DOWN = true;
-    }
-
-    if(e.code == 'Space') {
-        keyboard.SPACE = true;
-    }
-    
-    if(e.code == 'KeyD') {
-        keyboard.KEY_D = true;
-    }
-});
-
-
-window.addEventListener('keyup', (e) => {
-    if(e.code == 'ArrowLeft') {
-        keyboard.LEFT = false;
-    }
-    
-    if(e.code == 'ArrowRight') {
-        keyboard.RIGHT = false;
-    }
-
-    if(e.code == 'ArrowUp') {
-        keyboard.UP = false;
-    }
-
-    if(e.code == 'ArrowDown') {
-        keyboard.DOWN = false;
-    }
-
-    if(e.code == 'Space') {
-        keyboard.SPACE = false;
-    }
-
-    if(e.code == 'KeyD') {
-        keyboard.KEY_D = false;
-    }
-});
+let audioElements = [];
 
 
 // Start screen:
@@ -165,10 +112,11 @@ function checkExitFullscreen() {
 }
 
 
-function deactivateGameSounds() {
+function deactivateGameSounds() {   //Funktioniert noch nicht!!!
     document.getElementById('game_sound_on').classList.add('d-none');
     document.getElementById('game_sound_off').classList.remove('d-none');
-    let test = document.querySelectorAll("audio");
+    let all = document.querySelectorAll('*');
+    let test = Array.from(all).filter(element => element instanceof HTMLAudioElement);
     console.log(test);
 }
 
@@ -237,4 +185,10 @@ function stopAllIntervals() {                           //Funkion, die alle Inte
     for (let i = 0; i < 999; i++) {
         window.clearInterval(i);
     }
+}
+
+
+function setAudioElement(url) {     //Hilfsfunktion zum Sammeln aller Audio-Dateien
+    let audioElement = new Audio(url);
+    audioElements.push(audioElement);
 }
