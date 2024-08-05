@@ -56,6 +56,24 @@ function deactivateIntroSound() {
 }
 
 
+function showInfoContainer(id) {
+    if (id == 'start') {
+        document.getElementById('overlay_info_container_start').classList.add('translateX0');
+    } else if (id == 'game') {
+        document.getElementById('overlay_info_container_game').classList.add('translateY0');
+    }
+}
+
+
+function closeInfoContainer(id) {
+    if (id == 'start') {
+        document.getElementById('overlay_info_container_start').classList.remove('translateX0');
+    } else if (id == 'game') {
+        document.getElementById('overlay_info_container_game').classList.remove('translateY0');
+    }
+}
+
+
 // Game screen:
 function showFullscreen() {
     let canvas = document.getElementById('canvas');
