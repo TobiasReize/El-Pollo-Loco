@@ -159,7 +159,7 @@ function gameOverHTML() {
     return /*html*/ `
         <section class="df-ai-jc-ctr overlay-screen">
             <div class="df-jc-ctr content-screen game-over-screen">
-                <button onclick="location.reload()" class="button">Restart</button>
+                <button onclick="location.reload()" class="button">Neustart</button>
             </div>
         </section>
     `;
@@ -180,7 +180,7 @@ function youWinHTML() {
     return /*html*/ `
         <section class="df-ai-jc-ctr overlay-screen">
             <div class="df-jc-ctr content-screen win-screen">
-                <button onclick="location.reload()" class="button">Restart</button>
+                <button onclick="location.reload()" class="button">Neustart</button>
             </div>
         </section>
     `;

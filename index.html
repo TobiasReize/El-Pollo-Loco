@@ -8,6 +8,7 @@
         <title>El Pollo Loco</title>
         <link rel="icon" type="image/png" href="assets/img/3_enemies_chicken/chicken_normal/1_walk/3_w.png"/>
 
+        <link rel="stylesheet" href="./styles/font.css">
         <link rel="stylesheet" href="style.css" />
 
         <script src="classes/keyboard.class.js"></script>
@@ -45,12 +46,12 @@
                     <div class="flex1"></div>
                     <div class="df-ai-jc-ctr flex1 gap8">
                         <button onclick="startGame()" class="button start-button">Start</button>
-                        <button onclick="showInstructions()" class="button">Instructions</button>
+                        <button onclick="showInstructions()" class="button">Anleitung</button>
                     </div>
                     <div class="imprint-privacy-policy-container df-ai-ctr flex1">
-                        <a class="link-style hide" href="./html/imprint.html">Imprint</a>
+                        <a class="link-style hide" href="./html/imprint.html">Impressum</a>
                         <div class="hide">|</div>
-                        <a class="link-style hide" href="./html/privacy-policy.html">Privacy Policy</a>
+                        <a class="link-style hide" href="./html/privacy-policy.html">Datenschutzerklärung</a>
                         <div class="hide">|</div>
                         <svg onclick="showInfoContainer('start'), stopPropagation(event)" class="mobile-info" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                             <path d="M12,0A12,12,0,1,0,24,12,12.013,12.013,0,0,0,12,0Zm0,22A10,10,0,1,1,22,12,10.011,10.011,0,0,1,12,22Z"/>
@@ -77,8 +78,8 @@
                     <div class="close-overlay-info-container-start">
                         <div onclick="closeInfoContainer('start')" class="close-overlay-info-start">X</div>
                     </div>
-                    <a class="link-style" href="./html/imprint.html">Imprint</a>
-                    <a class="link-style" href="./html/privacy-policy.html">Privacy Policy</a>
+                    <a class="link-style" href="./html/imprint.html">Impressum</a>
+                    <a class="link-style" href="./html/privacy-policy.html">Datenschutzerklärung</a>
                 </div>
             </section>
             
@@ -88,11 +89,11 @@
                 <canvas id="canvas" width="720" height="480"></canvas>
 
                 <div id="game_info_container" class="game-info-container df-ai-ctr width100">
-                    <a class="link-style flex1 hide" href="index.html">Quit Game</a>
+                    <a class="link-style flex1 hide" href="index.html">Spiel verlassen</a>
                     <div id="game_imprint_container" class="game-imprint-container df-ai-ctr flex1">
-                        <a class="link-style hide" href="./html/imprint.html">Imprint</a>
+                        <a class="link-style hide" href="./html/imprint.html">Impressum</a>
                         <div class="hide">|</div>
-                        <a class="link-style hide" href="./html/privacy-policy.html">Privacy Policy</a>
+                        <a class="link-style hide" href="./html/privacy-policy.html">Datenschutzerklärung</a>
                     </div>
                     <div class="icon-container df-ai-ctr flex1">
                         <svg onclick="showInfoContainer('game'), stopPropagation(event)" class="mobile-info" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -147,9 +148,9 @@
                     <div class="close-overlay-info-container-start">
                         <div onclick="closeInfoContainer('game')" class="close-overlay-info-start">X</div>
                     </div>
-                    <a class="link-style" href="index.html">Quit Game</a>
-                    <a class="link-style" href="./html/imprint.html">Imprint</a>
-                    <a class="link-style" href="./html/privacy-policy.html">Privacy Policy</a>
+                    <a class="link-style" href="index.html">Spiel verlassen</a>
+                    <a class="link-style" href="./html/imprint.html">Impressum</a>
+                    <a class="link-style" href="./html/privacy-policy.html">Datenschutzerklärung</a>
                 </div>
 
             </section>
@@ -158,54 +159,54 @@
             <section id="overlay_instructions" class="df-ai-jc-ctr overlay-instructions d-none" onclick="closeInstructions()">
                 <div onclick="stopPropagation(event)" class="instructions-content">
                     <div class="instruction-headline df-ai-ctr">
-                        <h2>Instructions</h2>
+                        <h2>Anleitung</h2>
                         <div onclick="closeInstructions()" class="close-instructions">X</div>
                     </div>
                     <div class="df-ai-ctr flex1 columns-container">
                         <div class="df-ai-jc-ctr flex1 column">
-                            <h3>Move</h3>
+                            <h3>Bewegen</h3>
                             <img class="img-move" src="./assets/img/10_instructions/pepe-move.png" alt="pepe-move">
                             <table>
                                 <tbody>
                                     <tr>
                                         <td><img class="arrow-key-icon" src="./assets/icons/arrow-left.png" alt="arrow-left"></td>
-                                        <td class="table-text">Walk left</td>
+                                        <td class="table-text">Nach links gehen</td>
                                     </tr>
                                     <tr>
                                         <td><img class="arrow-key-icon" src="./assets/icons/arrow-right.png" alt="arrow-right"></td>
-                                        <td class="table-text">Walk right</td>
+                                        <td class="table-text">Nach rechts gehen</td>
                                     </tr>
                                     <tr>
                                         <td><img class="spacebar-icon" src="./assets/icons/spacebar.png" alt="spacebar"></td>
-                                        <td class="table-text">Jump</td>
+                                        <td class="table-text">Springen</td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
                         <div class="df-ai-jc-ctr flex1 column">
-                            <h3>Collect</h3>
+                            <h3>Einsammeln</h3>
                             <img class="img-collect" src="./assets/img/10_instructions/collect.png" alt="collect">
                             <table>
                                 <tbody>
                                     <tr>
-                                        <td class="table-text">Bottles:</td>
-                                        <td class="table-text">carry max. 5 pcs.</td>
+                                        <td class="table-text">Flaschen:</td>
+                                        <td class="table-text">tragen max. 5 Stk.</td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
                         <div class="df-ai-jc-ctr flex1 column">
-                            <h3>Fight</h3>
+                            <h3>Bekämpfen</h3>
                             <img class="img-fight" src="./assets/img/10_instructions/enemies.png" alt="enemies">
                             <table>
                                 <tbody>
                                     <tr>
                                         <td><img class="arrow-key-icon" src="./assets/icons/key-d.png" alt="key-d"></td>
-                                        <td class="table-text">Throw bottles</td>
+                                        <td class="table-text">Flasche werfen</td>
                                     </tr>
                                     <tr>
-                                        <td class="table-text">Small<br>chickens:</td>
-                                        <td class="table-text">Jump on it</td>
+                                        <td class="table-text">Kleine<br>Hühnchen:</td>
+                                        <td class="table-text">darauf springen</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -216,7 +217,7 @@
 
             <!-- Change to Landscape mode: -->
             <div class="orientation-screen overlay-screen df-ai-jc-ctr">
-                <h2>Please change to landscape mode</h2>
+                <h2>Bildschirm drehen!</h2>
                 <img src="./assets/img/10_instructions/portrait-to-landscape.jpg" alt="portrait-to-landscape">
             </div>
         </div>
