@@ -299,13 +299,13 @@ class World {
     playEndbossDefeatedSound() {
         let winSound = new Audio('assets/audio/endboss-defeated.mp3');
         winSound.volume = 0.5;
-        winSound.play();
+        checkPlayAudio(winSound);
     }
 
 
     playYouLostSound() {
         let lostSound = new Audio('assets/audio/you-lost.mp3');
         lostSound.playbackRate = 2;
-        lostSound.play();
+        checkPlayAudio(lostSound);
     }
 }

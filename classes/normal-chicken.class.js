@@ -54,7 +54,7 @@ class NormalChicken extends MovableObject {
 
     dead(currentEnemyIndex) {
         this.killChickenSound.volume = 0.4;
-        this.killChickenSound.play();
+        checkPlayAudio(this.killChickenSound);
         setTimeout(() => {
             this.killChickenSound.pause();
         }, 500);     //es sollen nur die ersten 500ms abgespielt werden!

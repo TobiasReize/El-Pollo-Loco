@@ -140,6 +140,9 @@ h3 {
 .link-style {
     color: black;
     text-decoration: none;
+    font-size: 20px;
+    font-weight: 400;
+    letter-spacing: 0.5px;
 }
 
 .link-style:hover {
@@ -170,11 +173,6 @@ h3 {
     justify-content: flex-end;
     height: 60px;
     gap: 8px;
-}
-
-.imprint-privacy-policy-container a {
-    font-size: 20px;
-    letter-spacing: 0.5px;
 }
 
 .mobile-info {
@@ -262,11 +260,6 @@ h3 {
 
 .close-overlay-info-start:active {
     color: rgb(221, 162, 0);
-}
-
-.overlay-info-container-start a {
-    font-size: 20px;
-    font-weight: 400;
 }
 
 .overlay-info-container-start a:hover {
@@ -393,11 +386,6 @@ canvas {
     gap: 8px;
 }
 
-.game-imprint-container a {
-    font-size: 20px;
-    letter-spacing: 1px;
-}
-
 .icon-container {
     justify-content: flex-end;
     gap: 24px
@@ -439,7 +427,7 @@ canvas {
 
 .overlay-info-container-game {
     position: absolute;
-    right: 280px;
+    left: calc(50% - 85px);
     bottom: 60px;
     background-color: #ffffff;
     display: flex;

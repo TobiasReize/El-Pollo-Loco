@@ -7,7 +7,7 @@ let introSoundIntervalID = 0;
 let gameSound = new Audio('assets/audio/game-music.mp3');
 let winScreenSound = new Audio('assets/audio/you-win.mp3');
 let gameOverSound = new Audio('assets/audio/game-over-music.mp3');
-let audioElements = [];
+let audioMuted = true;  //standardmäßig sind die Töne gemuted
 
 
 // Start screen:
@@ -15,6 +15,9 @@ function startGame() {
     introSound.pause();
     gameSound.volume = 0.1;
     gameSound.loop = true;
+    if (audioMuted) {
+        gameSound.volume = 0;
+    }
     gameSound.play();
     document.getElementById('overlay_start_screen').classList.add('d-none');
     initLevel();
@@ -36,6 +39,8 @@ function closeInstructions() {
 function activateIntroSound() {
     document.getElementById('start_screen_sound_off').classList.add('d-none');
     document.getElementById('start_screen_sound_on').classList.remove('d-none');
+    showGameSoundOnIcon();
+    audioMuted = false;
     introSound.volume = 0.2;
     introSound.loop = true;
     introSound.play();
@@ -46,10 +51,11 @@ function activateIntroSound() {
     }, 200);
 }
 
-
 function deactivateIntroSound() {
     document.getElementById('start_screen_sound_off').classList.remove('d-none');
     document.getElementById('start_screen_sound_on').classList.add('d-none');
+    showGameSoundOffIcon();
+    audioMuted = true;
     introSound.pause();
     introSound.currentTime = 0;
     clearInterval(introSoundIntervalID);
@@ -130,16 +136,31 @@ function checkExitFullscreen() {
 }
 
 
-function deactivateGameSounds() {   //Funktioniert noch nicht!!!
+function deactivateGameSounds() {
+    showGameSoundOffIcon();
+    audioMuted = true;
+    gameSound.volume = 0;
+    world.level.enemies[0].hecticMusic.volume = 0;
+    world.level.enemies[0].endbossSound.volume = 0;
+}
+
+
+function showGameSoundOffIcon() {
     document.getElementById('game_sound_on').classList.add('d-none');
     document.getElementById('game_sound_off').classList.remove('d-none');
-    let all = document.querySelectorAll('*');
-    let test = Array.from(all).filter(element => element instanceof HTMLAudioElement);
-    console.log(test);
 }
 
 
 function activateGameSounds() {
+    showGameSoundOnIcon();
+    audioMuted = false;
+    gameSound.volume = 0.1;
+    world.level.enemies[0].hecticMusic.volume = 0.8;
+    world.level.enemies[0].endbossSound.volume = 1;
+}
+
+
+function showGameSoundOnIcon() {
     document.getElementById('game_sound_on').classList.remove('d-none');
     document.getElementById('game_sound_off').classList.add('d-none');
 }
@@ -151,7 +172,7 @@ function gameOver() {
     stopAllIntervals();
     fullscreen.innerHTML += gameOverHTML();
     gameOverSound.volume = 0.2;
-    gameOverSound.play();
+    checkPlayAudio(gameOverSound);
 }
 
 
@@ -172,7 +193,7 @@ function youWin() {
     stopAllIntervals();
     fullscreen.innerHTML += youWinHTML();
     winScreenSound.volume = 0.2;
-    winScreenSound.play();
+    checkPlayAudio(winScreenSound);
 }
 
 
@@ -206,7 +227,8 @@ function stopAllIntervals() {                           //Funkion, die alle Inte
 }
 
 
-function setAudioElement(url) {     //Hilfsfunktion zum Sammeln aller Audio-Dateien
-    let audioElement = new Audio(url);
-    audioElements.push(audioElement);
+function checkPlayAudio(audio) {
+    if (!audioMuted) {
+        audio.play();
+    }
 }

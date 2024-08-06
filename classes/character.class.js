@@ -120,7 +120,7 @@ class Character extends MovableObject {
 
     hurt() {
         if (this.isHurt()) {
-            this.hurtSound.play();
+            checkPlayAudio(this.hurtSound);
             this.playAnimation(this.IMAGES_HURT);
             this.idleStatus = false;
         }
@@ -191,7 +191,7 @@ class Character extends MovableObject {
     moveRight() {
         super.moveRight();
         this.otherDirection = false;    //Bilder werden nicht gespiegelt! (Blickrichtung rechts)
-        this.walkingSound.play();      //Audio wird nur abgespielt wenn Pepe läuft
+        checkPlayAudio(this.walkingSound);
     }
 
 
@@ -203,7 +203,7 @@ class Character extends MovableObject {
     moveLeft() {
         super.moveLeft();
         this.otherDirection = true;     //Bilder werden gespiegelt! (Blickrichtung links)
-        this.walkingSound.play();
+        checkPlayAudio(this.walkingSound);
     }
 
 
@@ -215,7 +215,7 @@ class Character extends MovableObject {
     jump() {
         this.currentImage = 0;  //damit die jump-Animation immer beim ersten Bild anfängt!
         super.jump();
-        this.jumpingSound.play();
+        checkPlayAudio(this.jumpingSound);
     }
 
 }

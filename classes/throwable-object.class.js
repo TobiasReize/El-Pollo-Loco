@@ -52,7 +52,7 @@ class ThrowableObject extends MovableObject {
 
     throw() {
         this.throwSound.volume = 0.2;
-        this.throwSound.play();
+        checkPlayAudio(this.throwSound);
         if (this.otherDirection) {  //Wurf nach links
             this.throwIntervalID = setInterval(() => {
                 this.playAnimation(this.IMAGES_ROTATION);
@@ -70,7 +70,7 @@ class ThrowableObject extends MovableObject {
 
     splash() {
         this.bottleBreakSound.volume = 0.2;
-        this.bottleBreakSound.play();
+        checkPlayAudio(this.bottleBreakSound);
         this.splashIntervalID = setInterval(() => {
             if (this.imgCounter == this.IMAGES_SPLASH.length - 1) {
                 clearInterval(this.splashIntervalID);

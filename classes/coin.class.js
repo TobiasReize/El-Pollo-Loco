@@ -33,6 +33,6 @@ class Coin extends MovableObject {
 
     playCollectCoinSound() {
         this.collectCoinSound.volume = 0.2;
-        this.collectCoinSound.play();
+        checkPlayAudio(this.collectCoinSound);
     }
 }

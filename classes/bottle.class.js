@@ -33,6 +33,6 @@ class Bottle extends MovableObject {
 
     playCollectBottleSound() {
         this.collectBottleSound.volume = 0.2;
-        this.collectBottleSound.play();
+        checkPlayAudio(this.collectBottleSound);
     }
 }

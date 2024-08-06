@@ -167,7 +167,7 @@ class Endboss extends MovableObject {
     playHurtEndbossSound() {    //Sound soll nur von Sekunde 4,6 bis 5,2 abgespielt werden!
         if (this.hurtEndbossSound.paused || this.hurtEndbossSound.currentTime == 0) {   //Sound soll nur abgespielt werden, wenn er noch nie abgespielt wurde oder er pausiert wurde! (damit der Sound immer von Sekunde 4,6 bis 5,2 durchläuft!)
             this.hurtEndbossSound.currentTime = 4.6;
-            this.hurtEndbossSound.play();
+            checkPlayAudio(this.hurtEndbossSound);
             setTimeout(() => {
                 this.hurtEndbossSound.pause();
             }, 600);
@@ -178,9 +178,14 @@ class Endboss extends MovableObject {
     playEncounterEndbossSound() {
         this.hecticMusic.loop = true;
         this.hecticMusic.volume = 0.8;
+        if (audioMuted) {
+            this.hecticMusic.volume = 0;
+            this.endbossSound.volume = 0;
+        }
         this.endbossSound.play();
         let intervalID = setInterval(() => {
             if (this.endbossSound.ended) {
+                gameSound.pause();
                 this.hecticMusic.play();
                 clearInterval(intervalID);
             }
