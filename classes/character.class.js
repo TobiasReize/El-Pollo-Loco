@@ -7,6 +7,7 @@ class Character extends MovableObject {
     walkingSound = new Audio('assets/audio/walking.mp3');
     jumpingSound = new Audio('assets/audio/jump.mp3');
     hurtSound = new Audio('assets/audio/hurt.mp3');
+    snoringSound = new Audio('assets/audio/snoring.mp3');
     idleTimer = 0;
     idleStatus = false;
     deadStatus = false;
@@ -93,6 +94,8 @@ class Character extends MovableObject {
         this.animate();     //animiert den Charakter
         setStoppableInterval(() => this.applyGravity(), 1000 / 25);
         this.walkingSound.volume = 0.3;     //30%
+        this.snoringSound.playbackRate = 3;
+        this.snoringSound.loop = true;
     }
 
 
@@ -112,6 +115,7 @@ class Character extends MovableObject {
     dead() {
         if (this.isDead()) {
             this.playAnimation(this.IMAGES_DEAD);
+            this.snoringSound.pause();
             this.deadStatus = true;
             this.idleStatus = false;
         }
@@ -120,6 +124,7 @@ class Character extends MovableObject {
 
     hurt() {
         if (this.isHurt()) {
+            this.snoringSound.pause();
             checkPlayAudio(this.hurtSound);
             this.playAnimation(this.IMAGES_HURT);
             this.idleStatus = false;
@@ -151,12 +156,12 @@ class Character extends MovableObject {
         let timePassed = new Date().getTime() - this.idleTimer;     //Differenz zw. letztem idle-Zustand und aktuellem Zeitpunkt
         timePassed = timePassed / 1000;
         
-        if (this.idleStatus && timePassed > 5 && !this.world.keyboard.KEY_D) {            //bei mehr als 3 Sekunden wird die long-idle-Animation abgespielt!
+        if (this.idleStatus && timePassed > 5 && !this.world.keyboard.KEY_D) {            //bei mehr als 5 Sekunden wird die long-idle-Animation abgespielt!
+            checkPlayAudio(this.snoringSound);
             this.playAnimation(this.IMAGES_LONG_IDLE);
-
         } else if (this.idleStatus) {
+            this.snoringSound.pause();
             this.playAnimation(this.IMAGES_IDLE);
-
         } else if (!this.isDead() && !this.isHurt() && !this.isAboveGround() && !this.world.keyboard.RIGHT && !this.world.keyboard.LEFT && !this.world.keyboard.KEY_D && !this.idleStatus) {
             this.idleTimer = new Date().getTime();  //startet den idle-Timer
             this.idleStatus = true;                 //setzt den idle-Zustand auf "true" (somit wird nur einmal der idle-Timer gesetzt!)
@@ -191,6 +196,7 @@ class Character extends MovableObject {
     moveRight() {
         super.moveRight();
         this.otherDirection = false;    //Bilder werden nicht gespiegelt! (Blickrichtung rechts)
+        this.snoringSound.pause();
         checkPlayAudio(this.walkingSound);
     }
 
@@ -203,6 +209,7 @@ class Character extends MovableObject {
     moveLeft() {
         super.moveLeft();
         this.otherDirection = true;     //Bilder werden gespiegelt! (Blickrichtung links)
+        this.snoringSound.pause();
         checkPlayAudio(this.walkingSound);
     }
 
@@ -215,7 +222,7 @@ class Character extends MovableObject {
     jump() {
         this.currentImage = 0;  //damit die jump-Animation immer beim ersten Bild anfängt!
         super.jump();
+        this.snoringSound.pause();
         checkPlayAudio(this.jumpingSound);
     }
-
 }

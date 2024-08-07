@@ -13,7 +13,7 @@ let audioMuted = true;  //standardmäßig sind die Töne gemuted
 // Start screen:
 function startGame() {
     introSound.pause();
-    gameSound.volume = 0.1;
+    gameSound.volume = 0.05;
     gameSound.loop = true;
     if (audioMuted) {
         gameSound.volume = 0;
@@ -142,6 +142,7 @@ function deactivateGameSounds() {
     gameSound.volume = 0;
     world.level.enemies[0].hecticMusic.volume = 0;
     world.level.enemies[0].endbossSound.volume = 0;
+    world.character.snoringSound.volume = 0;
 }
 
 
@@ -157,6 +158,7 @@ function activateGameSounds() {
     gameSound.volume = 0.1;
     world.level.enemies[0].hecticMusic.volume = 0.8;
     world.level.enemies[0].endbossSound.volume = 1;
+    world.character.snoringSound.volume = 1;
 }
 
 

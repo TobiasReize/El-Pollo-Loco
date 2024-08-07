@@ -125,8 +125,6 @@ class World {
                     setTimeout(() => {
                         gameOver();
                     }, 2000);
-                } else {
-                    console.log('Collision with Character, energy: ', this.character.energy);
                 }
             }
         });
@@ -160,7 +158,6 @@ class World {
                 thrownBottle.hitEnemy = true;   //damit der Endboss nur einmal je Flasche getroffen wird!
                 this.endboss.hit();
                 this.statusBarEndboss.setStatusbarImage(this.endboss.energy);
-                console.log('Hit Endboss!!!', this.endboss.energy);
                 clearInterval(thrownBottle.throwIntervalID);    //Bewegung der Flasche wird gestoppt (auf der x-Achse und nachfolgend auf der y-Achse)
                 thrownBottle.speedY = 0;
                 thrownBottle.acceleration = 0;
@@ -172,7 +169,6 @@ class World {
             if (this.endboss.isDead() && !this.endboss.deadStatus) {
                 this.endboss.hecticMusic.pause();
                 this.playEndbossDefeatedSound();
-                console.log('Endboss is dead!!!');
                 this.endboss.currentImage = 0;      //damit die dead-Animation von vorne beginnt!
                 this.endboss.dead();
                 setTimeout(() => {
