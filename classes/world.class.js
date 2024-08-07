@@ -105,7 +105,7 @@ class World {
             this.mirrorImage(object);
         }
         object.draw(this.ctx);
-        object.drawFrame(this.ctx);
+        // object.drawFrame(this.ctx);
         if (object.otherDirection) {
             this.mirrorImageBack(object);
         }
