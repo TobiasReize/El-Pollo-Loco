@@ -1,6 +1,6 @@
 class StatusBarHealth extends DrawableObject {
 
-    percentage = 0;   //Wert der Statusbar (zum Anzeigen des Bildes)
+    percentage = 0;
 
     IMAGES = [
         'assets/img/7_statusbars/1_statusbar/2_statusbar_health/blue/0.png',
@@ -13,24 +13,29 @@ class StatusBarHealth extends DrawableObject {
 
 
     constructor() {
-        super();    //immer den super-constructor aufrufen, um die Variablen und Funktionen der Über-Klasse zu laden!
+        super();
         this.loadImages(this.IMAGES);
         this.x = 20;
         this.y = 0;
         this.width = 150;
         this.height = 50;
-        this.setStatusbarImage(100);    //damit die Statusbar am Anfang gleich angezeigt wird! (und ein img-Element definiert wird!)
+        this.setStatusbarImage(100);
     }
 
 
-    setStatusbarImage(energy) {     //wählt das passende Bild zum aktuellen "percentage" aus!
+    /**
+     * Selects the image of the status bar according to the energy.
+     * @param {integer} energy - energy value of the status bar
+     */
+    setStatusbarImage(energy) {
         this.percentage = energy;
         let path = this.IMAGES[this.resolveImageIndex()];
         this.img = this.imageCache[path];
     }
 
 
-    resolveImageIndex() {   //gibt den Index des IMAGES-Array zurück je nach dem wie groß "percentage" ist (wie viel health man noch hat)
+    /** Returns the image index according to the percentage. */
+    resolveImageIndex() {
         if (this.percentage >= 100) {
             return 5;
         } else if (this.percentage >= 80) {
@@ -45,6 +50,4 @@ class StatusBarHealth extends DrawableObject {
             return 0;
         }
     }
-
-
 }

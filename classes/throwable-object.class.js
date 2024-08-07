@@ -1,14 +1,14 @@
 class ThrowableObject extends MovableObject {
 
-    throwIntervalID = 0;        //zum Zwischenspeichern der throw-Intervall-ID je Flasche
-    splashIntervalID = 0;       //zum Zwischenspeichern der splash-Intervall-ID je Flasche
-    splashDone = false;         //zum Prüfen, ob die splash-Animation komplett durchgeführt wurde
-    hitEnemy = false;           //damit der Endboss/ Chicken nur einmal je Flasche getroffen wird
-    imgCounter = 0;             //zum Zählen der Animations-Bilder (damit die Animation nur einmal durchlaufen wird)
+    throwIntervalID = 0;
+    splashIntervalID = 0;
+    splashDone = false;
+    hitEnemy = false;
+    imgCounter = 0;
     throwSound = new Audio('assets/audio/throw.mp3');
     bottleBreakSound = new Audio('assets/audio/bottle-break.mp3');
     
-    offset = {      //Offset zur genauen Kollisionsprüfung (Offset wird von der ursprünglichen Bildgröße abgezogen!)
+    offset = {
         top: 10,
         left: 10,
         right: 10,
@@ -33,48 +33,60 @@ class ThrowableObject extends MovableObject {
 
     
     constructor(x, y, otherDirection) {
-        super().loadImage('assets/img/6_salsa_bottle/salsa_bottle.png');    //am Anfang muss immer ein Startbild einzeln geladen werden, wenn das Objekt erstellt wird! Ansonten gibt die Funktion "draw(ctx){}" der "DrawableObject" Klasse einen Fehler!
+        super().loadImage('assets/img/6_salsa_bottle/salsa_bottle.png');
         this.loadImages(this.IMAGES_ROTATION);
         this.loadImages(this.IMAGES_SPLASH);
-
         this.x = x;
         this.y = y + 100;
         this.height = 60;
         this.width = 50;
         this.speedY = 30;
         this.speed = 15;
-        this.otherDirection = otherDirection;   //um zu prüfen ob die Flasche nach links oder rechts fliegen soll
-
-        setStoppableInterval(() => this.applyGravity(), 1000 / 25);     //sobald eine neue Instanz erstellt wird, wird die Funktion "applyGravity" ausgeführt!
-        this.throw();   //die Funktion "throw" muss im constructor ausgeführt werden, damit die Flasche immer gleich geworfen wird, sobalb ein neues Objekt erstellt wird!
+        this.otherDirection = otherDirection;
+        setStoppableInterval(() => this.applyGravity(), 1000 / 25);
+        this.throw();
     }
 
 
+    /** Throws a new bottle. */
     throw() {
         this.throwSound.volume = 0.2;
         checkPlayAudio(this.throwSound);
-        if (this.otherDirection) {  //Wurf nach links
-            this.throwIntervalID = setInterval(() => {
-                this.playAnimation(this.IMAGES_ROTATION);
-                this.x -= this.speed;
-            }, 50);
-        } else {    //Wurf nach rechts
-            this.x = this.x + 50;
-            this.throwIntervalID = setInterval(() => {
-                this.playAnimation(this.IMAGES_ROTATION);
-                this.x += this.speed;
-            }, 50);
+        if (this.otherDirection) {
+            this.throwLeft();
+        } else {
+            this.throwRight();
         }
     }
 
 
+    /** Throws the bottle to the left. */
+    throwLeft() {
+        this.throwIntervalID = setInterval(() => {
+            this.playAnimation(this.IMAGES_ROTATION);
+            this.x -= this.speed;
+        }, 50);
+    }
+
+
+    /** Throws the bottle to the right. */
+    throwRight() {
+        this.x = this.x + 50;
+        this.throwIntervalID = setInterval(() => {
+            this.playAnimation(this.IMAGES_ROTATION);
+            this.x += this.speed;
+        }, 50);
+    }
+
+
+    /** Plays the splash animation of the bottle. */
     splash() {
         this.bottleBreakSound.volume = 0.2;
         checkPlayAudio(this.bottleBreakSound);
         this.splashIntervalID = setInterval(() => {
             if (this.imgCounter == this.IMAGES_SPLASH.length - 1) {
                 clearInterval(this.splashIntervalID);
-                this.splashDone = true;    //erst wenn die Animation fertig ist und das Interval beendet wurde, wird "true" zurückgegeben!
+                this.splashDone = true;
             } else {
                 this.playAnimation(this.IMAGES_SPLASH);
                 this.imgCounter++;

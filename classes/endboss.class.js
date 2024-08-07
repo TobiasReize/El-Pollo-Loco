@@ -3,9 +3,9 @@ class Endboss extends MovableObject {
     height = 350;
     width = 220;
     y = 100;
-    energy = 50;    //Ursprungs-Energie ist nur 50, damit man den Endboss nur 5x treffen muss!
-    visible = false;    //zum Prüfen ob der Endboss sichtbar ist (zum Anzeigen der Statusbar des Endbosses)
-    deadStatus = false;     //damit die dead-Animation nur einmal ausgeführt wird!
+    energy = 50;
+    visible = false;
+    deadStatus = false;
     endbossSound = new Audio('assets/audio/endboss-sound.mp3');
     hecticMusic = new Audio('assets/audio/hectic-music.mp3');
     hurtEndbossSound = new Audio('assets/audio/hurt-endboss-sound.mp3');
@@ -14,7 +14,7 @@ class Endboss extends MovableObject {
     isAlert = false;
     isWalking = false;
 
-    offset = {  //Offset zur genauen Kollisionsprüfung (Offset wird von der ursprünglichen Bildgröße abgezogen!)
+    offset = {
         top: 140,
         left: 40,
         right: 30,
@@ -64,19 +64,20 @@ class Endboss extends MovableObject {
 
 
     constructor() {
-        super().loadImage(this.IMAGES_ALERT[0]);    //lädt das Start-Bild
+        super().loadImage(this.IMAGES_ALERT[0]);
         this.loadImages(this.IMAGES_WALKING);
         this.loadImages(this.IMAGES_ALERT);
         this.loadImages(this.IMAGES_ATTACK);
         this.loadImages(this.IMAGES_HURT);
         this.loadImages(this.IMAGES_DEAD);
-        this.x = 2550;      //x-Pos. am Ende der Map
+        this.x = 2550;
         this.speed = 10;
-        setStoppableInterval(() => this.applyGravity(), 1000 / 25);     //Gravity ergänzt, damit der Endboss auch springen kann
+        setStoppableInterval(() => this.applyGravity(), 1000 / 25);
         this.animate();
     }
 
 
+    /** Starts the animation of the endboss. */
     initEndboss() {
         this.visible = true;
         this.isWalking = true;
@@ -89,6 +90,7 @@ class Endboss extends MovableObject {
     }
 
 
+    /** Animates the endboss. */
     animate() {
         setStoppableInterval(() => this.walk(), 150);
         setStoppableInterval(() => this.alert(), 200);
@@ -97,7 +99,9 @@ class Endboss extends MovableObject {
         setStoppableInterval(() => this.dead(), 250);
     }
 
-    //Animationen:
+
+    // --- Animation: --- //
+    /** Checks if the endboss can walk and plays the animation. */
     walk() {
         if (this.visible && !this.isAttacking && !this.isAlert && !this.isAboveGround() && !this.isHurt() && !this.deadStatus) {
             this.isWalking = true;
@@ -108,6 +112,7 @@ class Endboss extends MovableObject {
     }
 
 
+    /** Checks if the endboss is alert and plays the animation. */
     alert() {
         if (this.visible && !this.isAttacking && !this.isWalking && !this.isAboveGround() && !this.isHurt() && (this.imgCounter < this.IMAGES_ALERT.length - 1) && !this.deadStatus) {
             this.isAlert = true;
@@ -119,6 +124,7 @@ class Endboss extends MovableObject {
     }
 
 
+    /** Checks if the endboss can attack and plays the animation. */
     attack() {
         if (this.visible && this.isAboveGround() && !this.isWalking && !this.isAlert && !this.isHurt() && !this.deadStatus) {
             this.isAttacking = true;
@@ -129,6 +135,7 @@ class Endboss extends MovableObject {
     }
 
 
+    /** Checks if the endboss is hurt and plays the animation. */
     hurt() {
         if (this.visible && this.isHurt() && !this.deadStatus) {
             this.playHurtEndbossSound();
@@ -137,6 +144,7 @@ class Endboss extends MovableObject {
     }
 
 
+    /** Checks if the endboss is dead and plays the animation. */
     dead() {
         if (this.isDead() && (this.currentImage < (this.IMAGES_DEAD.length - 1) * 3)) {
             this.deadStatus = true;
@@ -145,27 +153,31 @@ class Endboss extends MovableObject {
     }
 
 
-    //Bewegung:
+    // --- Movement: --- //
+    /** Endboss moves to the right. */
     moveRight() {
         super.moveRight();
-        this.otherDirection = true;     //Bilder werden gespiegelt
+        this.otherDirection = true;
     }
     
     
+    /** Endboss moves to the left. */
     moveLeft() {
         super.moveLeft();
-        this.otherDirection = false;    //Bilder werden nicht gespiegelt (Endboss blickt ursprünglich nach links!)
+        this.otherDirection = false;
     }
 
 
+    /** Endboss jumps. */
     jump() {
         super.jump();
     }
 
 
-    //Sounds:
-    playHurtEndbossSound() {    //Sound soll nur von Sekunde 4,6 bis 5,2 abgespielt werden!
-        if (this.hurtEndbossSound.paused || this.hurtEndbossSound.currentTime == 0) {   //Sound soll nur abgespielt werden, wenn er noch nie abgespielt wurde oder er pausiert wurde! (damit der Sound immer von Sekunde 4,6 bis 5,2 durchläuft!)
+    // --- Sounds: --- //
+    /** Plays the sound when the endboss is hurt. */
+    playHurtEndbossSound() {
+        if (this.hurtEndbossSound.paused || this.hurtEndbossSound.currentTime == 0) {
             this.hurtEndbossSound.currentTime = 4.6;
             checkPlayAudio(this.hurtEndbossSound);
             setTimeout(() => {
@@ -175,13 +187,11 @@ class Endboss extends MovableObject {
     }
 
 
+    /** Plays the sound when the character encounters the endboss. */
     playEncounterEndbossSound() {
         this.hecticMusic.loop = true;
         this.hecticMusic.volume = 0.8;
-        if (audioMuted) {
-            this.hecticMusic.volume = 0;
-            this.endbossSound.volume = 0;
-        }
+        this.checkIfAudioIsMuted();
         this.endbossSound.play();
         let intervalID = setInterval(() => {
             if (this.endbossSound.ended) {
@@ -190,5 +200,14 @@ class Endboss extends MovableObject {
                 clearInterval(intervalID);
             }
         }, 100);
+    }
+
+
+    /** Checks if the audio is muted and sets the volume to zero. */
+    checkIfAudioIsMuted() {
+        if (audioMuted) {
+            this.hecticMusic.volume = 0;
+            this.endbossSound.volume = 0;
+        }
     }
 }

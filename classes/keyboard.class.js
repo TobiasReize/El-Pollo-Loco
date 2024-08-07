@@ -13,7 +13,7 @@ class Keyboard {
     }
 
 
-    // Tastatur:
+    /** Implements keyboard control. */
     addKeyboardEvents() {
         window.addEventListener('keydown', (e) => {
             if(e.code == 'ArrowLeft') {
@@ -70,7 +70,7 @@ class Keyboard {
     }
 
 
-    // Touchscreen:
+    /** Implements touchscreen control. */
     addTouchEvents() {
         document.getElementById('btn_left').addEventListener('touchstart', (e) => {
             e.preventDefault();

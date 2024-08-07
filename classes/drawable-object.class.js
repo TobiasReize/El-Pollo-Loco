@@ -4,10 +4,10 @@ class DrawableObject {
     height = 150;
     width = 100;
     img;
-    imageCache = {};    //Bilder-Speicher
-    currentImage = 0;   //Zählvariable
+    imageCache = {};
+    currentImage = 0;
 
-    offset = {      //Standard-Offset für die Kollisionsprüfung (wird je nach Objekt angepasst!)
+    offset = {
         top: 0,
         left: 0,
         right: 0,
@@ -15,32 +15,48 @@ class DrawableObject {
     };
 
 
-    loadImage(path) {   //am Anfang muss immer ein Startbild einzeln geladen werden, wenn das Objekt erstellt wird! Ansonten gibt die Funktion "draw(ctx){}" einen Fehler! (diese Funktion erwartet ein img-Element!)
-        this.img = new Image();     //new Image() vgl. mit einem <img>-HTML-Element (nur für JS vordefiniert, wird später in die HTML-Datei eingefügt)
+    /**
+     * Loads the start image.
+     * @param {string} path - url of the image
+     */
+    loadImage(path) {
+        this.img = new Image();
         this.img.src = path;
     }
 
 
-    loadImages(arr) {   //es werden alle Bilder aus dem Array "arr" geladen und in "imageCache" abgespeichert
+    /**
+     * Saves all images in the image cache.
+     * @param {array} arr - array of image urls
+     */
+    loadImages(arr) {
         arr.forEach(path => {
             let img = new Image();
             img.src = path;
-            this.imageCache[path] = img;    //key: Image-Pfad und value: Image-Objekt
+            this.imageCache[path] = img;
         });
     }
 
 
-    draw(ctx) {     //Bild wird auf dem Canvas gezeichnet
+    /**
+     * Draws the image on the canvas.
+     * @param {*} ctx - 2d context
+     */
+    draw(ctx) {
         ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
     }
 
     
-    drawFrame(ctx) {    //zeichnet die Rechtecke um die Objekte (nur zur Kontrolle der Kollisionsprüfung)
-        if (this instanceof Character || this instanceof NormalChicken || this instanceof SmallChicken || this instanceof Endboss || this instanceof ThrowableObject || this instanceof Bottle || this instanceof Coin) {     //nur für den Charakter und die Chickens
+    /**
+     * Draws a rectangle around the object for collision checking.
+     * @param {*} ctx - 2d context
+     */
+    drawFrame(ctx) {
+        if (this instanceof Character || this instanceof NormalChicken || this instanceof SmallChicken || this instanceof Endboss || this instanceof ThrowableObject || this instanceof Bottle || this instanceof Coin) {
             ctx.beginPath();
             ctx.lineWidth = "3";
             ctx.strokeStyle = "blue";
-            ctx.rect(this.x + this.offset.left, this.y + this.offset.top, this.width - this.offset.left - this.offset.right, this.height - this.offset.top - this.offset.bottom);     //cxt.rect(x, y, width, height)
+            ctx.rect(this.x + this.offset.left, this.y + this.offset.top, this.width - this.offset.left - this.offset.right, this.height - this.offset.top - this.offset.bottom);
             ctx.stroke();
         }
     }

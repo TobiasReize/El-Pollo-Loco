@@ -1,6 +1,6 @@
 class StatusBarBottle extends DrawableObject {
 
-    amount = 0;     //zum Zählen der eingesammelten Flaschen
+    amount = 0;
 
     IMAGES = [
         'assets/img/7_statusbars/1_statusbar/3_statusbar_bottle/blue/0.png',
@@ -13,23 +13,25 @@ class StatusBarBottle extends DrawableObject {
 
 
     constructor() {
-        super();    //immer den super-constructor aufrufen, um die Variablen und Funktionen der Über-Klasse zu laden!
+        super();
         this.loadImages(this.IMAGES);
         this.x = 170;
         this.y = 0;
         this.width = 150;
         this.height = 50;
-        this.setStatusbarImage();    //damit die Statusbar am Anfang gleich angezeigt wird! (und ein img-Element definiert wird!)
+        this.setStatusbarImage();
     }
 
 
-    setStatusbarImage() {     //wählt das passende Bild aus!
+    /** Selects the image of the status bar according to the amount. */
+    setStatusbarImage() {
         let path = this.IMAGES[this.resolveImageIndex()];
         this.img = this.imageCache[path];
     }
 
 
-    resolveImageIndex() {   //gibt den Index des IMAGES-Array zurück je nach dem wie groß "amountBottles" ist (wie viel bottles man noch hat)
+    /** Returns the image index according to the amount. */
+    resolveImageIndex() {
         if (this.amount == 5) {
             return 5;
         } else if (this.amount == 4) {
@@ -44,8 +46,4 @@ class StatusBarBottle extends DrawableObject {
             return 0;
         }
     }
-
-
-
-
 }

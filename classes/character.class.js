@@ -3,7 +3,7 @@ class Character extends MovableObject {
     height = 280;
     y = 150;
     speed = 10;
-    world;  //Referenz auf die Klasse "world" (aktuelle Instanz), damit die Variable "keyboard" der Klasse "world" auch hier verwendet werden kann!
+    world;
     walkingSound = new Audio('assets/audio/walking.mp3');
     jumpingSound = new Audio('assets/audio/jump.mp3');
     hurtSound = new Audio('assets/audio/hurt.mp3');
@@ -12,7 +12,7 @@ class Character extends MovableObject {
     idleStatus = false;
     deadStatus = false;
 
-    offset = {      //Offset zur genauen Kollisionsprüfung (Offset wird von der ursprünglichen Bildgröße abgezogen!)
+    offset = {
         top: 140,
         left: 20,
         right: 30,
@@ -84,26 +84,24 @@ class Character extends MovableObject {
 
 
     constructor() {
-        super().loadImage('assets/img/2_character_pepe/2_walk/W-21.png');   //lädt das Start-Bild. Der "super-constructor" darf nur einmal aufgerufen werden! Danach immer nur "this" verwenden!
-        this.loadImages(this.IMAGES_WALKING);   //speichert alle Bilder für die Animation in dem ImageCache
+        super().loadImage('assets/img/2_character_pepe/2_walk/W-21.png');
+        this.loadImages(this.IMAGES_WALKING);
         this.loadImages(this.IMAGES_JUMPING);
         this.loadImages(this.IMAGES_HURT);
         this.loadImages(this.IMAGES_IDLE);
         this.loadImages(this.IMAGES_LONG_IDLE);
         this.loadImages(this.IMAGES_DEAD);
-        this.animate();     //animiert den Charakter
+        this.animate();
         setStoppableInterval(() => this.applyGravity(), 1000 / 25);
-        this.walkingSound.volume = 0.3;     //30%
+        this.walkingSound.volume = 0.3;
         this.snoringSound.playbackRate = 3;
         this.snoringSound.loop = true;
     }
 
 
-    animate() {     //animiert den Charakter
-        //Bewegungen:
+    /** Animates the character. */
+    animate() {
         setStoppableInterval(() => this.moveCharacter(), 1000 / 60);
-
-        //Animationen:
         setStoppableInterval(() => this.dead(), 100);
         setStoppableInterval(() => this.hurt(), 100);
         setStoppableInterval(() => this.aboveGround(), 150);
@@ -112,6 +110,7 @@ class Character extends MovableObject {
     }
 
 
+    /** Checks if the character is dead and plays the animation. */
     dead() {
         if (this.isDead()) {
             this.playAnimation(this.IMAGES_DEAD);
@@ -122,6 +121,7 @@ class Character extends MovableObject {
     }
 
 
+    /** Checks if the character is hurt and plays the animation. */
     hurt() {
         if (this.isHurt()) {
             this.snoringSound.pause();
@@ -132,95 +132,100 @@ class Character extends MovableObject {
     }
 
 
+    /** Checks if the character is above the ground and plays the jumping animation. */
     aboveGround() {
         if (this.isAboveGround() && !this.isDead()) {
             this.playAnimation(this.IMAGES_JUMPING);
             this.idleStatus = false;
         } else {
-            this.speedY = 0;    //speedY muss wieder auf 0 gesetzt werden, ansonsten ist der Wert immer negativ!
+            this.speedY = 0;
         }
     }
 
 
+    /** Checks if the character is walking and plays the animation. */
     walk() {
         if (!this.isDead() && !this.isHurt() && !this.isAboveGround() && (this.world.keyboard.RIGHT || this.world.keyboard.LEFT)) {
             this.playAnimation(this.IMAGES_WALKING);
             this.idleStatus = false;
         } else {
-            this.walkingSound.currentTime = 0;      //Audiozeit wird wieder zurückgesetzt!
+            this.walkingSound.currentTime = 0;
         }
     }
 
 
+    /** Checks if the character is inactive and plays the animation. */
     idle() {
-        let timePassed = new Date().getTime() - this.idleTimer;     //Differenz zw. letztem idle-Zustand und aktuellem Zeitpunkt
+        let timePassed = new Date().getTime() - this.idleTimer;
         timePassed = timePassed / 1000;
-        
-        if (this.idleStatus && timePassed > 5 && !this.world.keyboard.KEY_D) {            //bei mehr als 5 Sekunden wird die long-idle-Animation abgespielt!
+        if (this.idleStatus && timePassed > 5 && !this.world.keyboard.KEY_D) {
             checkPlayAudio(this.snoringSound);
             this.playAnimation(this.IMAGES_LONG_IDLE);
         } else if (this.idleStatus) {
             this.snoringSound.pause();
             this.playAnimation(this.IMAGES_IDLE);
         } else if (!this.isDead() && !this.isHurt() && !this.isAboveGround() && !this.world.keyboard.RIGHT && !this.world.keyboard.LEFT && !this.world.keyboard.KEY_D && !this.idleStatus) {
-            this.idleTimer = new Date().getTime();  //startet den idle-Timer
-            this.idleStatus = true;                 //setzt den idle-Zustand auf "true" (somit wird nur einmal der idle-Timer gesetzt!)
+            this.idleTimer = new Date().getTime();
+            this.idleStatus = true;
         }
     }
 
 
-    moveCharacter() {       //Funktion zum Bewegen des Charakters
-        this.walkingSound.pause();     //wenn Pepe nicht läuft, wird der Sound pausiert!
-
-        if (this.canMoveRight()) {    //Bewegung nach rechts! (bis die max. x-Pos. erreicht ist)
+    /** Function for the movement of the character. */
+    moveCharacter() {
+        this.walkingSound.pause();
+        if (this.canMoveRight()) {
             this.moveRight();
         }
-
-        if (this.canMoveLeft()) {    //Bewegung nach links! (bis max. zur x-Pos = 0)
+        if (this.canMoveLeft()) {
             this.moveLeft();
         }
-
-        if (this.canJump()) {   //Sprung nach oben! (nur wenn Pepe den Boden berührt!)
+        if (this.canJump()) {
             this.jump();
         }
-
         this.world.camera_x = -this.x + 100;
     }
 
 
+    /** Checks if the character can move to the right. */
     canMoveRight() {
         return this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x && !this.deadStatus;
     }
 
 
+    /** Character moves to the right. */
     moveRight() {
         super.moveRight();
-        this.otherDirection = false;    //Bilder werden nicht gespiegelt! (Blickrichtung rechts)
+        this.otherDirection = false;
         this.snoringSound.pause();
         checkPlayAudio(this.walkingSound);
     }
 
 
+    /** Checks if the character can move to the left. */
     canMoveLeft() {
         return this.world.keyboard.LEFT && this.x > 0 && !this.deadStatus;
     }
 
 
+    /** Character moves to the left. */
     moveLeft() {
         super.moveLeft();
-        this.otherDirection = true;     //Bilder werden gespiegelt! (Blickrichtung links)
+        this.otherDirection = true;
         this.snoringSound.pause();
         checkPlayAudio(this.walkingSound);
     }
 
 
+    /** Checks if the character can jump. */
     canJump() {
         return this.world.keyboard.SPACE && !this.isAboveGround() && !this.deadStatus;
     }
 
 
+    /** Character jumps. */
     jump() {
-        this.currentImage = 0;  //damit die jump-Animation immer beim ersten Bild anfängt!
+        this.currentImage = 0;
         super.jump();
         this.snoringSound.pause();
         checkPlayAudio(this.jumpingSound);

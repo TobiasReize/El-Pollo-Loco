@@ -1,9 +1,10 @@
 let LEVEL_1;
 
 
+/** Initiates the level. */
 function initLevel() {
     LEVEL_1 = new Level(
-        [   // 1. enemy-Array
+        [   // 1. enemy-array
             new Endboss(),
             new NormalChicken(),
             new NormalChicken(),
@@ -16,13 +17,13 @@ function initLevel() {
             new SmallChicken(),
             new SmallChicken()
         ],
-        [   // 2. cloud-Array
-            new Cloud('assets/img/5_background/layers/4_clouds/1.png', 0),   //Wolke an der x-Pos. 0
-            new Cloud('assets/img/5_background/layers/4_clouds/2.png', 720),  //2. Wolke an der x-Pos. 720, usw.
+        [   // 2. cloud-array
+            new Cloud('assets/img/5_background/layers/4_clouds/1.png', 0),
+            new Cloud('assets/img/5_background/layers/4_clouds/2.png', 720),
             new Cloud('assets/img/5_background/layers/4_clouds/1.png', 800*2),
             new Cloud('assets/img/5_background/layers/4_clouds/2.png', 800*3)
         ],
-        [   // 3. background-objects-Array
+        [   // 3. background-objects-array
             new BackgroundObject('assets/img/5_background/layers/air.png', -719),
             new BackgroundObject('assets/img/5_background/layers/3_third_layer/2.png', -719),
             new BackgroundObject('assets/img/5_background/layers/2_second_layer/2.png', -719),
