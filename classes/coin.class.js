@@ -1,5 +1,8 @@
+/**
+ * Class representing a coin.
+ * @extends MovableObject
+ */
 class Coin extends MovableObject {
-
     height = 120;
     width = 120;
     collectCoinSound = new Audio('assets/audio/collect-coin.mp3');
@@ -17,6 +20,7 @@ class Coin extends MovableObject {
     ]
 
 
+    /** Creates a coin. */
     constructor() {
         super().loadImage('assets/img/8_coin/coin_1.png');
         this.loadImages(this.IMAGES);

@@ -1,5 +1,8 @@
+/**
+ * Class representing the character object.
+ * @extends MovableObject
+ */
 class Character extends MovableObject {
-
     height = 280;
     y = 150;
     speed = 10;
@@ -83,6 +86,7 @@ class Character extends MovableObject {
     ];
 
 
+    /** Creates the character. */
     constructor() {
         super().loadImage('assets/img/2_character_pepe/2_walk/W-21.png');
         this.loadImages(this.IMAGES_WALKING);

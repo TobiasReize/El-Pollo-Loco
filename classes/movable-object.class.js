@@ -1,5 +1,8 @@
+/**
+ * Class representing a movable object.
+ * @extends DrawableObject
+ */
 class MovableObject extends DrawableObject {
- 
     speed = 0.15;
     otherDirection = false;
     speedY = 0;

@@ -1,5 +1,8 @@
+/**
+ * Class representing the statusbar endboss object.
+ * @extends DrawableObject
+ */
 class StatusBarEndboss extends DrawableObject {
-
     percentage = 0;
 
     IMAGES = [
@@ -13,6 +16,7 @@ class StatusBarEndboss extends DrawableObject {
     ];
 
 
+    /** Creates the statusbar endboss. */
     constructor() {
         super();
         this.loadImages(this.IMAGES);

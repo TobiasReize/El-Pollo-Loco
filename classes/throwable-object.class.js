@@ -1,5 +1,8 @@
+/**
+ * Class representing a throwable object.
+ * @extends MovableObject
+ */
 class ThrowableObject extends MovableObject {
-
     throwIntervalID = 0;
     splashIntervalID = 0;
     splashDone = false;
@@ -32,6 +35,12 @@ class ThrowableObject extends MovableObject {
     ];
 
     
+    /**
+     * Creates a throwable object.
+     * @param {integer} x - the x value
+     * @param {integer} y - the y value
+     * @param {boolean} otherDirection - to check if images need to be mirrored
+     */
     constructor(x, y, otherDirection) {
         super().loadImage('assets/img/6_salsa_bottle/salsa_bottle.png');
         this.loadImages(this.IMAGES_ROTATION);

@@ -1,5 +1,8 @@
+/**
+ * Class representing the statusbar coin object.
+ * @extends DrawableObject
+ */
 class StatusBarCoin extends DrawableObject {
-
     amount = 0;
 
     IMAGES = [
@@ -12,6 +15,7 @@ class StatusBarCoin extends DrawableObject {
     ];
 
 
+    /** Creates the statusbar coin. */
     constructor() {
         super();
         this.loadImages(this.IMAGES);

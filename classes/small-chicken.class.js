@@ -1,5 +1,8 @@
+/**
+ * Class representing a small chicken object.
+ * @extends MovableObject
+ */
 class SmallChicken extends MovableObject {
-
     y = 370;
     height = 50;
     width = 60;
@@ -25,6 +28,7 @@ class SmallChicken extends MovableObject {
     ];
 
 
+    /** Creates a small chicken. */
     constructor() {
         super().loadImage('assets/img/3_enemies_chicken/chicken_small/1_walk/1_w.png');
         this.loadImages(this.IMAGES_WALKING);

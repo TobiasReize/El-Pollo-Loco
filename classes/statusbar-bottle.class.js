@@ -1,5 +1,8 @@
+/**
+ * Class representing the statusbar bottle object.
+ * @extends DrawableObject
+ */
 class StatusBarBottle extends DrawableObject {
-
     amount = 0;
 
     IMAGES = [
@@ -12,6 +15,7 @@ class StatusBarBottle extends DrawableObject {
     ];
 
 
+    /** Creates the statusbar bottle. */
     constructor() {
         super();
         this.loadImages(this.IMAGES);

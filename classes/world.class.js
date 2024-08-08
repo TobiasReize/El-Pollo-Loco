@@ -1,3 +1,4 @@
+/** Class representing the world. */
 class World {
     character = new Character();
     level = LEVEL_1;
@@ -18,7 +19,7 @@ class World {
 
 
     /**
-     * Initiates the instance of the world.
+     * Creates the the world.
      * @param {HTMLElement} canvas - canvas HTML element
      * @param {object} keyboard - instance of the keyboard class
      */

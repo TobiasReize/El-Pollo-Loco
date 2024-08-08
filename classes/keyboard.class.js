@@ -1,3 +1,4 @@
+/** Class representing the keyboard object. */
 class Keyboard {
     LEFT = false;
     RIGHT = false;
@@ -7,6 +8,7 @@ class Keyboard {
     KEY_D = false;
 
 
+    /** Creates a keyboard. */
     constructor() {
         this.addKeyboardEvents();
         this.addTouchEvents();

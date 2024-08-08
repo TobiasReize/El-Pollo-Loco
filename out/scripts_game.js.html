@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: scripts/game.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: scripts/game.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>let canvas;
+let world;
+let keyboard = new Keyboard();
+let intervalIDs = [];
+let introSound = new Audio('assets/audio/intro.mp3');
+let introSoundIntervalID = 0;
+let gameSound = new Audio('assets/audio/game-music.mp3');
+let winScreenSound = new Audio('assets/audio/you-win.mp3');
+let gameOverSound = new Audio('assets/audio/game-over-music.mp3');
+let audioMuted = true;
+
+
+// --- Start screen: --- //
+/** Initiates the world and shows the game screen. */
+function startGame() {
+    setUpSounds();
+    document.getElementById('overlay_start_screen').classList.add('d-none');
+    initLevel();
+    canvas = document.getElementById('canvas');
+    world = new World(canvas, keyboard);
+}
+
+
+/** Set up game sound. */
+function setUpSounds() {
+    introSound.pause();
+    gameSound.volume = 0.05;
+    gameSound.loop = true;
+    if (audioMuted) {
+        gameSound.volume = 0;
+    }
+    gameSound.play();
+}
+
+
+/** Shows the instruction overlay. */
+function showInstructions() {
+    document.getElementById('overlay_instructions').classList.remove('d-none');
+}
+
+
+/** Closes the instruction overlay. */
+function closeInstructions() {
+    document.getElementById('overlay_instructions').classList.add('d-none');
+}
+
+
+/** Sets up and plays the intro sound. */
+function activateIntroSound() {
+    showStartSoundOnIcon();
+    showGameSoundOnIcon();
+    audioMuted = false;
+    introSound.volume = 0.2;
+    introSound.loop = true;
+    introSound.play();
+    introSoundIntervalID = setInterval(() => {
+        if (introSound.currentTime > 41) {
+            introSound.currentTime = 0;
+        }
+    }, 200);
+}
+
+
+/** Shows the sound-on-icon on the start screen. */
+function showStartSoundOnIcon() {
+    document.getElementById('start_screen_sound_off').classList.add('d-none');
+    document.getElementById('start_screen_sound_on').classList.remove('d-none');
+}
+
+
+/** Deactivates the intro sound. */
+function deactivateIntroSound() {
+    showStartSoundOffIcon();
+    showGameSoundOffIcon();
+    audioMuted = true;
+    introSound.pause();
+    introSound.currentTime = 0;
+    clearInterval(introSoundIntervalID);
+}
+
+
+/** Shows the sound-off-icon on the start screen. */
+function showStartSoundOffIcon() {
+    document.getElementById('start_screen_sound_off').classList.remove('d-none');
+    document.getElementById('start_screen_sound_on').classList.add('d-none');
+}
+
+
+// --- Game screen: --- //
+/** Shows the fullscreen view. */
+function showFullscreen() {
+    let canvas = document.getElementById('canvas');
+    let gameInfoContainer = document.getElementById('game_info_container');
+    checkFullscreen();
+    canvas.classList.add('canvas-fullscreen');
+    gameInfoContainer.classList.add('game-info-container-fullscreen');
+    document.getElementById('game_imprint_container').classList.add('d-none');
+    document.getElementById('headline').classList.add('d-none');
+    document.getElementById('icon_fullscreen').classList.add('d-none');
+    document.getElementById('icon_exit_fullscreen').classList.remove('d-none');
+}
+
+
+/** Checks and enables fullscreen mode for different browsers. */
+function checkFullscreen() {
+    let fullscreen = document.getElementById('fullscreen');
+    if (fullscreen.requestFullscreen) {
+	    fullscreen.requestFullscreen();
+	  } else if (fullscreen.webkitRequestFullscreen) { /* Safari */
+	    fullscreen.webkitRequestFullscreen();
+	  } else if (fullscreen.msRequestFullscreen) { /* IE11 */
+	    fullscreen.msRequestFullscreen();
+	  }
+}
+
+
+/** Exit the fullscreen view. */
+function removeFullscreen() {
+    let canvas = document.getElementById('canvas');
+    let gameInfoContainer = document.getElementById('game_info_container');
+    checkExitFullscreen();
+    canvas.classList.remove('canvas-fullscreen');
+    gameInfoContainer.classList.remove('game-info-container-fullscreen');
+    document.getElementById('game_imprint_container').classList.remove('d-none');
+    document.getElementById('headline').classList.remove('d-none');
+    document.getElementById('icon_fullscreen').classList.remove('d-none');
+    document.getElementById('icon_exit_fullscreen').classList.add('d-none');
+}
+
+
+/** Checks and exits fullscreen mode for different browsers. */
+function checkExitFullscreen() {
+    if (document.exitFullscreen) {
+	    document.exitFullscreen();
+	  } else if (document.webkitExitFullscreen) { /* Safari */
+	    document.webkitExitFullscreen();
+	  } else if (document.msExitFullscreen) { /* IE11 */
+	    document.msExitFullscreen();
+	  }
+}
+
+
+/** Deactivates all game sounds. */
+function deactivateGameSounds() {
+    showGameSoundOffIcon();
+    audioMuted = true;
+    gameSound.volume = 0;
+    world.level.enemies[0].hecticMusic.volume = 0;
+    world.level.enemies[0].endbossSound.volume = 0;
+    world.character.snoringSound.volume = 0;
+}
+
+
+/** Shows the sound-off-icon on the game screen. */
+function showGameSoundOffIcon() {
+    document.getElementById('game_sound_on').classList.add('d-none');
+    document.getElementById('game_sound_off').classList.remove('d-none');
+}
+
+
+/** Activates all game sounds. */
+function activateGameSounds() {
+    showGameSoundOnIcon();
+    audioMuted = false;
+    gameSound.volume = 0.1;
+    world.level.enemies[0].hecticMusic.volume = 0.8;
+    world.level.enemies[0].endbossSound.volume = 1;
+    world.character.snoringSound.volume = 1;
+}
+
+
+/** Shows the sound-on-icon on the game screen. */
+function showGameSoundOnIcon() {
+    document.getElementById('game_sound_on').classList.remove('d-none');
+    document.getElementById('game_sound_off').classList.add('d-none');
+}
+
+
+/** Stops the game and shows the game over screen. */
+function gameOver() {
+    let fullscreen = document.getElementById('fullscreen');
+    gameSound.pause();
+    stopAllIntervals();
+    fullscreen.innerHTML += gameOverHTML();
+    gameOverSound.volume = 0.2;
+    checkPlayAudio(gameOverSound);
+}
+
+
+/** Game over screen HTML. */
+function gameOverHTML() {
+    return /*html*/ `
+        &lt;section id="game_over_overlay" class="df-ai-jc-ctr overlay-screen">
+            &lt;div class="df-jc-ctr content-screen game-over-screen gap16">
+                &lt;button onclick="location.reload()" class="button">Menü&lt;/button>
+                &lt;button onclick="restartGame('game_over_overlay')" class="button">Neustart&lt;/button>
+            &lt;/div>
+        &lt;/section>
+    `;
+}
+
+
+/** Stops the game and shows the win screen. */
+function youWin() {
+    let fullscreen = document.getElementById('fullscreen');
+    gameSound.pause();
+    stopAllIntervals();
+    fullscreen.innerHTML += youWinHTML();
+    winScreenSound.volume = 0.2;
+    checkPlayAudio(winScreenSound);
+}
+
+
+/** Win screen HTML. */
+function youWinHTML() {
+    return /*html*/ `
+        &lt;section id="you_win_overlay" class="df-ai-jc-ctr overlay-screen">
+            &lt;div class="df-jc-ctr content-screen win-screen gap16">
+                &lt;button onclick="location.reload()" class="button">Menü&lt;/button>
+                &lt;button onclick="restartGame('you_win_overlay')" class="button">Neustart&lt;/button>
+            &lt;/div>
+        &lt;/section>
+    `;
+}
+
+
+/**
+ * Restarts the game.
+ * @param {string} id - id of the overlay screen
+ */
+function restartGame(id) {
+    world = '';
+    canvas = '';
+    document.getElementById(id).remove();
+    winScreenSound.pause();
+    winScreenSound.currentTime = 0;
+    gameOverSound.pause();
+    gameOverSound.currentTime = 0;
+    gameSound.currentTime = 0;
+    startGame();
+}
+
+
+// --- Auxiliary functions: --- //
+/**
+ * Stops the event propagation.
+ * @param {event} event - triggered event
+ */
+function stopPropagation(event) {
+    event.stopPropagation();
+}
+
+
+/**
+ * Executes functions as interval and saves the interval ID.
+ * @param {*} fn - interval function
+ * @param {*} time - interval time
+ */
+function setStoppableInterval(fn, time) {
+    let id = setInterval(fn, time);
+    intervalIDs.push(id);
+}
+
+
+/** Stops all intervals. */
+function stopAllIntervals() {
+    for (let i = 0; i &lt; 999; i++) {
+        window.clearInterval(i);
+    }
+}
+
+
+/**
+ * Checks if sounds are muted and plays the audio.
+ * @param {audio} audio - audio object
+ */
+function checkPlayAudio(audio) {
+    if (!audioMuted) {
+        audio.play();
+    }
+}
+
+
+/**
+ * Shows the info overlay container for mobile view.
+ * @param {string} id - ID to identify start or game screen
+ */
+function showInfoContainer(id) {
+    if (id == 'start') {
+        document.getElementById('overlay_info_container_start').classList.add('translateX0');
+    } else if (id == 'game') {
+        document.getElementById('overlay_info_container_game').classList.add('translateY0');
+    }
+}
+
+
+/**
+ * Closes the info overlay container for mobile view.
+ * @param {string} id - ID to identify start or game screen
+ */
+function closeInfoContainer(id) {
+    if (id == 'start') {
+        document.getElementById('overlay_info_container_start').classList.remove('translateX0');
+    } else if (id == 'game') {
+        document.getElementById('overlay_info_container_game').classList.remove('translateY0');
+    }
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="BackgroundObject.html">BackgroundObject</a></li><li><a href="Bottle.html">Bottle</a></li><li><a href="Character.html">Character</a></li><li><a href="Cloud.html">Cloud</a></li><li><a href="Coin.html">Coin</a></li><li><a href="DrawableObject.html">DrawableObject</a></li><li><a href="Endboss.html">Endboss</a></li><li><a href="Keyboard.html">Keyboard</a></li><li><a href="Level.html">Level</a></li><li><a href="MovableObject.html">MovableObject</a></li><li><a href="NormalChicken.html">NormalChicken</a></li><li><a href="SmallChicken.html">SmallChicken</a></li><li><a href="StatusBarBottle.html">StatusBarBottle</a></li><li><a href="StatusBarCoin.html">StatusBarCoin</a></li><li><a href="StatusBarEndboss.html">StatusBarEndboss</a></li><li><a href="StatusBarHealth.html">StatusBarHealth</a></li><li><a href="ThrowableObject.html">ThrowableObject</a></li><li><a href="World.html">World</a></li></ul><h3>Global</h3><ul><li><a href="global.html#activateGameSounds">activateGameSounds</a></li><li><a href="global.html#activateIntroSound">activateIntroSound</a></li><li><a href="global.html#checkExitFullscreen">checkExitFullscreen</a></li><li><a href="global.html#checkFullscreen">checkFullscreen</a></li><li><a href="global.html#checkPlayAudio">checkPlayAudio</a></li><li><a href="global.html#closeInfoContainer">closeInfoContainer</a></li><li><a href="global.html#closeInstructions">closeInstructions</a></li><li><a href="global.html#deactivateGameSounds">deactivateGameSounds</a></li><li><a href="global.html#deactivateIntroSound">deactivateIntroSound</a></li><li><a href="global.html#gameOver">gameOver</a></li><li><a href="global.html#gameOverHTML">gameOverHTML</a></li><li><a href="global.html#initLevel">initLevel</a></li><li><a href="global.html#removeFullscreen">removeFullscreen</a></li><li><a href="global.html#restartGame">restartGame</a></li><li><a href="global.html#setStoppableInterval">setStoppableInterval</a></li><li><a href="global.html#setUpSounds">setUpSounds</a></li><li><a href="global.html#showFullscreen">showFullscreen</a></li><li><a href="global.html#showGameSoundOffIcon">showGameSoundOffIcon</a></li><li><a href="global.html#showGameSoundOnIcon">showGameSoundOnIcon</a></li><li><a href="global.html#showInfoContainer">showInfoContainer</a></li><li><a href="global.html#showInstructions">showInstructions</a></li><li><a href="global.html#showStartSoundOffIcon">showStartSoundOffIcon</a></li><li><a href="global.html#showStartSoundOnIcon">showStartSoundOnIcon</a></li><li><a href="global.html#startGame">startGame</a></li><li><a href="global.html#stopAllIntervals">stopAllIntervals</a></li><li><a href="global.html#stopPropagation">stopPropagation</a></li><li><a href="global.html#youWin">youWin</a></li><li><a href="global.html#youWinHTML">youWinHTML</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Thu Aug 08 2024 10:01:44 GMT+0200 (Mitteleuropäische Sommerzeit)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

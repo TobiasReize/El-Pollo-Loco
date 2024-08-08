@@ -1,5 +1,8 @@
+/**
+ * Class representing a bottle.
+ * @extends MovableObject
+ */
 class Bottle extends MovableObject {
-
     y = 350;
     height = 80;
     width = 60;
@@ -18,6 +21,7 @@ class Bottle extends MovableObject {
     ]
 
 
+    /** Creates a bottle. */
     constructor() {
         super().loadImage('assets/img/6_salsa_bottle/1_salsa_bottle_on_ground.png');
         this.loadImages(this.IMAGES);

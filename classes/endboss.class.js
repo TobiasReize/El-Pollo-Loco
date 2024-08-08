@@ -1,5 +1,8 @@
+/**
+ * Class representing the endboss object.
+ * @extends MovableObject
+ */
 class Endboss extends MovableObject {
-
     height = 350;
     width = 220;
     y = 100;
@@ -63,6 +66,7 @@ class Endboss extends MovableObject {
     ];
 
 
+    /** Creates the endboss. */
     constructor() {
         super().loadImage(this.IMAGES_ALERT[0]);
         this.loadImages(this.IMAGES_WALKING);
@@ -71,7 +75,7 @@ class Endboss extends MovableObject {
         this.loadImages(this.IMAGES_HURT);
         this.loadImages(this.IMAGES_DEAD);
         this.x = 2550;
-        this.speed = 10;
+        this.speed = 20;
         setStoppableInterval(() => this.applyGravity(), 1000 / 25);
         this.animate();
     }

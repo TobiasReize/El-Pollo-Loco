@@ -1,10 +1,11 @@
+/** Class representing the level. */
 class Level {
     enemies;
     clouds;
     backgroundObjects;
     level_end_x = 2500;
 
-    
+
 /**
  * Assigns the object arrays to the variables.
  * @param {array} enemies - array of the enemies objects

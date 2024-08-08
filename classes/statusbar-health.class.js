@@ -1,5 +1,8 @@
+/**
+ * Class representing the statusbar health object.
+ * @extends DrawableObject
+ */
 class StatusBarHealth extends DrawableObject {
-
     percentage = 0;
 
     IMAGES = [
@@ -12,6 +15,7 @@ class StatusBarHealth extends DrawableObject {
     ];
 
 
+    /** Creates the statusbar health. */
     constructor() {
         super();
         this.loadImages(this.IMAGES);

@@ -190,9 +190,10 @@ function gameOver() {
 /** Game over screen HTML. */
 function gameOverHTML() {
     return /*html*/ `
-        <section class="df-ai-jc-ctr overlay-screen">
-            <div class="df-jc-ctr content-screen game-over-screen">
-                <button onclick="location.reload()" class="button">Neustart</button>
+        <section id="game_over_overlay" class="df-ai-jc-ctr overlay-screen">
+            <div class="df-jc-ctr content-screen game-over-screen gap16">
+                <button onclick="location.reload()" class="button">Menü</button>
+                <button onclick="restartGame('game_over_overlay')" class="button">Neustart</button>
             </div>
         </section>
     `;
@@ -213,12 +214,30 @@ function youWin() {
 /** Win screen HTML. */
 function youWinHTML() {
     return /*html*/ `
-        <section class="df-ai-jc-ctr overlay-screen">
-            <div class="df-jc-ctr content-screen win-screen">
-                <button onclick="location.reload()" class="button">Neustart</button>
+        <section id="you_win_overlay" class="df-ai-jc-ctr overlay-screen">
+            <div class="df-jc-ctr content-screen win-screen gap16">
+                <button onclick="location.reload()" class="button">Menü</button>
+                <button onclick="restartGame('you_win_overlay')" class="button">Neustart</button>
             </div>
         </section>
     `;
+}
+
+
+/**
+ * Restarts the game.
+ * @param {string} id - id of the overlay screen
+ */
+function restartGame(id) {
+    world = '';
+    canvas = '';
+    document.getElementById(id).remove();
+    winScreenSound.pause();
+    winScreenSound.currentTime = 0;
+    gameOverSound.pause();
+    gameOverSound.currentTime = 0;
+    gameSound.currentTime = 0;
+    startGame();
 }
 
 
