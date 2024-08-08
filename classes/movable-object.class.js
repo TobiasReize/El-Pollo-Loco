@@ -41,11 +41,15 @@ class MovableObject extends DrawableObject {
     }
 
 
-    /** Gravity is activated. */
+    /** Applies gravity to the objects. */
     applyGravity() {
         if (this.isAboveGround() || this.speedY > 0) {
-            this.y -= this.speedY;
-            this.speedY -= this.acceleration;
+            if (this instanceof Character && (this.y - this.speedY >= 150)) {
+                this.y = 150;
+            } else {
+                this.y -= this.speedY;
+                this.speedY -= this.acceleration;
+            }
         }
     }
 

@@ -94,7 +94,7 @@ h3 {
 }
 
 .overlay-screen {
-    position: absolute;
+    position: fixed;
     width: 100%;
     top: 0;
     left: 0;
@@ -143,6 +143,7 @@ h3 {
     font-size: 20px;
     font-weight: 400;
     letter-spacing: 0.5px;
+    cursor: pointer;
 }
 
 .link-style:hover {
@@ -169,15 +170,37 @@ canvas {
 
 .game-info-container {
     margin-top: 16px;
-    background-color: rgb(255 255 255 / 30%);
-    border-right: 4px solid rgb(255 255 255);
-    border-left: 4px solid rgb(255 255 255);
     padding: 8px;
 }
 
 .game-info-container-fullscreen {
     background-color: unset;
     border: unset;
+}
+
+.game-links {
+    color: black;
+    text-decoration: none;
+    font-size: 20px;
+    font-weight: 400;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+}
+
+.game-info-buttons {
+    background-color: rgb(243, 178, 0);
+    padding: 4px 8px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.5);
+}
+
+.game-info-buttons:hover {
+    background-color: rgb(255, 205, 69);
+}
+
+.game-info-buttons:active {
+    background-color: rgb(221, 162, 0);
+    box-shadow: inset 0px 0px 4px 2px rgba(0, 0, 0, 0.5);
 }
 
 .game-imprint-container {
@@ -189,38 +212,14 @@ canvas {
     gap: 24px
 }
 
-.icon-sound {
+.icon-sound-game {
     height: 26px;
     cursor: pointer;
 }
 
-.icon-sound:hover {
-    filter: drop-shadow(0px 0px 2px #000000);
-}
-
-.icon-sound:hover path {
-    fill: rgb(243, 178, 0);
-}
-
-.icon-sound:active path {
-    fill: rgb(221, 162, 0);
-}
-
 .icon-fullscreen {
-    height: 24px;
+    height: 26px;
     cursor: pointer;
-}
-
-.icon-fullscreen:hover {
-    filter: drop-shadow(0px 0px 2px #000000);
-}
-
-.icon-fullscreen:hover path {
-    fill: rgb(243, 178, 0);
-}
-
-.icon-fullscreen:active path {
-    fill: rgb(221, 162, 0);
 }
 
 .overlay-info-container-game {

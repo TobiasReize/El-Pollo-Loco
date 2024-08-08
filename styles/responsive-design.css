@@ -11,7 +11,7 @@
     }
 }
 
-@media screen and (orientation: portrait) and (max-width: 720px) {
+@media screen and (orientation: portrait) and (max-width: 1024px) {
     .orientation-screen {
         display: flex;
     }
@@ -39,10 +39,6 @@
         font-size: 16px;
     }
 
-    .sound-start {
-        height: 22px;
-    }
-
     .button {
         font-size: 22px;
         letter-spacing: 1px;
@@ -52,7 +48,7 @@
 }
 
 /* Mobile Ansicht: (im Querformat, Landscape mode) */
-@media(max-height: 550px) or (max-width: 750px) {
+@media(max-width: 1366px) {
     .start-screen {
         gap: unset;
     }
@@ -92,18 +88,35 @@
         justify-content: center;
     }
 
-    .game-imprint-container {
-        display: none;
-    }
-
     .icon-container {
         flex: unset;
         justify-content: center;
         z-index: 4;
     }
 
-    .icon-fullscreen {
-        display: none;
+    .game-icon-responsive {
+        background-color: unset;
+        padding: unset;
+        border-radius: unset;
+        box-shadow: unset;
+    }
+
+    .game-icon-responsive:hover {
+        filter: drop-shadow(0px 0px 2px #000000);
+        background-color: unset;
+    }
+    
+    .game-icon-responsive:hover path {
+        fill: rgb(243, 178, 0);
+    }
+
+    .game-icon-responsive:active {
+        background-color: unset;
+        box-shadow: unset;
+    }
+    
+    .game-icon-responsive:active path {
+        fill: rgb(221, 162, 0);
     }
 
     .canvas-fullscreen {
