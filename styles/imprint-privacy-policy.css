@@ -13,6 +13,10 @@
     margin-bottom: 32px;
 }
 
+.m-top16 {
+    margin-top: 16px;
+}
+
 .p-left8 {
     padding-left: 8px;
 }
@@ -27,6 +31,7 @@ ul {
     padding: 16px;
     display: flex;
     flex-direction: column;
+    background-image: linear-gradient(#029CC7, #994409);
 }
 
 .headline {
@@ -34,6 +39,7 @@ ul {
     align-items: center;
     justify-content: space-between;
     margin-bottom: 32px;
+    max-width: 1920px;
 }
 
 .back {
@@ -68,6 +74,11 @@ h3 {
     font-size: 24px;
     font-weight: bold;
     margin-bottom: 8px;
+}
+
+h4 {
+    font-size: 20px;
+    font-weight: bold;
 }
 
 p, li {
