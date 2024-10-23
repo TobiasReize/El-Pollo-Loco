@@ -132,7 +132,7 @@
 /* Instruction screen (start screen overlay): */
 .overlay-instructions {
     position: absolute;
-    min-height: 100vh;
+    min-height: 100dvh;
     width: 100%;
     top: 0;
     left: 0;

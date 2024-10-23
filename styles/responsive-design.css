@@ -7,7 +7,7 @@
 
 @media only screen and (max-height: 480px) {
     canvas {
-        height: 100vh;
+        height: 100dvh;
     }
 }
 
@@ -120,7 +120,7 @@
     }
 
     .canvas-fullscreen {
-        max-height: 100vh;
+        max-height: 100dvh;
     }
 }
 

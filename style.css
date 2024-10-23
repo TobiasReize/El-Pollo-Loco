@@ -46,7 +46,7 @@
 .wrapper {
     overflow: hidden;
     flex-direction: column;
-    min-height: 100vh;
+    min-height: 100dvh;
     background-image: url('./assets/img/5_background/desert.png');
     background-position: bottom;
     background-size: cover;
@@ -165,7 +165,7 @@ canvas {
 
 .canvas-fullscreen {
     width: 100%;
-    max-height: calc(100vh - 58px);
+    max-height: calc(100dvh - 58px);
 }
 
 .game-info-container {
